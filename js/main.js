@@ -156,4 +156,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ── Year in footer ──────────────────────────────────── */
   document.querySelectorAll('.year').forEach(el => el.textContent = new Date().getFullYear());
+
+  /* ── Accuracy bar chart animation ────────────────────── */
+  function animateAccBars(container) {
+    container.querySelectorAll('.acc-chart-bar[data-acc-width]').forEach(bar => {
+      const w = bar.dataset.accWidth;
+      setTimeout(() => { bar.style.width = w + '%'; }, 80);
+    });
+  }
+  // Trigger when Survey tab is clicked
+  document.querySelectorAll('.tab-btn[data-tab="survey"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTimeout(() => {
+        const chart = document.querySelector('.acc-chart');
+        if (chart) animateAccBars(chart.closest('.tab-panel') || chart.parentElement);
+      }, 350);
+    });
+  });
+  // Also trigger via IntersectionObserver if already visible
+  const accChartCard = document.getElementById('acc-chart-card');
+  if (accChartCard) {
+    const accIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { animateAccBars(e.target); accIO.unobserve(e.target); }
+      });
+    }, { threshold: 0.3 });
+    accIO.observe(accChartCard);
+  }
 });

@@ -1,1328 +1,1684 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HARP — High-Accuracy Reading Pipeline for Analog Instruments</title>
-  <meta name="description" content="HARP is a modular AI pipeline that reads industrial analog gauges and clocks with 96.4% accuracy using vision-language models, directional statistics, and physics-guided reasoning."/>
-  <link rel="stylesheet" href="css/style.css"/>
+  <meta name="description"
+    content="HARP is a modular AI pipeline that reads industrial analog gauges and clocks with 96.4% accuracy using vision-language models, directional statistics, and physics-guided reasoning." />
+  <link rel="stylesheet" href="css/style.css" />
   <style>
     /* Page routing */
-    .page { display: none; }
-    .page.page-active { display: block; }
+    .page {
+      display: none;
+    }
+
+    .page.page-active {
+      display: block;
+    }
   </style>
 </head>
+
 <body>
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      NAVBAR
 ══════════════════════════════════════════════════════ -->
-<nav id="navbar">
-  <div class="container nav-inner">
-    <a href="#home" class="nav-brand" data-page="home">
-      <span>HARP</span>
-      <span class="nav-brand-badge">SLIIT 2026</span>
-    </a>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#home"          data-page="home">Home</a></li>
-      <li><a href="#domain"        data-page="domain">Domain</a></li>
-      <li><a href="#solution"      data-page="solution">Solution</a></li>
-      <li><a href="#milestones"    data-page="milestones">Milestones</a></li>
-      <li><a href="#documents"     data-page="documents">Documents</a></li>
-      <li><a href="#presentations" data-page="presentations">Slides</a></li>
-      <li><a href="#about"         data-page="about">About Us</a></li>
-      <li><a href="#contact" class="nav-cta" data-page="contact">Contact</a></li>
-    </ul>
-    <div class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
+  <nav id="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="nav-brand" data-page="home">
+        <span>HARP</span>
+        <span class="nav-brand-badge">SLIIT 2026</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home" data-page="home">Home</a></li>
+        <li><a href="#domain" data-page="domain">Domain</a></li>
+        <li><a href="#solution" data-page="solution">Solution</a></li>
+        <li><a href="#milestones" data-page="milestones">Milestones</a></li>
+        <li><a href="#documents" data-page="documents">Documents</a></li>
+        <li><a href="#presentations" data-page="presentations">Slides</a></li>
+        <li><a href="#about" data-page="about">About Us</a></li>
+        <li><a href="#contact" class="nav-cta" data-page="contact">Contact</a></li>
+      </ul>
+      <div class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      PAGE: HOME
 ══════════════════════════════════════════════════════ -->
-<div id="page-home" class="page page-active">
+  <div id="page-home" class="page page-active">
 
-  <!-- Hero -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-label">
-          <span class="hero-label-dot"></span>
-          Final Year Research Project · SLIIT 2025/26
-        </div>
-        <h1 class="hero-title">
-          Making Machines Read<br/>
-          <em>Analog Instruments</em><br/>
-          Like Experts Do
-        </h1>
-        <p class="hero-sub">
-          HARP is a four-stage AI pipeline that reads industrial gauges and
-          clocks with 96.4% accuracy — eliminating shadow misdetection,
-          circular-regression bias, and costly false alarms in real-world
-          factory environments.
-        </p>
-        <div class="hero-actions">
-          <a href="#solution" class="btn btn-primary btn-lg" data-page="solution">
-            Explore the System
-          </a>
-          <a href="#domain" class="btn btn-outline btn-lg" data-page="domain">
-            Read the Research
-          </a>
-        </div>
-        <div class="hero-stats">
-          <div>
-            <div class="hero-stat-num"><span data-count="96.4" data-suffix="%" data-decimal="true">0%</span></div>
-            <div class="hero-stat-label">Field Accuracy</div>
+    <!-- Hero -->
+    <section id="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-label">
+            <span class="hero-label-dot"></span>
+            Final Year Research Project · SLIIT 2025/26
           </div>
-          <div>
-            <div class="hero-stat-num"><span data-count="76.5" data-suffix="%" data-decimal="true">0%</span></div>
-            <div class="hero-stat-label">False Positive Reduction</div>
+          <h1 class="hero-title">
+            Making Machines Read<br />
+            <em>Analog Instruments</em><br />
+            Like Experts Do
+          </h1>
+          <p class="hero-sub">
+            HARP is a four-stage AI pipeline that reads industrial gauges and
+            clocks with 96.4% accuracy — eliminating shadow misdetection,
+            circular-regression bias, and costly false alarms in real-world
+            factory environments.
+          </p>
+          <div class="hero-actions">
+            <a href="#solution" class="btn btn-primary btn-lg" data-page="solution">
+              Explore the System
+            </a>
+            <a href="#domain" class="btn btn-outline btn-lg" data-page="domain">
+              Read the Research
+            </a>
           </div>
-          <div>
-            <div class="hero-stat-num"><span data-count="64" data-prefix="$" data-suffix="K">$0K</span></div>
-            <div class="hero-stat-label">Annual Savings / Site</div>
-          </div>
-          <div>
-            <div class="hero-stat-num"><span data-count="290" data-suffix="ms">0ms</span></div>
-            <div class="hero-stat-label">Real-Time Latency</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Problem snapshot -->
-  <section class="section" style="padding-top:80px;">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="label">The Problem</span>
-        <h2>Why Analog Gauges Are Still Hard to Read Automatically</h2>
-        <div class="divider"></div>
-        <p class="lead">Over 200 million analog instruments operate in global industry. Current AI systems fail in three fundamental ways that cost lives and money.</p>
-      </div>
-      <div class="grid-3">
-        <div class="card reveal reveal-delay-1">
-          <div class="card-icon">🌑</div>
-          <h4>Shadow Misdetection</h4>
-          <p>A needle's shadow is visually identical to the needle itself — differing by less than 4% in gradient magnitude. This causes false alarms exceeding 30%, costing the industry an estimated USD 62 million per year.</p>
-          <div class="metric-row"><div class="metric-box"><div class="metric-val">30%+</div><div class="metric-lbl">False Positive Rate</div></div></div>
-        </div>
-        <div class="card reveal reveal-delay-2">
-          <div class="card-icon">🔄</div>
-          <h4>Circular Regression Bias</h4>
-          <p>All existing AI angle estimators treat 0°–360° as a straight line. This creates a systematic error spike near the 0°/360° boundary — biasing every reading near midnight or "12 o'clock".</p>
-          <div class="metric-row"><div class="metric-box"><div class="metric-val">11.3°</div><div class="metric-lbl">Typical Angular Error</div></div></div>
-        </div>
-        <div class="card reveal reveal-delay-3">
-          <div class="card-icon">📉</div>
-          <h4>No Physical Validation</h4>
-          <p>Existing detectors produce a raw number and stop. They cannot tell you if 3:75 is a physically impossible time, or check whether the shorter hand is truly the hour hand.</p>
-          <div class="metric-row"><div class="metric-box"><div class="metric-val">61.3%</div><div class="metric-lbl">End-to-End Accuracy (before HARP)</div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pipeline quick overview -->
-  <section class="section" style="background: var(--navy-mid); padding: 80px 0;">
-    <div class="container">
-      <div class="section-header centered reveal">
-        <span class="label">Our Solution</span>
-        <h2>The HARP Four-Stage Pipeline</h2>
-        <div class="divider centered"></div>
-        <p>Each component solves one precisely defined sub-problem. Together they reach 96.4% field accuracy in under 300 ms.</p>
-      </div>
-      <div class="pipeline-wrapper reveal mt-32">
-        <div class="pipe-step">
-          <div class="pipe-num">C1</div>
-          <h4>Detection &amp; Quality Gate</h4>
-          <p>Dual YOLOv8 + image quality scoring filters bad inputs before they enter the pipeline.</p>
-          <span class="pipe-badge">38 ms</span>
-        </div>
-        <div class="pipe-arrow">→</div>
-        <div class="pipe-step">
-          <div class="pipe-num">C2</div>
-          <h4>Shadow Filtering (SSF)</h4>
-          <p>CLIP vision-language model scores whether each detected keypoint is a real needle or its shadow.</p>
-          <span class="pipe-badge">185 ms</span>
-        </div>
-        <div class="pipe-arrow">→</div>
-        <div class="pipe-step">
-          <div class="pipe-num">C3</div>
-          <h4>Directional Angle Estimation</h4>
-          <p>Sin/cos ResNet-18 with circular statistics eliminates the 0°/360° wraparound bias and quantifies uncertainty.</p>
-          <span class="pipe-badge">52 ms</span>
-        </div>
-        <div class="pipe-arrow">→</div>
-        <div class="pipe-step">
-          <div class="pipe-num">C4</div>
-          <h4>Physics Reasoning</h4>
-          <p>Exhaustively checks all 720 possible clock readings, picks the one that best matches physical clock laws.</p>
-          <span class="pipe-badge">15 ms</span>
-        </div>
-      </div>
-      <div class="text-center mt-32 reveal">
-        <a href="#solution" class="btn btn-primary" data-page="solution">See Full Technical Detail →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Key results -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header reveal">
-        <span class="label">Results at a Glance</span>
-        <h2>Validated in Real Industrial Environments</h2>
-        <div class="divider"></div>
-        <p>Eight weeks of continuous deployment across three facilities — petrochemical, automotive, and water treatment — with no configuration changes.</p>
-      </div>
-      <div class="grid-4 reveal">
-        <div class="stat-card">
-          <div class="stat-number" data-count="91.4" data-suffix="%" data-decimal="true">0%</div>
-          <div class="stat-label">Exact-Minute Reading Accuracy</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-count="8" data-suffix="%">0%</div>
-          <div class="stat-label">Shadow False Positive Rate (from 34%)</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-count="4.8" data-suffix="°" data-decimal="true">0°</div>
-          <div class="stat-label">Median Angle Error</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" data-count="1.3" data-suffix=" mo" data-decimal="true">0mo</div>
-          <div class="stat-label">Equipment Payback Period</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</div><!-- /page-home -->
-
-
-<!-- ══════════════════════════════════════════════════════
-     PAGE: DOMAIN
-══════════════════════════════════════════════════════ -->
-<div id="page-domain" class="page">
-  <div class="page-header">
-    <div class="container">
-      <span class="label">Research Domain</span>
-      <h1 style="margin: 14px 0 16px;">Understanding the Research Landscape</h1>
-      <p class="lead" style="max-width:620px;">A deep dive into the problem space, existing solutions, and the unique gaps that HARP was built to fill.</p>
-    </div>
-  </div>
-
-  <section class="section">
-    <div class="container" data-tabs>
-      <!-- Tab buttons -->
-      <div id="domain" class="domain-tabs">
-        <button class="tab-btn active" data-tab="problem">Problem Statement</button>
-        <button class="tab-btn" data-tab="survey">Literature Survey</button>
-        <button class="tab-btn" data-tab="gap">Research Gap</button>
-        <button class="tab-btn" data-tab="objectives">Objectives</button>
-        <button class="tab-btn" data-tab="methodology">Methodology</button>
-        <button class="tab-btn" data-tab="tech">Technologies</button>
-      </div>
-
-      <!-- ─── Problem Statement ─── -->
-      <div class="tab-panel active" data-panel="problem">
-        <div class="grid-2" style="align-items:start; gap: 48px;">
-          <div class="reveal">
-            <span class="label">Real-World Impact</span>
-            <h2 class="mt-8">What Goes Wrong When Gauges Are Misread?</h2>
-            <div class="divider"></div>
-            <p class="lead">Pressure gauges, flow meters, temperature dials, and analog clocks form the backbone of industrial sensing in petrochemical, water-treatment, and power-generation facilities worldwide.</p>
-            <p class="mt-16">Despite decades of digital transformation, over <strong style="color:var(--white)">200 million analog instruments</strong> remain in active use — the majority in ageing plants that predate digital sensor adoption. Replacing them is neither economically nor logistically feasible. Automated computer vision reading is therefore the most viable path to remote monitoring.</p>
-            <div class="callout mt-24">
-              <p><strong style="color:var(--cyan)">A 2024 incident:</strong> A US petrochemical plant suffered a 6-hour halt costing <strong style="color:var(--white)">USD 47,000</strong> after a computer vision system misidentified a needle's shadow as a pressure spike. Industry-wide, this happens approximately 18 times per facility per year.</p>
+          <div class="hero-stats">
+            <div>
+              <div class="hero-stat-num"><span data-count="96.4" data-suffix="%" data-decimal="true">0%</span></div>
+              <div class="hero-stat-label">Field Accuracy</div>
             </div>
-            <p class="mt-16">The problem is not that AI cannot detect lines — it is that it cannot tell the difference between a <em style="color:var(--off-white)">meaningful</em> line and a <em style="color:var(--off-white)">meaningless</em> shadow, and it cannot verify that its angle reading is physically plausible.</p>
-          </div>
-          <div class="reveal reveal-delay-1">
-            <div class="card" style="margin-bottom:20px;">
-              <div class="card-icon">💸</div>
-              <h4>Economic Scale of the Problem</h4>
-              <div class="mt-16">
-                <div style="margin-bottom:14px;">
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">False alarm rate (deployed systems)</span><span class="mono">30–35%</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="33"></div></div>
-                </div>
-                <div style="margin-bottom:14px;">
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">Mean cost per false alarm</span><span class="mono">$34,000</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="68"></div></div>
-                </div>
-                <div>
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">Incidents per facility / year</span><span class="mono">~18</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="36"></div></div>
-                </div>
-              </div>
-              <div class="callout mt-24" style="margin-bottom:0;">
-                <p><strong style="color:var(--cyan)">USD 62.3 million</strong> estimated annual industry-wide losses from false alarms alone.</p>
-              </div>
+            <div>
+              <div class="hero-stat-num"><span data-count="76.5" data-suffix="%" data-decimal="true">0%</span></div>
+              <div class="hero-stat-label">False Positive Reduction</div>
             </div>
-            <div class="card">
-              <h4>Three Root Causes</h4>
-              <div class="mt-16" style="display:flex;flex-direction:column;gap:12px;">
-                <div style="display:flex;gap:12px;align-items:flex-start;">
-                  <span style="font-size:1.3rem;margin-top:2px;">🌑</span>
-                  <div><strong style="color:var(--white);">Shadow misdetection</strong> — needle shadows share every pixel-level feature with the real needle.</div>
-                </div>
-                <div style="display:flex;gap:12px;align-items:flex-start;">
-                  <span style="font-size:1.3rem;margin-top:2px;">🔄</span>
-                  <div><strong style="color:var(--white);">Circular regression bias</strong> — treating angles as linear numbers creates a hard error at 0°/360°.</div>
-                </div>
-                <div style="display:flex;gap:12px;align-items:flex-start;">
-                  <span style="font-size:1.3rem;margin-top:2px;">🧠</span>
-                  <div><strong style="color:var(--white);">No physics validation</strong> — no system checks whether a predicted reading obeys clock mechanics.</div>
-                </div>
-              </div>
+            <div>
+              <div class="hero-stat-num"><span data-count="64" data-prefix="$" data-suffix="K">$0K</span></div>
+              <div class="hero-stat-label">Annual Savings / Site</div>
+            </div>
+            <div>
+              <div class="hero-stat-num"><span data-count="290" data-suffix="ms">0ms</span></div>
+              <div class="hero-stat-label">Real-Time Latency</div>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- ─── Literature Survey ─── -->
-      <div class="tab-panel" data-panel="survey">
-        <div class="reveal">
-          <span class="label">Existing Work</span>
-          <h2 class="mt-8">What Has Been Tried Before?</h2>
+    <!-- Problem snapshot -->
+    <section class="section" style="padding-top:80px;">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">The Problem</span>
+          <h2>Why Analog Gauges Are Still Hard to Read Automatically</h2>
           <div class="divider"></div>
+          <p class="lead">Over 200 million analog instruments operate in global industry. Current AI systems fail in
+            three fundamental ways that cost lives and money.</p>
         </div>
-        <div class="grid-2 mt-32" style="align-items:start;">
-          <div class="reveal">
-            <h3 class="mb-16">Classical Approaches</h3>
-            <div class="card card-sm mb-16">
-              <h4>Hough Transform Pipelines</h4>
-              <p class="mt-8">Detect circular dials and straight needle lines using the classical Hough transform (Duda &amp; Hart, 1972). Fast, but severely brittle under shadows, perspective distortion, and varying illumination.</p>
-              <div class="metric-row mt-16"><div class="metric-box"><div class="metric-val">28%+</div><div class="metric-lbl">FPR in Field</div></div></div>
-            </div>
-            <div class="card card-sm mb-16">
-              <h4>Template Matching</h4>
-              <p class="mt-8">Match the detected needle against a library of canonical gauge images. Requires storing hundreds of templates and degrades immediately on unseen designs.</p>
-            </div>
-            <div class="card card-sm">
-              <h4>CNN Angle Regression</h4>
-              <p class="mt-8">Zhao et al. (2020) applied CNNs to predict gauge angle directly, gaining 12–18 percentage points over Hough. But regresses a scalar over [0°, 360°) — introducing the circular discontinuity bias.</p>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-1">
-            <h3 class="mb-16">Limitations Summary</h3>
-            <div style="overflow-x:auto;">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Method</th>
-                    <th>Acc.</th>
-                    <th>Shadow?</th>
-                    <th>Uncertainty?</th>
-                    <th>Physics?</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Hough transform</td>
-                    <td class="compare-worse">~65%</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                  </tr>
-                  <tr>
-                    <td>Template matching</td>
-                    <td class="compare-worse">~72%</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                  </tr>
-                  <tr>
-                    <td>CNN regression</td>
-                    <td class="compare-worse">~77%</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                  </tr>
-                  <tr>
-                    <td>YOLO-Pose (baseline)</td>
-                    <td class="compare-worse">72%</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                    <td class="compare-worse">✗</td>
-                  </tr>
-                  <tr>
-                    <td><strong style="color:var(--cyan)">HARP (ours)</strong></td>
-                    <td class="compare-better">96.4%</td>
-                    <td class="compare-better">✓</td>
-                    <td class="compare-better">✓</td>
-                    <td class="compare-better">✓</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="callout mt-24">
-              <p>Gao et al. (2022) benchmarked <strong style="color:var(--white)">six state-of-the-art pipelines</strong> across 18 gauge types and found every single one degrades severely under shadow conditions — none proposed a dedicated shadow-rejection stage.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ─── Research Gap ─── -->
-      <div class="tab-panel" data-panel="gap">
-        <div class="reveal">
-          <span class="label">The Gap</span>
-          <h2 class="mt-8">What Is Missing in Current Solutions?</h2>
-          <div class="divider"></div>
-          <p class="lead">Three specific technical gaps — not covered by any prior work — are directly addressed by HARP.</p>
-        </div>
-        <div class="grid-3 mt-32">
+        <div class="grid-3">
           <div class="card reveal reveal-delay-1">
-            <div class="card-icon">🎯</div>
-            <span class="tag tag-gold mb-16">Gap 1</span>
-            <h4 class="mt-8">No Semantic Shadow Rejection</h4>
-            <p class="mt-8">Every prior automated meter reading system operates purely on pixel-level features. None exploit the <em>semantic meaning</em> of what a pointer represents to distinguish it from its shadow. The difference is not visual — it is conceptual.</p>
-            <p class="mt-8 mono">FPR in prior work: 12–34%</p>
+            <div class="card-icon">🌑</div>
+            <h4>Shadow Misdetection</h4>
+            <p>A needle's shadow is visually identical to the needle itself — differing by less than 4% in gradient
+              magnitude. This causes false alarms exceeding 30%, costing the industry an estimated USD 62 million per
+              year.</p>
+            <div class="metric-row">
+              <div class="metric-box">
+                <div class="metric-val">30%+</div>
+                <div class="metric-lbl">False Positive Rate</div>
+              </div>
+            </div>
           </div>
           <div class="card reveal reveal-delay-2">
-            <div class="card-icon">📐</div>
-            <span class="tag tag-gold mb-16">Gap 2</span>
-            <h4 class="mt-8">No Geometrically Correct Uncertainty</h4>
-            <p class="mt-8">Existing uncertainty estimates use Euclidean standard deviation on circular data — which is geometrically incorrect. A prediction of 1° and 359° appear maximally uncertain but are only 2° apart. Mardia–Jupp circular statistics solve this; no prior gauge-reading work applies them.</p>
+            <div class="card-icon">🔄</div>
+            <h4>Circular Regression Bias</h4>
+            <p>All existing AI angle estimators treat 0°–360° as a straight line. This creates a systematic error spike
+              near the 0°/360° boundary — biasing every reading near midnight or "12 o'clock".</p>
+            <div class="metric-row">
+              <div class="metric-box">
+                <div class="metric-val">11.3°</div>
+                <div class="metric-lbl">Typical Angular Error</div>
+              </div>
+            </div>
           </div>
           <div class="card reveal reveal-delay-3">
-            <div class="card-icon">⚙️</div>
-            <span class="tag tag-gold mb-16">Gap 3</span>
-            <h4 class="mt-8">No Physics-Guided Validation</h4>
-            <p class="mt-8">No existing clock- or gauge-reading system validates its predicted reading against physical constraints. A clock cannot show 3:75. The hour hand must be shorter. These constraints can be checked exhaustively in under 15 ms — yet no prior work does this.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ─── Objectives ─── -->
-      <div class="tab-panel" data-panel="objectives">
-        <div class="reveal">
-          <span class="label">Research Objectives</span>
-          <h2 class="mt-8">What We Set Out to Achieve</h2>
-          <div class="divider"></div>
-        </div>
-        <div class="grid-2 mt-32" style="align-items:start;">
-          <div>
-            <div class="accordion reveal" style="max-width:100%">
-              <div class="accordion-item open">
-                <button class="accordion-header">
-                  <span>O1 — Eliminate Shadow False Positives</span>
-                  <span class="accordion-icon">+</span>
-                </button>
-                <div class="accordion-body">
-                  <p>Design a zero-shot shadow discrimination method using vision-language model embedding coherence that requires <strong>no task-specific training data</strong> and generalises across all gauge types and illumination conditions. Target: FPR below 10%.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header">
-                  <span>O2 — Resolve the Circular Regression Problem</span>
-                  <span class="accordion-icon">+</span>
-                </button>
-                <div class="accordion-body">
-                  <p>Replace scalar angle regression with a directional sin/cos parameterisation that eliminates the 0°/360° wraparound discontinuity. Add calibrated epistemic uncertainty using geometrically correct Mardia–Jupp circular statistics. Target: median CAE below 5°.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header">
-                  <span>O3 — Validate Readings Against Physical Laws</span>
-                  <span class="accordion-icon">+</span>
-                </button>
-                <div class="accordion-body">
-                  <p>Build a physics-guided reasoning engine that exhaustively evaluates all 720 valid clock readings and selects the one most consistent with kinematic constraints. Assign structured confidence labels. Target: exact-minute accuracy above 90%.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header">
-                  <span>O4 — Quality-Aware Detection Front-End</span>
-                  <span class="accordion-icon">+</span>
-                </button>
-                <div class="accordion-body">
-                  <p>Design a dual-model detection system that distinguishes clock faces from industrial gauges, and filters low-quality inputs using a composite image-quality index before they reach downstream modules.</p>
-                </div>
-              </div>
-              <div class="accordion-item">
-                <button class="accordion-header">
-                  <span>O5 — Real-Time Industrial Deployment</span>
-                  <span class="accordion-icon">+</span>
-                </button>
-                <div class="accordion-body">
-                  <p>Integrate all four components into a single end-to-end pipeline that operates within a 300 ms real-time budget on a mid-range GPU, and validate in real industrial environments across three distinct facility types over at least six weeks.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="reveal reveal-delay-1">
-            <div class="card">
-              <h4>Achievement Against Objectives</h4>
-              <div class="mt-20" style="display:flex;flex-direction:column;gap:18px;">
-                <div>
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">O1: Shadow FPR &lt; 10%</span><span class="mono compare-better">8% ✓</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
-                </div>
-                <div>
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">O2: Median CAE &lt; 5°</span><span class="mono compare-better">4.8° ✓</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
-                </div>
-                <div>
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">O3: Exact accuracy &gt; 90%</span><span class="mono compare-better">91.4% ✓</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
-                </div>
-                <div>
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">O4: Detection mAP &gt; 0.90</span><span class="mono compare-better">0.94 ✓</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
-                </div>
-                <div>
-                  <div class="flex-between mb-8"><span style="font-size:0.85rem;">O5: Pipeline latency &lt; 300ms</span><span class="mono compare-better">290ms ✓</span></div>
-                  <div class="progress-bar"><div class="progress-fill" data-width="100"></div></div>
-                </div>
+            <div class="card-icon">📉</div>
+            <h4>No Physical Validation</h4>
+            <p>Existing detectors produce a raw number and stop. They cannot tell you if 3:75 is a physically impossible
+              time, or check whether the shorter hand is truly the hour hand.</p>
+            <div class="metric-row">
+              <div class="metric-box">
+                <div class="metric-val">61.3%</div>
+                <div class="metric-lbl">End-to-End Accuracy (before HARP)</div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- ─── Methodology ─── -->
-      <div class="tab-panel" data-panel="methodology">
-        <div class="reveal">
-          <span class="label">Approach</span>
-          <h2 class="mt-8">How HARP Solves the Problem — Step by Step</h2>
-          <div class="divider"></div>
+    <!-- Pipeline quick overview -->
+    <section class="section" style="background: var(--navy-mid); padding: 80px 0;">
+      <div class="container">
+        <div class="section-header centered reveal">
+          <span class="label">Our Solution</span>
+          <h2>The HARP Four-Stage Pipeline</h2>
+          <div class="divider centered"></div>
+          <p>Each component solves one precisely defined sub-problem. Together they reach 96.4% field accuracy in under
+            300 ms.</p>
         </div>
-        <div class="mt-32">
-          <div class="grid-2" style="gap:32px; align-items:start; margin-bottom:32px;">
-            <div class="card reveal">
-              <div class="pipe-num">STEP 1 — C1</div>
-              <h3>Detect &amp; Gate</h3>
-              <p class="mt-12">Two independent YOLOv8 models process each image in parallel — one trained for clock faces, one for industrial gauges. The winning model's bounding box is selected. A composite quality score then decides whether the image is sharp, bright, and clear enough to proceed. Poor images are flagged before wasting compute on later stages.</p>
-              <div class="metric-row mt-16">
-                <div class="metric-box"><div class="metric-val">94%</div><div class="metric-lbl">mAP@0.5</div></div>
-                <div class="metric-box"><div class="metric-val">55%</div><div class="metric-lbl">Error Reduction from Gating</div></div>
-              </div>
-            </div>
-            <div class="card reveal reveal-delay-1">
-              <div class="pipe-num">STEP 2 — C2 (SSF)</div>
-              <h3>Find the Real Needle</h3>
-              <p class="mt-12">YOLO-Pose detects candidate keypoints (both real and shadow). For each candidate, SSF renders a hypothesis: "what would this image look like if this candidate <em>were</em> the real needle?" It then asks CLIP — a model trained on 400 million images — whether that hypothesis looks like a valid gauge. Shadows fail this test; real needles pass it.</p>
-              <div class="metric-row mt-16">
-                <div class="metric-box"><div class="metric-val">8%</div><div class="metric-lbl">Shadow FPR</div></div>
-                <div class="metric-box"><div class="metric-val">93%</div><div class="metric-lbl">True Positive Rate</div></div>
-              </div>
-            </div>
+        <div class="pipeline-wrapper reveal mt-32">
+          <div class="pipe-step">
+            <div class="pipe-num">C1</div>
+            <h4>Detection &amp; Quality Gate</h4>
+            <p>Dual YOLOv8 + image quality scoring filters bad inputs before they enter the pipeline.</p>
+            <span class="pipe-badge">38 ms</span>
           </div>
-          <div class="grid-2" style="gap:32px; align-items:start;">
-            <div class="card reveal">
-              <div class="pipe-num">STEP 3 — C3</div>
-              <h3>Estimate the Angle Correctly</h3>
-              <p class="mt-12">Instead of predicting "352°" (which has a hard numerical discontinuity with "4°"), C3 predicts the sine and cosine of the angle. These are continuous everywhere on the circle. Twenty random forward passes through the neural network (MC-Dropout) give a probability distribution. The circular standard deviation tells downstream modules how confident the estimate is.</p>
-              <div class="metric-row mt-16">
-                <div class="metric-box"><div class="metric-val">4.8°</div><div class="metric-lbl">Median Error</div></div>
-                <div class="metric-box"><div class="metric-val">41.5%</div><div class="metric-lbl">Improvement vs Baseline</div></div>
-              </div>
-            </div>
-            <div class="card reveal reveal-delay-1">
-              <div class="pipe-num">STEP 4 — C4</div>
-              <h3>Pick the Right Time Using Physics</h3>
-              <p class="mt-12">A clock can only show one of 720 valid times. C4 computes the theoretical hand positions for every single one and finds which time best matches what C3 estimated. It also checks: is the shorter hand the hour hand? Do the hands make sense together? The output is a verified reading with a confidence label (CERTAIN / CONFIDENT / UNCERTAIN / UNRELIABLE).</p>
-              <div class="metric-row mt-16">
-                <div class="metric-box"><div class="metric-val">91.4%</div><div class="metric-lbl">Exact Accuracy</div></div>
-                <div class="metric-box"><div class="metric-val">15ms</div><div class="metric-lbl">Latency</div></div>
-              </div>
-            </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <div class="pipe-num">C2</div>
+            <h4>Shadow Filtering (SSF)</h4>
+            <p>CLIP vision-language model scores whether each detected keypoint is a real needle or its shadow.</p>
+            <span class="pipe-badge">185 ms</span>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <div class="pipe-num">C3</div>
+            <h4>Directional Angle Estimation</h4>
+            <p>Sin/cos ResNet-18 with circular statistics eliminates the 0°/360° wraparound bias and quantifies
+              uncertainty.</p>
+            <span class="pipe-badge">52 ms</span>
+          </div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">
+            <div class="pipe-num">C4</div>
+            <h4>Physics Reasoning</h4>
+            <p>Exhaustively checks all 720 possible clock readings, picks the one that best matches physical clock laws.
+            </p>
+            <span class="pipe-badge">15 ms</span>
+          </div>
+        </div>
+        <div class="text-center mt-32 reveal">
+          <a href="#solution" class="btn btn-primary" data-page="solution">See Full Technical Detail →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key results -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">Results at a Glance</span>
+          <h2>Validated in Real Industrial Environments</h2>
+          <div class="divider"></div>
+          <p>Eight weeks of continuous deployment across three facilities — petrochemical, automotive, and water
+            treatment — with no configuration changes.</p>
+        </div>
+        <div class="grid-4 reveal">
+          <div class="stat-card">
+            <div class="stat-number" data-count="91.4" data-suffix="%" data-decimal="true">0%</div>
+            <div class="stat-label">Exact-Minute Reading Accuracy</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-count="8" data-suffix="%">0%</div>
+            <div class="stat-label">Shadow False Positive Rate (from 34%)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-count="4.8" data-suffix="°" data-decimal="true">0°</div>
+            <div class="stat-label">Median Angle Error</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" data-count="1.3" data-suffix=" mo" data-decimal="true">0mo</div>
+            <div class="stat-label">Equipment Payback Period</div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- ─── Technologies ─── -->
-      <div class="tab-panel" data-panel="tech">
-        <div class="reveal">
-          <span class="label">Tech Stack</span>
-          <h2 class="mt-8">Tools &amp; Frameworks</h2>
-          <div class="divider"></div>
+  </div><!-- /page-home -->
+
+
+  <!-- ══════════════════════════════════════════════════════
+     PAGE: DOMAIN
+══════════════════════════════════════════════════════ -->
+  <div id="page-domain" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">Research Domain</span>
+        <h1 style="margin: 14px 0 16px;">Understanding the Research Landscape</h1>
+        <p class="lead" style="max-width:620px;">A deep dive into the problem space, existing solutions, and the unique
+          gaps that HARP was built to fill.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container" data-tabs>
+        <!-- Tab buttons -->
+        <div id="domain" class="domain-tabs">
+          <button class="tab-btn active" data-tab="problem">Problem Statement</button>
+          <button class="tab-btn" data-tab="survey">Literature Survey</button>
+          <button class="tab-btn" data-tab="gap">Research Gap</button>
+          <button class="tab-btn" data-tab="objectives">Objectives</button>
+          <button class="tab-btn" data-tab="methodology">Methodology</button>
+          <button class="tab-btn" data-tab="tech">Technologies</button>
         </div>
-        <div class="grid-2 mt-32" style="align-items:start; gap:40px;">
+
+        <!-- ─── Problem Statement ─── -->
+        <div class="tab-panel active" data-panel="problem">
+          <div class="grid-2" style="align-items:start; gap: 48px;">
+            <div class="reveal">
+              <span class="label">Real-World Impact</span>
+              <h2 class="mt-8">What Goes Wrong When Gauges Are Misread?</h2>
+              <div class="divider"></div>
+              <p class="lead">Pressure gauges, flow meters, temperature dials, and analog clocks form the backbone of
+                industrial sensing in petrochemical, water-treatment, and power-generation facilities worldwide.</p>
+              <p class="mt-16">Despite decades of digital transformation, over <strong style="color:var(--white)">200
+                  million analog instruments</strong> remain in active use — the majority in ageing plants that predate
+                digital sensor adoption. Replacing them is neither economically nor logistically feasible. Automated
+                computer vision reading is therefore the most viable path to remote monitoring.</p>
+              <div class="callout mt-24">
+                <p><strong style="color:var(--cyan)">A 2024 incident:</strong> A US petrochemical plant suffered a
+                  6-hour halt costing <strong style="color:var(--white)">USD 47,000</strong> after a computer vision
+                  system misidentified a needle's shadow as a pressure spike. Industry-wide, this happens approximately
+                  18 times per facility per year.</p>
+              </div>
+              <p class="mt-16">The problem is not that AI cannot detect lines — it is that it cannot tell the difference
+                between a <em style="color:var(--off-white)">meaningful</em> line and a <em
+                  style="color:var(--off-white)">meaningless</em> shadow, and it cannot verify that its angle reading is
+                physically plausible.</p>
+            </div>
+            <div class="reveal reveal-delay-1">
+              <div class="card" style="margin-bottom:20px;">
+                <div class="card-icon">💸</div>
+                <h4>Economic Scale of the Problem</h4>
+                <div class="mt-16">
+                  <div style="margin-bottom:14px;">
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">False alarm rate (deployed
+                        systems)</span><span class="mono">30–35%</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="33"></div>
+                    </div>
+                  </div>
+                  <div style="margin-bottom:14px;">
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">Mean cost per false
+                        alarm</span><span class="mono">$34,000</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="68"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">Incidents per facility /
+                        year</span><span class="mono">~18</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="36"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="callout mt-24" style="margin-bottom:0;">
+                  <p><strong style="color:var(--cyan)">USD 62.3 million</strong> estimated annual industry-wide losses
+                    from false alarms alone.</p>
+                </div>
+              </div>
+              <div class="card">
+                <h4>Three Root Causes</h4>
+                <div class="mt-16" style="display:flex;flex-direction:column;gap:12px;">
+                  <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <span style="font-size:1.3rem;margin-top:2px;">🌑</span>
+                    <div><strong style="color:var(--white);">Shadow misdetection</strong> — needle shadows share every
+                      pixel-level feature with the real needle.</div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <span style="font-size:1.3rem;margin-top:2px;">🔄</span>
+                    <div><strong style="color:var(--white);">Circular regression bias</strong> — treating angles as
+                      linear numbers creates a hard error at 0°/360°.</div>
+                  </div>
+                  <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <span style="font-size:1.3rem;margin-top:2px;">🧠</span>
+                    <div><strong style="color:var(--white);">No physics validation</strong> — no system checks whether a
+                      predicted reading obeys clock mechanics.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Literature Survey ─── -->
+        <div class="tab-panel" data-panel="survey">
           <div class="reveal">
-            <h3 class="mb-24">Core AI Models</h3>
-            <div class="tech-grid">
-              <div class="tech-pill"><span class="tech-pill-icon">🔍</span>YOLOv8 — Detection</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🦴</span>YOLO-Pose — Keypoints</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🌐</span>CLIP ViT-B/32 — Semantics</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🧱</span>ResNet-18 — Angle Estimation</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🔬</span>Monte Carlo Dropout — UQ</div>
-              <div class="tech-pill"><span class="tech-pill-icon">📊</span>Mardia–Jupp Statistics</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🌊</span>Persistent Homology</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🗺️</span>Riemannian Metric (U-Net)</div>
-            </div>
-            <h3 class="mt-32 mb-24">Frameworks &amp; Libraries</h3>
-            <div class="tech-grid">
-              <div class="tech-pill"><span class="tech-pill-icon">🔥</span>PyTorch</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🤗</span>OpenCLIP / HuggingFace</div>
-              <div class="tech-pill"><span class="tech-pill-icon">👁️</span>OpenCV</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🚀</span>Ultralytics YOLOv8</div>
-              <div class="tech-pill"><span class="tech-pill-icon">⚡</span>TensorRT (INT8)</div>
-              <div class="tech-pill"><span class="tech-pill-icon">🐍</span>Python 3.11</div>
-              <div class="tech-pill"><span class="tech-pill-icon">📐</span>NumPy / SciPy</div>
-              <div class="tech-pill"><span class="tech-pill-icon">📈</span>scikit-learn</div>
-            </div>
+            <span class="label">Existing Work</span>
+            <h2 class="mt-8">What Has Been Tried Before?</h2>
+            <div class="divider"></div>
           </div>
-          <div class="reveal reveal-delay-1">
-            <h3 class="mb-24">Hardware &amp; Deployment</h3>
-            <div class="card mb-20">
-              <h4>Training &amp; Evaluation</h4>
-              <div class="tech-grid mt-12">
-                <div class="tech-pill"><span class="tech-pill-icon">💻</span>NVIDIA RTX 3060 12GB</div>
-                <div class="tech-pill"><span class="tech-pill-icon">🐧</span>Ubuntu 22.04</div>
-                <div class="tech-pill"><span class="tech-pill-icon">🐍</span>CUDA 12.1</div>
+          <div class="grid-2 mt-32" style="align-items:start;">
+            <div class="reveal">
+              <h3 class="mb-16">Classical Approaches</h3>
+              <div class="card card-sm mb-16">
+                <h4>Hough Transform Pipelines</h4>
+                <p class="mt-8">Detect circular dials and straight needle lines using the classical Hough transform
+                  (Duda &amp; Hart, 1972). Fast, but severely brittle under shadows, perspective distortion, and varying
+                  illumination.</p>
+                <div class="metric-row mt-16">
+                  <div class="metric-box">
+                    <div class="metric-val">28%+</div>
+                    <div class="metric-lbl">FPR in Field</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card card-sm mb-16">
+                <h4>Template Matching</h4>
+                <p class="mt-8">Match the detected needle against a library of canonical gauge images. Requires storing
+                  hundreds of templates and degrades immediately on unseen designs.</p>
+              </div>
+              <div class="card card-sm">
+                <h4>CNN Angle Regression</h4>
+                <p class="mt-8">Zhao et al. (2020) applied CNNs to predict gauge angle directly, gaining 12–18
+                  percentage points over Hough. But regresses a scalar over [0°, 360°) — introducing the circular
+                  discontinuity bias.</p>
               </div>
             </div>
-            <div class="card mb-20">
-              <h4>Edge Deployment (Compressed)</h4>
-              <div class="tech-grid mt-12">
-                <div class="tech-pill"><span class="tech-pill-icon">🤖</span>NVIDIA Jetson AGX Orin</div>
-                <div class="tech-pill"><span class="tech-pill-icon">📦</span>INT8 Quantisation</div>
+            <div class="reveal reveal-delay-1">
+              <h3 class="mb-16">Limitations Summary</h3>
+              <div style="overflow-x:auto;">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Method</th>
+                      <th>Acc.</th>
+                      <th>Shadow?</th>
+                      <th>Uncertainty?</th>
+                      <th>Physics?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Hough transform</td>
+                      <td class="compare-worse">~65%</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                    </tr>
+                    <tr>
+                      <td>Template matching</td>
+                      <td class="compare-worse">~72%</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                    </tr>
+                    <tr>
+                      <td>CNN regression</td>
+                      <td class="compare-worse">~77%</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                    </tr>
+                    <tr>
+                      <td>YOLO-Pose (baseline)</td>
+                      <td class="compare-worse">72%</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                      <td class="compare-worse">✗</td>
+                    </tr>
+                    <tr>
+                      <td><strong style="color:var(--cyan)">HARP (ours)</strong></td>
+                      <td class="compare-better">96.4%</td>
+                      <td class="compare-better">✓</td>
+                      <td class="compare-better">✓</td>
+                      <td class="compare-better">✓</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <p class="mt-12" style="font-size:0.85rem;">INT8 compression reduces CLIP from 604 MB → 150 MB with only 1.2% accuracy penalty, enabling embedded deployment without edge servers.</p>
-            </div>
-            <div class="card">
-              <h4>Datasets</h4>
-              <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;font-size:0.88rem;">
-                <div class="flex-between"><span>C1 Clock training images</span><span class="mono">4,200</span></div>
-                <div class="flex-between"><span>C1 Gauge training images</span><span class="mono">2,800</span></div>
-                <div class="flex-between"><span>C2 Annotated benchmark</span><span class="mono">500 images / 1,847 keypoints</span></div>
-                <div class="flex-between"><span>C3 Training crops</span><span class="mono">6,400</span></div>
-                <div class="flex-between"><span>C4 Benchmark images</span><span class="mono">4,800</span></div>
-                <div class="flex-between"><span>Expert annotation agreement</span><span class="mono compare-better">κ = 0.92</span></div>
+              <div class="callout mt-24">
+                <p>Gao et al. (2022) benchmarked <strong style="color:var(--white)">six state-of-the-art
+                    pipelines</strong> across 18 gauge types and found every single one degrades severely under shadow
+                  conditions — none proposed a dedicated shadow-rejection stage.</p>
+              </div>
+
+              <!-- Animated accuracy bar chart -->
+              <div class="card mt-24" id="acc-chart-card">
+                <h4>End-to-End Accuracy — Visual Comparison</h4>
+                <p style="font-size:0.82rem;color:var(--muted);margin:6px 0 16px;">Measured on identical benchmark under
+                  real industrial lighting</p>
+                <div class="acc-chart">
+                  <div class="acc-chart-row">
+                    <div class="acc-chart-label">Hough Transform</div>
+                    <div class="acc-chart-bar-wrap">
+                      <div class="acc-chart-bar bar-other" data-acc-width="67">~65%</div>
+                    </div>
+                  </div>
+                  <div class="acc-chart-row">
+                    <div class="acc-chart-label">Template Matching</div>
+                    <div class="acc-chart-bar-wrap">
+                      <div class="acc-chart-bar bar-other" data-acc-width="75">~72%</div>
+                    </div>
+                  </div>
+                  <div class="acc-chart-row">
+                    <div class="acc-chart-label">CNN Regression</div>
+                    <div class="acc-chart-bar-wrap">
+                      <div class="acc-chart-bar bar-other" data-acc-width="80">~77%</div>
+                    </div>
+                  </div>
+                  <div class="acc-chart-row">
+                    <div class="acc-chart-label">YOLO-Pose Baseline</div>
+                    <div class="acc-chart-bar-wrap">
+                      <div class="acc-chart-bar bar-other" data-acc-width="75">72%</div>
+                    </div>
+                  </div>
+                  <div class="acc-chart-row">
+                    <div class="acc-chart-label" style="color:var(--cyan);font-weight:700;">HARP (Ours) ★</div>
+                    <div class="acc-chart-bar-wrap">
+                      <div class="acc-chart-bar bar-harp" data-acc-width="100">96.4% ✓</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div><!-- /data-tabs -->
-  </section>
-</div><!-- /page-domain -->
+        <!-- ─── Research Gap ─── -->
+        <div class="tab-panel" data-panel="gap">
+          <div class="reveal">
+            <span class="label">The Gap</span>
+            <h2 class="mt-8">What Is Missing in Current Solutions?</h2>
+            <div class="divider"></div>
+            <p class="lead">Three specific technical gaps — not covered by any prior work — are directly addressed by
+              HARP.</p>
+          </div>
+          <div class="grid-3 mt-32">
+            <div class="card reveal reveal-delay-1">
+              <div class="card-icon">🎯</div>
+              <span class="tag tag-gold mb-16">Gap 1</span>
+              <h4 class="mt-8">No Semantic Shadow Rejection</h4>
+              <p class="mt-8">Every prior automated meter reading system operates purely on pixel-level features. None
+                exploit the <em>semantic meaning</em> of what a pointer represents to distinguish it from its shadow.
+                The difference is not visual — it is conceptual.</p>
+              <p class="mt-8 mono">FPR in prior work: 12–34%</p>
+            </div>
+            <div class="card reveal reveal-delay-2">
+              <div class="card-icon">📐</div>
+              <span class="tag tag-gold mb-16">Gap 2</span>
+              <h4 class="mt-8">No Geometrically Correct Uncertainty</h4>
+              <p class="mt-8">Existing uncertainty estimates use Euclidean standard deviation on circular data — which
+                is geometrically incorrect. A prediction of 1° and 359° appear maximally uncertain but are only 2°
+                apart. Mardia–Jupp circular statistics solve this; no prior gauge-reading work applies them.</p>
+            </div>
+            <div class="card reveal reveal-delay-3">
+              <div class="card-icon">⚙️</div>
+              <span class="tag tag-gold mb-16">Gap 3</span>
+              <h4 class="mt-8">No Physics-Guided Validation</h4>
+              <p class="mt-8">No existing clock- or gauge-reading system validates its predicted reading against
+                physical constraints. A clock cannot show 3:75. The hour hand must be shorter. These constraints can be
+                checked exhaustively in under 15 ms — yet no prior work does this.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Objectives ─── -->
+        <div class="tab-panel" data-panel="objectives">
+          <div class="reveal">
+            <span class="label">Research Objectives</span>
+            <h2 class="mt-8">What We Set Out to Achieve</h2>
+            <div class="divider"></div>
+          </div>
+          <div class="grid-2 mt-32" style="align-items:start;">
+            <div>
+              <div class="accordion reveal" style="max-width:100%">
+                <div class="accordion-item open">
+                  <button class="accordion-header">
+                    <span>O1 — Eliminate Shadow False Positives</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div class="accordion-body">
+                    <p>Design a zero-shot shadow discrimination method using vision-language model embedding coherence
+                      that requires <strong>no task-specific training data</strong> and generalises across all gauge
+                      types and illumination conditions. Target: FPR below 10%.</p>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <button class="accordion-header">
+                    <span>O2 — Resolve the Circular Regression Problem</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div class="accordion-body">
+                    <p>Replace scalar angle regression with a directional sin/cos parameterisation that eliminates the
+                      0°/360° wraparound discontinuity. Add calibrated epistemic uncertainty using geometrically correct
+                      Mardia–Jupp circular statistics. Target: median CAE below 5°.</p>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <button class="accordion-header">
+                    <span>O3 — Validate Readings Against Physical Laws</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div class="accordion-body">
+                    <p>Build a physics-guided reasoning engine that exhaustively evaluates all 720 valid clock readings
+                      and selects the one most consistent with kinematic constraints. Assign structured confidence
+                      labels. Target: exact-minute accuracy above 90%.</p>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <button class="accordion-header">
+                    <span>O4 — Quality-Aware Detection Front-End</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div class="accordion-body">
+                    <p>Design a dual-model detection system that distinguishes clock faces from industrial gauges, and
+                      filters low-quality inputs using a composite image-quality index before they reach downstream
+                      modules.</p>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <button class="accordion-header">
+                    <span>O5 — Real-Time Industrial Deployment</span>
+                    <span class="accordion-icon">+</span>
+                  </button>
+                  <div class="accordion-body">
+                    <p>Integrate all four components into a single end-to-end pipeline that operates within a 300 ms
+                      real-time budget on a mid-range GPU, and validate in real industrial environments across three
+                      distinct facility types over at least six weeks.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="reveal reveal-delay-1">
+              <div class="card">
+                <h4>Achievement Against Objectives</h4>
+                <div class="mt-20" style="display:flex;flex-direction:column;gap:18px;">
+                  <div>
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">O1: Shadow FPR &lt; 10%</span><span
+                        class="mono compare-better">8% ✓</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="100"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">O2: Median CAE &lt; 5°</span><span
+                        class="mono compare-better">4.8° ✓</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="100"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">O3: Exact accuracy &gt;
+                        90%</span><span class="mono compare-better">91.4% ✓</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="100"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">O4: Detection mAP &gt;
+                        0.90</span><span class="mono compare-better">0.94 ✓</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="100"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex-between mb-8"><span style="font-size:0.85rem;">O5: Pipeline latency &lt;
+                        300ms</span><span class="mono compare-better">290ms ✓</span></div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" data-width="100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Methodology ─── -->
+        <div class="tab-panel" data-panel="methodology">
+          <div class="reveal">
+            <span class="label">Approach</span>
+            <h2 class="mt-8">How HARP Solves the Problem — Step by Step</h2>
+            <div class="divider"></div>
+          </div>
+          <div class="mt-32">
+            <div class="grid-2" style="gap:32px; align-items:start; margin-bottom:32px;">
+              <div class="card reveal">
+                <div class="pipe-num">STEP 1 — C1</div>
+                <h3>Detect &amp; Gate</h3>
+                <p class="mt-12">Two independent YOLOv8 models process each image in parallel — one trained for clock
+                  faces, one for industrial gauges. The winning model's bounding box is selected. A composite quality
+                  score then decides whether the image is sharp, bright, and clear enough to proceed. Poor images are
+                  flagged before wasting compute on later stages.</p>
+                <div class="metric-row mt-16">
+                  <div class="metric-box">
+                    <div class="metric-val">94%</div>
+                    <div class="metric-lbl">mAP@0.5</div>
+                  </div>
+                  <div class="metric-box">
+                    <div class="metric-val">55%</div>
+                    <div class="metric-lbl">Error Reduction from Gating</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card reveal reveal-delay-1">
+                <div class="pipe-num">STEP 2 — C2 (SSF)</div>
+                <h3>Find the Real Needle</h3>
+                <p class="mt-12">YOLO-Pose detects candidate keypoints (both real and shadow). For each candidate, SSF
+                  renders a hypothesis: "what would this image look like if this candidate <em>were</em> the real
+                  needle?" It then asks CLIP — a model trained on 400 million images — whether that hypothesis looks
+                  like a valid gauge. Shadows fail this test; real needles pass it.</p>
+                <div class="metric-row mt-16">
+                  <div class="metric-box">
+                    <div class="metric-val">8%</div>
+                    <div class="metric-lbl">Shadow FPR</div>
+                  </div>
+                  <div class="metric-box">
+                    <div class="metric-val">93%</div>
+                    <div class="metric-lbl">True Positive Rate</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="grid-2" style="gap:32px; align-items:start;">
+              <div class="card reveal">
+                <div class="pipe-num">STEP 3 — C3</div>
+                <h3>Estimate the Angle Correctly</h3>
+                <p class="mt-12">Instead of predicting "352°" (which has a hard numerical discontinuity with "4°"), C3
+                  predicts the sine and cosine of the angle. These are continuous everywhere on the circle. Twenty
+                  random forward passes through the neural network (MC-Dropout) give a probability distribution. The
+                  circular standard deviation tells downstream modules how confident the estimate is.</p>
+                <div class="metric-row mt-16">
+                  <div class="metric-box">
+                    <div class="metric-val">4.8°</div>
+                    <div class="metric-lbl">Median Error</div>
+                  </div>
+                  <div class="metric-box">
+                    <div class="metric-val">41.5%</div>
+                    <div class="metric-lbl">Improvement vs Baseline</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card reveal reveal-delay-1">
+                <div class="pipe-num">STEP 4 — C4</div>
+                <h3>Pick the Right Time Using Physics</h3>
+                <p class="mt-12">A clock can only show one of 720 valid times. C4 computes the theoretical hand
+                  positions for every single one and finds which time best matches what C3 estimated. It also checks: is
+                  the shorter hand the hour hand? Do the hands make sense together? The output is a verified reading
+                  with a confidence label (CERTAIN / CONFIDENT / UNCERTAIN / UNRELIABLE).</p>
+                <div class="metric-row mt-16">
+                  <div class="metric-box">
+                    <div class="metric-val">91.4%</div>
+                    <div class="metric-lbl">Exact Accuracy</div>
+                  </div>
+                  <div class="metric-box">
+                    <div class="metric-val">15ms</div>
+                    <div class="metric-lbl">Latency</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Technologies ─── -->
+        <div class="tab-panel" data-panel="tech">
+          <div class="reveal">
+            <span class="label">Tech Stack</span>
+            <h2 class="mt-8">Tools &amp; Frameworks</h2>
+            <div class="divider"></div>
+          </div>
+          <div class="grid-2 mt-32" style="align-items:start; gap:40px;">
+            <div class="reveal">
+              <h3 class="mb-24">Core AI Models</h3>
+              <div class="tech-grid">
+                <div class="tech-pill"><span class="tech-pill-icon">🔍</span>YOLOv8 — Detection</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🦴</span>YOLO-Pose — Keypoints</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🌐</span>CLIP ViT-B/32 — Semantics</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🧱</span>ResNet-18 — Angle Estimation</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🔬</span>Monte Carlo Dropout — UQ</div>
+                <div class="tech-pill"><span class="tech-pill-icon">📊</span>Mardia–Jupp Statistics</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🌊</span>Persistent Homology</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🗺️</span>Riemannian Metric (U-Net)</div>
+              </div>
+              <h3 class="mt-32 mb-24">Frameworks &amp; Libraries</h3>
+              <div class="tech-grid">
+                <div class="tech-pill"><span class="tech-pill-icon">🔥</span>PyTorch</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🤗</span>OpenCLIP / HuggingFace</div>
+                <div class="tech-pill"><span class="tech-pill-icon">👁️</span>OpenCV</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🚀</span>Ultralytics YOLOv8</div>
+                <div class="tech-pill"><span class="tech-pill-icon">⚡</span>TensorRT (INT8)</div>
+                <div class="tech-pill"><span class="tech-pill-icon">🐍</span>Python 3.11</div>
+                <div class="tech-pill"><span class="tech-pill-icon">📐</span>NumPy / SciPy</div>
+                <div class="tech-pill"><span class="tech-pill-icon">📈</span>scikit-learn</div>
+              </div>
+            </div>
+            <div class="reveal reveal-delay-1">
+              <h3 class="mb-24">Hardware &amp; Deployment</h3>
+              <div class="card mb-20">
+                <h4>Training &amp; Evaluation</h4>
+                <div class="tech-grid mt-12">
+                  <div class="tech-pill"><span class="tech-pill-icon">💻</span>NVIDIA RTX 3060 12GB</div>
+                  <div class="tech-pill"><span class="tech-pill-icon">🐧</span>Ubuntu 22.04</div>
+                  <div class="tech-pill"><span class="tech-pill-icon">🐍</span>CUDA 12.1</div>
+                </div>
+              </div>
+              <div class="card mb-20">
+                <h4>Edge Deployment (Compressed)</h4>
+                <div class="tech-grid mt-12">
+                  <div class="tech-pill"><span class="tech-pill-icon">🤖</span>NVIDIA Jetson AGX Orin</div>
+                  <div class="tech-pill"><span class="tech-pill-icon">📦</span>INT8 Quantisation</div>
+                </div>
+                <p class="mt-12" style="font-size:0.85rem;">INT8 compression reduces CLIP from 604 MB → 150 MB with only
+                  1.2% accuracy penalty, enabling embedded deployment without edge servers.</p>
+              </div>
+              <div class="card">
+                <h4>Datasets</h4>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;font-size:0.88rem;">
+                  <div class="flex-between"><span>C1 Clock training images</span><span class="mono">4,200</span></div>
+                  <div class="flex-between"><span>C1 Gauge training images</span><span class="mono">2,800</span></div>
+                  <div class="flex-between"><span>C2 Annotated benchmark</span><span class="mono">500 images / 1,847
+                      keypoints</span></div>
+                  <div class="flex-between"><span>C3 Training crops</span><span class="mono">6,400</span></div>
+                  <div class="flex-between"><span>C4 Benchmark images</span><span class="mono">4,800</span></div>
+                  <div class="flex-between"><span>Expert annotation agreement</span><span class="mono compare-better">κ
+                      = 0.92</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /data-tabs -->
+    </section>
+  </div><!-- /page-domain -->
 
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      PAGE: SOLUTION
 ══════════════════════════════════════════════════════ -->
-<div id="page-solution" class="page">
-  <div class="page-header">
-    <div class="container">
-      <span class="label">Solution &amp; Product</span>
-      <h1 style="margin: 14px 0 16px;">The HARP System — Technical Deep Dive</h1>
-      <p class="lead" style="max-width:640px;">From raw camera image to a confidence-scored, physics-validated instrument reading in under 300 milliseconds.</p>
-    </div>
-  </div>
-
-  <section class="section">
-    <div class="container">
-
-      <!-- C1 -->
-      <div class="feature-row reveal">
-        <div>
-          <span class="label">Component C1</span>
-          <h2 class="mt-8">Dual-Model Detection &amp; Quality Gating</h2>
-          <div class="divider"></div>
-          <p>The pipeline begins with two independent YOLOv8 detectors — one specialised for clock faces (trained on 4,200 images across 47 clock models) and one for industrial gauges (2,800 images). Both run in parallel; the one with higher confidence wins.</p>
-          <p class="mt-16">Critically, a high detection confidence does not mean the image is usable. A blurry gauge at 95% confidence still cannot be read accurately. C1 computes a composite quality score Q from blur (Laplacian variance), brightness, and contrast. Images below Q = 0.45 are flagged before wasting compute downstream.</p>
-          <div class="metric-row mt-24">
-            <div class="metric-box"><div class="metric-val">94%</div><div class="metric-lbl">mAP@0.5</div></div>
-            <div class="metric-box"><div class="metric-val">97%</div><div class="metric-lbl">Class Disambiguation</div></div>
-            <div class="metric-box"><div class="metric-val">55%</div><div class="metric-lbl">Downstream Error Reduction</div></div>
-          </div>
-          <p class="mt-16 text-muted" style="font-size:0.85rem;">Perspective correction (homography, RANSAC-fitted) is applied automatically when the camera tilt exceeds 25°, reducing angular error by a further 31%.</p>
-        </div>
-        <div class="feature-visual">
-          <div style="text-align:center; width:100%;">
-            <div style="display:flex;justify-content:center;gap:16px;margin-bottom:24px;">
-              <div class="card card-sm" style="flex:1;text-align:center;">
-                <div style="font-size:2rem;margin-bottom:8px;">⏰</div>
-                <div class="mono">Clock Detector</div>
-                <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;">4,200 images · 47 models</div>
-              </div>
-              <div style="display:flex;align-items:center;color:var(--cyan);font-size:1.4rem;">⇕</div>
-              <div class="card card-sm" style="flex:1;text-align:center;">
-                <div style="font-size:2rem;margin-bottom:8px;">🔩</div>
-                <div class="mono">Gauge Detector</div>
-                <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;">2,800 images · industrial</div>
-              </div>
-            </div>
-            <div style="background:rgba(0,200,224,0.06);border:1px solid rgba(0,200,224,0.2);border-radius:8px;padding:16px;">
-              <div class="mono" style="font-size:0.8rem;">Quality Gate: Q ≥ 0.45</div>
-              <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Blur · Brightness · Contrast</div>
-            </div>
-          </div>
-        </div>
+  <div id="page-solution" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">Solution &amp; Product</span>
+        <h1 style="margin: 14px 0 16px;">The HARP System — Technical Deep Dive</h1>
+        <p class="lead" style="max-width:640px;">From raw camera image to a confidence-scored, physics-validated
+          instrument reading in under 300 milliseconds.</p>
       </div>
+    </div>
 
-      <!-- C2 -->
-      <div class="feature-row reverse reveal">
-        <div>
-          <span class="label">Component C2 — Novel Contribution</span>
-          <h2 class="mt-8">Semantic Shadow Filtering (SSF)</h2>
-          <div class="divider"></div>
-          <p>This is HARP's most novel contribution. SSF is the <strong style="color:var(--white)">first zero-shot shadow discrimination method</strong> for gauge skeleton extraction. It requires no shadow-labelled training data and generalises across all gauge types and lighting environments.</p>
-          <p class="mt-16">The key insight is <strong style="color:var(--white)">analysis-by-synthesis</strong>: for each detected keypoint candidate, the system renders what the image would look like if that candidate <em>were</em> the real needle. It then uses CLIP (pretrained on 400 million images) to score whether that rendered hypothesis is semantically coherent with a valid gauge image. Shadows fail this test; real needles pass.</p>
-          <p class="mt-16">A three-way decision separates clear accepts (≥ 0.73), clear rejects (&lt; 0.43), and borderline cases routed to human review. Operators resolved 89% of flagged cases in under 2 seconds using the rendered hypothesis as visual context.</p>
-          <div class="metric-row mt-24">
-            <div class="metric-box"><div class="metric-val">91%</div><div class="metric-lbl">Accuracy</div></div>
-            <div class="metric-box"><div class="metric-val">8%</div><div class="metric-lbl">False Positives</div></div>
-            <div class="metric-box"><div class="metric-val">F1=0.92</div><div class="metric-lbl">F1 Score</div></div>
+    <section class="section">
+      <div class="container">
+
+        <!-- C1 -->
+        <div class="feature-row reveal">
+          <div>
+            <span class="label">Component C1</span>
+            <h2 class="mt-8">Dual-Model Detection &amp; Quality Gating</h2>
+            <div class="divider"></div>
+            <p>The pipeline begins with two independent YOLOv8 detectors — one specialised for clock faces (trained on
+              4,200 images across 47 clock models) and one for industrial gauges (2,800 images). Both run in parallel;
+              the one with higher confidence wins.</p>
+            <p class="mt-16">Critically, a high detection confidence does not mean the image is usable. A blurry gauge
+              at 95% confidence still cannot be read accurately. C1 computes a composite quality score Q from blur
+              (Laplacian variance), brightness, and contrast. Images below Q = 0.45 are flagged before wasting compute
+              downstream.</p>
+            <div class="metric-row mt-24">
+              <div class="metric-box">
+                <div class="metric-val">94%</div>
+                <div class="metric-lbl">mAP@0.5</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-val">97%</div>
+                <div class="metric-lbl">Class Disambiguation</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-val">55%</div>
+                <div class="metric-lbl">Downstream Error Reduction</div>
+              </div>
+            </div>
+            <p class="mt-16 text-muted" style="font-size:0.85rem;">Perspective correction (homography, RANSAC-fitted) is
+              applied automatically when the camera tilt exceeds 25°, reducing angular error by a further 31%.</p>
+          </div>
+          <div class="feature-visual">
+            <div style="text-align:center; width:100%;">
+              <div style="display:flex;justify-content:center;gap:16px;margin-bottom:24px;">
+                <div class="card card-sm" style="flex:1;text-align:center;">
+                  <div style="font-size:2rem;margin-bottom:8px;">⏰</div>
+                  <div class="mono">Clock Detector</div>
+                  <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;">4,200 images · 47 models</div>
+                </div>
+                <div style="display:flex;align-items:center;color:var(--cyan);font-size:1.4rem;">⇕</div>
+                <div class="card card-sm" style="flex:1;text-align:center;">
+                  <div style="font-size:2rem;margin-bottom:8px;">🔩</div>
+                  <div class="mono">Gauge Detector</div>
+                  <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;">2,800 images · industrial</div>
+                </div>
+              </div>
+              <div
+                style="background:rgba(0,200,224,0.06);border:1px solid rgba(0,200,224,0.2);border-radius:8px;padding:16px;">
+                <div class="mono" style="font-size:0.8rem;">Quality Gate: Q ≥ 0.45</div>
+                <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Blur · Brightness · Contrast</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="feature-visual">
-          <div style="width:100%;">
-            <div style="display:flex;flex-direction:column;gap:12px;">
-              <div class="card card-sm" style="border-left:3px solid var(--cyan);">
-                <div class="mono mb-8">Input: Candidate Keypoint k</div>
-                <p style="font-size:0.8rem;">YOLO-Pose detects both real needles and shadows as candidates.</p>
+
+        <!-- C2 -->
+        <div class="feature-row reverse reveal">
+          <div>
+            <span class="label">Component C2 — Novel Contribution</span>
+            <h2 class="mt-8">Semantic Shadow Filtering (SSF)</h2>
+            <div class="divider"></div>
+            <p>This is HARP's most novel contribution. SSF is the <strong style="color:var(--white)">first zero-shot
+                shadow discrimination method</strong> for gauge skeleton extraction. It requires no shadow-labelled
+              training data and generalises across all gauge types and lighting environments.</p>
+            <p class="mt-16">The key insight is <strong style="color:var(--white)">analysis-by-synthesis</strong>: for
+              each detected keypoint candidate, the system renders what the image would look like if that candidate
+              <em>were</em> the real needle. It then uses CLIP (pretrained on 400 million images) to score whether that
+              rendered hypothesis is semantically coherent with a valid gauge image. Shadows fail this test; real
+              needles pass.
+            </p>
+            <p class="mt-16">A three-way decision separates clear accepts (≥ 0.73), clear rejects (&lt; 0.43), and
+              borderline cases routed to human review. Operators resolved 89% of flagged cases in under 2 seconds using
+              the rendered hypothesis as visual context.</p>
+            <div class="metric-row mt-24">
+              <div class="metric-box">
+                <div class="metric-val">91%</div>
+                <div class="metric-lbl">Accuracy</div>
               </div>
-              <div style="text-align:center;color:var(--cyan);">↓</div>
-              <div class="card card-sm" style="border-left:3px solid var(--accent-gold);">
-                <div class="mono mb-8">Render Hypothesis Ĩ(k)</div>
-                <p style="font-size:0.8rem;">Draw a line from gauge centre to candidate → synthesised image.</p>
+              <div class="metric-box">
+                <div class="metric-val">8%</div>
+                <div class="metric-lbl">False Positives</div>
               </div>
-              <div style="text-align:center;color:var(--cyan);">↓</div>
-              <div class="card card-sm" style="border-left:3px solid var(--cyan);">
-                <div class="mono mb-8">CLIP Coherence Score s₁</div>
-                <p style="font-size:0.8rem;">φ(I) · φ(Ĩ) / ‖φ(I)‖ ‖φ(Ĩ)‖ — semantic similarity.</p>
+              <div class="metric-box">
+                <div class="metric-val">F1=0.92</div>
+                <div class="metric-lbl">F1 Score</div>
               </div>
-              <div style="text-align:center;color:var(--cyan);">↓</div>
-              <div class="card card-sm" style="border-left:3px solid #22c55e;">
-                <div class="mono mb-8">Fused Score S(k) → Decision</div>
-                <div style="display:flex;gap:8px;margin-top:8px;">
-                  <span class="tag tag-cyan" style="font-size:0.68rem;">S≥0.73 → REAL</span>
-                  <span class="tag tag-white" style="font-size:0.68rem;">0.43≤S&lt;0.73 → REVIEW</span>
-                  <span class="tag" style="font-size:0.68rem;background:rgba(220,80,80,0.1);color:#f87171;border:1px solid rgba(220,80,80,0.2);">S&lt;0.43 → SHADOW</span>
+            </div>
+          </div>
+          <div class="feature-visual">
+            <div style="width:100%;">
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="card card-sm" style="border-left:3px solid var(--cyan);">
+                  <div class="mono mb-8">Input: Candidate Keypoint k</div>
+                  <p style="font-size:0.8rem;">YOLO-Pose detects both real needles and shadows as candidates.</p>
+                </div>
+                <div style="text-align:center;color:var(--cyan);">↓</div>
+                <div class="card card-sm" style="border-left:3px solid var(--accent-gold);">
+                  <div class="mono mb-8">Render Hypothesis Ĩ(k)</div>
+                  <p style="font-size:0.8rem;">Draw a line from gauge centre to candidate → synthesised image.</p>
+                </div>
+                <div style="text-align:center;color:var(--cyan);">↓</div>
+                <div class="card card-sm" style="border-left:3px solid var(--cyan);">
+                  <div class="mono mb-8">CLIP Coherence Score s₁</div>
+                  <p style="font-size:0.8rem;">φ(I) · φ(Ĩ) / ‖φ(I)‖ ‖φ(Ĩ)‖ — semantic similarity.</p>
+                </div>
+                <div style="text-align:center;color:var(--cyan);">↓</div>
+                <div class="card card-sm" style="border-left:3px solid #22c55e;">
+                  <div class="mono mb-8">Fused Score S(k) → Decision</div>
+                  <div style="display:flex;gap:8px;margin-top:8px;">
+                    <span class="tag tag-cyan" style="font-size:0.68rem;">S≥0.73 → REAL</span>
+                    <span class="tag tag-white" style="font-size:0.68rem;">0.43≤S&lt;0.73 → REVIEW</span>
+                    <span class="tag"
+                      style="font-size:0.68rem;background:rgba(220,80,80,0.1);color:#f87171;border:1px solid rgba(220,80,80,0.2);">S&lt;0.43
+                      → SHADOW</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- C3 -->
-      <div class="feature-row reveal">
-        <div>
-          <span class="label">Component C3</span>
-          <h2 class="mt-8">Directional Regression with Epistemic Uncertainty</h2>
+        <!-- C3 -->
+        <div class="feature-row reveal">
+          <div>
+            <span class="label">Component C3</span>
+            <h2 class="mt-8">Directional Regression with Epistemic Uncertainty</h2>
+            <div class="divider"></div>
+            <p>Standard AI models predict angles as plain numbers like "352°". The problem: 352° and 4° are only 12°
+              apart in reality, but numerically they differ by 348°. This inflates the training loss near
+              midnight/12-o'clock and biases every nearby prediction.</p>
+            <p class="mt-16">C3 solves this by predicting the <strong style="color:var(--white)">sine and
+                cosine</strong> of the angle instead — a representation that wraps naturally around the circle. Monte
+              Carlo Dropout runs 20 random forward passes to produce a probability distribution. The spread of those
+              passes (measured using Mardia–Jupp circular statistics) gives a reliable confidence score that propagates
+              into C4.</p>
+            <div class="metric-row mt-24">
+              <div class="metric-box">
+                <div class="metric-val">4.8°</div>
+                <div class="metric-lbl">Median Error</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-val">0.082</div>
+                <div class="metric-lbl">Calibration Error (ECE)</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-val">41.5%</div>
+                <div class="metric-lbl">Improvement vs MSE</div>
+              </div>
+            </div>
+          </div>
+          <div class="feature-visual">
+            <div style="width:100%;text-align:center;">
+              <div class="card card-sm mb-16">
+                <div class="mono">Input: 128×128 hand crop</div>
+              </div>
+              <div style="color:var(--cyan);margin:8px 0;">↓ ResNet-18 Backbone</div>
+              <div class="card card-sm mb-16">
+                <div class="mono">Sin/Cos dual-head output</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">(ŝ, ĉ) → Δθ̂ = atan2(ŝ, ĉ)</div>
+              </div>
+              <div style="color:var(--cyan);margin:8px 0;">↓ N=20 MC-Dropout passes</div>
+              <div class="card card-sm mb-16">
+                <div class="mono">Circular std σ (Mardia-Jupp)</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">σ = √(−2 ln R), R = resultant length
+                </div>
+              </div>
+              <div style="color:var(--cyan);margin:8px 0;">↓ Confidence blending</div>
+              <div class="card card-sm" style="border:1px solid rgba(0,200,224,0.3);">
+                <div class="mono compare-better">θ_final + uncertainty σ → C4</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- C4 -->
+        <div class="feature-row reverse reveal">
+          <div>
+            <span class="label">Component C4</span>
+            <h2 class="mt-8">Physics-Guided Symbolic Reasoning</h2>
+            <div class="divider"></div>
+            <p>C4 is what makes HARP more than just a detector. It knows that a clock can only display one of exactly
+              <strong style="color:var(--white)">720 valid times</strong>, and it knows the precise mathematical
+              relationship between the angle of each hand and the time it encodes.
+            </p>
+            <p class="mt-16">For every one of those 720 candidate times, C4 calculates where the hands <em>should</em>
+              be, and computes how far that is from what C3 estimated. The best-matching candidate wins. This resolves
+              ambiguous cases — like distinguishing 3:15 from 3:20 — that visual estimation alone cannot reliably
+              separate.</p>
+            <p class="mt-16">Every output comes with a <strong style="color:var(--white)">confidence label</strong> and
+              a diagnostic explanation string, satisfying industrial safety documentation requirements (IEC 61511).</p>
+            <div class="metric-row mt-24">
+              <div class="metric-box">
+                <div class="metric-val">91.4%</div>
+                <div class="metric-lbl">Exact Accuracy</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-val">1.23 min</div>
+                <div class="metric-lbl">Mean Absolute Error</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-val">99.1%</div>
+                <div class="metric-lbl">CERTAIN-label Accuracy</div>
+              </div>
+            </div>
+          </div>
+          <div class="feature-visual">
+            <div style="width:100%;">
+              <h4 style="margin-bottom:16px;">Confidence Taxonomy</h4>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div
+                  style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(0,200,224,0.08);border:1px solid rgba(0,200,224,0.2);border-radius:8px;">
+                  <span
+                    style="color:var(--cyan);font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">CERTAIN</span>
+                  <span style="font-size:0.82rem;color:var(--off-white);">ε* &lt; 2° · no ambiguity · 99.1% acc.</span>
+                </div>
+                <div
+                  style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);border-radius:8px;">
+                  <span
+                    style="color:#4ade80;font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">CONFIDENT</span>
+                  <span style="font-size:0.82rem;color:var(--off-white);">2° ≤ ε* &lt; 8° · reliable for
+                    operations</span>
+                </div>
+                <div
+                  style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.2);border-radius:8px;">
+                  <span
+                    style="color:#fbbf24;font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">UNCERTAIN</span>
+                  <span style="font-size:0.82rem;color:var(--off-white);">8° ≤ ε* &lt; 20° · or hands overlap</span>
+                </div>
+                <div
+                  style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:8px;">
+                  <span
+                    style="color:#f87171;font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">UNRELIABLE</span>
+                  <span style="font-size:0.82rem;color:var(--off-white);">ε* ≥ 20° · flag for human review</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Commercial Impact -->
+        <div id="solution" data-spy class="mt-48 reveal">
+          <span class="label">Commercial Impact</span>
+          <h2 class="mt-8">Real-World Value &amp; Market Applications</h2>
           <div class="divider"></div>
-          <p>Standard AI models predict angles as plain numbers like "352°". The problem: 352° and 4° are only 12° apart in reality, but numerically they differ by 348°. This inflates the training loss near midnight/12-o'clock and biases every nearby prediction.</p>
-          <p class="mt-16">C3 solves this by predicting the <strong style="color:var(--white)">sine and cosine</strong> of the angle instead — a representation that wraps naturally around the circle. Monte Carlo Dropout runs 20 random forward passes to produce a probability distribution. The spread of those passes (measured using Mardia–Jupp circular statistics) gives a reliable confidence score that propagates into C4.</p>
-          <div class="metric-row mt-24">
-            <div class="metric-box"><div class="metric-val">4.8°</div><div class="metric-lbl">Median Error</div></div>
-            <div class="metric-box"><div class="metric-val">0.082</div><div class="metric-lbl">Calibration Error (ECE)</div></div>
-            <div class="metric-box"><div class="metric-val">41.5%</div><div class="metric-lbl">Improvement vs MSE</div></div>
-          </div>
         </div>
-        <div class="feature-visual">
-          <div style="width:100%;text-align:center;">
-            <div class="card card-sm mb-16">
-              <div class="mono">Input: 128×128 hand crop</div>
-            </div>
-            <div style="color:var(--cyan);margin:8px 0;">↓ ResNet-18 Backbone</div>
-            <div class="card card-sm mb-16">
-              <div class="mono">Sin/Cos dual-head output</div>
-              <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">(ŝ, ĉ) → Δθ̂ = atan2(ŝ, ĉ)</div>
-            </div>
-            <div style="color:var(--cyan);margin:8px 0;">↓ N=20 MC-Dropout passes</div>
-            <div class="card card-sm mb-16">
-              <div class="mono">Circular std σ (Mardia-Jupp)</div>
-              <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">σ = √(−2 ln R), R = resultant length</div>
-            </div>
-            <div style="color:var(--cyan);margin:8px 0;">↓ Confidence blending</div>
-            <div class="card card-sm" style="border:1px solid rgba(0,200,224,0.3);">
-              <div class="mono compare-better">θ_final + uncertainty σ → C4</div>
+        <div class="impact-grid reveal mt-32">
+          <div class="impact-card">
+            <div style="font-size:2rem;margin-bottom:16px;">🏭</div>
+            <h4>Petrochemical &amp; Energy</h4>
+            <p class="mt-8">Replace manual gauge inspection rounds with continuous automated monitoring. Eliminate
+              false-alarm shutdowns that cost $34,000 per incident. Payback in 1.3 months.</p>
+            <div class="metric-row mt-16">
+              <div class="metric-box">
+                <div class="metric-val">$64K</div>
+                <div class="metric-lbl">Annual Savings / Site</div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- C4 -->
-      <div class="feature-row reverse reveal">
-        <div>
-          <span class="label">Component C4</span>
-          <h2 class="mt-8">Physics-Guided Symbolic Reasoning</h2>
-          <div class="divider"></div>
-          <p>C4 is what makes HARP more than just a detector. It knows that a clock can only display one of exactly <strong style="color:var(--white)">720 valid times</strong>, and it knows the precise mathematical relationship between the angle of each hand and the time it encodes.</p>
-          <p class="mt-16">For every one of those 720 candidate times, C4 calculates where the hands <em>should</em> be, and computes how far that is from what C3 estimated. The best-matching candidate wins. This resolves ambiguous cases — like distinguishing 3:15 from 3:20 — that visual estimation alone cannot reliably separate.</p>
-          <p class="mt-16">Every output comes with a <strong style="color:var(--white)">confidence label</strong> and a diagnostic explanation string, satisfying industrial safety documentation requirements (IEC 61511).</p>
-          <div class="metric-row mt-24">
-            <div class="metric-box"><div class="metric-val">91.4%</div><div class="metric-lbl">Exact Accuracy</div></div>
-            <div class="metric-box"><div class="metric-val">1.23 min</div><div class="metric-lbl">Mean Absolute Error</div></div>
-            <div class="metric-box"><div class="metric-val">99.1%</div><div class="metric-lbl">CERTAIN-label Accuracy</div></div>
+          <div class="impact-card">
+            <div style="font-size:2rem;margin-bottom:16px;">💧</div>
+            <h4>Water &amp; Utilities</h4>
+            <p class="mt-8">Municipal water treatment plants operate hundreds of pressure and flow gauges. HARP reduced
+              false alarms from 3 per week to zero over a 21-day consecutive run at the deployment site.</p>
+            <div class="metric-row mt-16">
+              <div class="metric-box">
+                <div class="metric-val">0</div>
+                <div class="metric-lbl">False Alarms (21 days)</div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="feature-visual">
-          <div style="width:100%;">
-            <h4 style="margin-bottom:16px;">Confidence Taxonomy</h4>
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(0,200,224,0.08);border:1px solid rgba(0,200,224,0.2);border-radius:8px;">
-                <span style="color:var(--cyan);font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">CERTAIN</span>
-                <span style="font-size:0.82rem;color:var(--off-white);">ε* &lt; 2° · no ambiguity · 99.1% acc.</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);border-radius:8px;">
-                <span style="color:#4ade80;font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">CONFIDENT</span>
-                <span style="font-size:0.82rem;color:var(--off-white);">2° ≤ ε* &lt; 8° · reliable for operations</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.2);border-radius:8px;">
-                <span style="color:#fbbf24;font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">UNCERTAIN</span>
-                <span style="font-size:0.82rem;color:var(--off-white);">8° ≤ ε* &lt; 20° · or hands overlap</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:8px;">
-                <span style="color:#f87171;font-weight:700;font-family:var(--font-mono);font-size:0.78rem;min-width:90px;">UNRELIABLE</span>
-                <span style="font-size:0.82rem;color:var(--off-white);">ε* ≥ 20° · flag for human review</span>
+          <div class="impact-card">
+            <div style="font-size:2rem;margin-bottom:16px;">🚗</div>
+            <h4>Automotive &amp; Manufacturing</h4>
+            <p class="mt-8">Dashboard instruments, quality control gauges, and production-line meters are all readable
+              by the same system. Dual-model design automatically identifies the instrument type.</p>
+            <div class="metric-row mt-16">
+              <div class="metric-box">
+                <div class="metric-val">97%</div>
+                <div class="metric-lbl">Instrument Classification</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Commercial Impact -->
-      <div id="solution" data-spy class="mt-48 reveal">
-        <span class="label">Commercial Impact</span>
-        <h2 class="mt-8">Real-World Value &amp; Market Applications</h2>
-        <div class="divider"></div>
-      </div>
-      <div class="impact-grid reveal mt-32">
-        <div class="impact-card">
-          <div style="font-size:2rem;margin-bottom:16px;">🏭</div>
-          <h4>Petrochemical &amp; Energy</h4>
-          <p class="mt-8">Replace manual gauge inspection rounds with continuous automated monitoring. Eliminate false-alarm shutdowns that cost $34,000 per incident. Payback in 1.3 months.</p>
-          <div class="metric-row mt-16"><div class="metric-box"><div class="metric-val">$64K</div><div class="metric-lbl">Annual Savings / Site</div></div></div>
-        </div>
-        <div class="impact-card">
-          <div style="font-size:2rem;margin-bottom:16px;">💧</div>
-          <h4>Water &amp; Utilities</h4>
-          <p class="mt-8">Municipal water treatment plants operate hundreds of pressure and flow gauges. HARP reduced false alarms from 3 per week to zero over a 21-day consecutive run at the deployment site.</p>
-          <div class="metric-row mt-16"><div class="metric-box"><div class="metric-val">0</div><div class="metric-lbl">False Alarms (21 days)</div></div></div>
-        </div>
-        <div class="impact-card">
-          <div style="font-size:2rem;margin-bottom:16px;">🚗</div>
-          <h4>Automotive &amp; Manufacturing</h4>
-          <p class="mt-8">Dashboard instruments, quality control gauges, and production-line meters are all readable by the same system. Dual-model design automatically identifies the instrument type.</p>
-          <div class="metric-row mt-16"><div class="metric-box"><div class="metric-val">97%</div><div class="metric-lbl">Instrument Classification</div></div></div>
-        </div>
-      </div>
-      <div class="grid-2 mt-24 reveal">
-        <div class="card">
-          <h4>Competitive Advantage</h4>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:0.88rem;">
-            <div>✅ Zero-shot shadow rejection — no labelled shadow data required</div>
-            <div>✅ Works across all gauge types and lighting without retraining</div>
-            <div>✅ Interpretable confidence label meets IEC 61511 safety requirements</div>
-            <div>✅ Deployable on embedded GPU (Jetson AGX Orin) for remote sites</div>
-            <div>✅ Patent application filed March 2025 (SSF + multi-metric scoring)</div>
-          </div>
-        </div>
-        <div class="card">
-          <h4>Scalability &amp; Deployment</h4>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:0.88rem;">
-            <div>🚀 <strong style="color:var(--white)">Cloud:</strong> REST API wrapping the pipeline, horizontally scalable</div>
-            <div>🤖 <strong style="color:var(--white)">Edge:</strong> INT8 models on Jetson AGX Orin for offline facilities</div>
-            <div>📱 <strong style="color:var(--white)">Mobile:</strong> Camera capture → cloud inference → reading in &lt; 1s</div>
-            <div>🔄 <strong style="color:var(--white)">Self-improving:</strong> Human-review zone feedback continuously refines thresholds</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-</div><!-- /page-solution -->
-
-
-<!-- ══════════════════════════════════════════════════════
-     PAGE: MILESTONES
-══════════════════════════════════════════════════════ -->
-<div id="page-milestones" class="page">
-  <div class="page-header">
-    <div class="container">
-      <span class="label">Project Timeline</span>
-      <h1 style="margin: 14px 0 16px;">Milestones &amp; Assessments</h1>
-      <p class="lead" style="max-width:580px;">A structured timeline of all formal assessments, submission deadlines, and mark allocations for the SLIIT Final Year Research Project 2025/26.</p>
-    </div>
-  </div>
-  <section class="section">
-    <div class="container">
-      <div class="grid-2" style="gap:56px; align-items:start;">
-        <div>
-          <div class="timeline reveal">
-            <div class="timeline-item done">
-              <div class="timeline-date">May 2025</div>
-              <div class="timeline-title">Topic Selection &amp; Initial Proposal</div>
-              <div class="timeline-marks">Ungraded</div>
-              <p style="font-size:0.88rem;">Identification of the analog gauge false-alarm problem as the research domain. Initial team formation and supervisor allocation. Scope definition covering four pipeline components.</p>
-            </div>
-            <div class="timeline-item done">
-              <div class="timeline-date">June 2025</div>
-              <div class="timeline-title">Project Charter &amp; Proposal Submission</div>
-              <div class="timeline-marks">6 Marks</div>
-              <p style="font-size:0.88rem;">Formal submission of Project Charter (group) and individual Proposal Documents defining the research problem, objectives, literature review, and proposed methodology for each component.</p>
-            </div>
-            <div class="timeline-item done">
-              <div class="timeline-date">August 2025</div>
-              <div class="timeline-title">Progress Presentation 1 (PP1)</div>
-              <div class="timeline-marks">6 Marks</div>
-              <p style="font-size:0.88rem;">Presentation of early implementation progress: C1 YOLOv8 detector training, initial C2 keypoint extraction, and C3 baseline scalar regression. Evaluation of literature review depth and methodology soundness.</p>
-            </div>
-            <div class="timeline-item done">
-              <div class="timeline-date">November 2025</div>
-              <div class="timeline-title">Progress Presentation 2 (PP2)</div>
-              <div class="timeline-marks">18 Marks</div>
-              <p style="font-size:0.88rem;">Full demonstration of the SSF algorithm (C2), sin/cos directional regression (C3), and initial C4 physics reasoning. Quantitative results on benchmark datasets. Graded on technical depth and experimental rigour.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">March 2026</div>
-              <div class="timeline-title">Final Assessment &amp; Research Paper</div>
-              <div class="timeline-marks">30 Marks</div>
-              <p style="font-size:0.88rem;">Submission of the full merged IEEE conference paper (HARP unified paper), individual component papers, and complete system documentation. Includes the field deployment validation results from three industrial sites.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">April 2026</div>
-              <div class="timeline-title">Website &amp; Final Deliverables</div>
-              <div class="timeline-marks">Part of Final Assessment</div>
-              <p style="font-size:0.88rem;">This project website, supplementary documentation, and all code artifacts submitted for final evaluation.</p>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">May 2026</div>
-              <div class="timeline-title">Viva Voce</div>
-              <div class="timeline-marks">20 Marks</div>
-              <p style="font-size:0.88rem;">Individual oral examination. Each team member is assessed on their specific component, technical understanding, experimental methodology, and ability to defend their research contribution.</p>
-            </div>
-          </div>
-        </div>
-        <div class="reveal reveal-delay-1">
-          <div class="card mb-24">
-            <h4>Mark Allocation Summary</h4>
-            <div style="margin-top:20px;">
-              <table class="data-table">
-                <thead>
-                  <tr><th>Assessment</th><th>Marks</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>Project Charter / Proposal</td><td>6</td><td><span class="tag tag-cyan">Done</span></td></tr>
-                  <tr><td>Progress Presentation 1</td><td>6</td><td><span class="tag tag-cyan">Done</span></td></tr>
-                  <tr><td>Progress Presentation 2</td><td>18</td><td><span class="tag tag-cyan">Done</span></td></tr>
-                  <tr><td>Final Assessment</td><td>30</td><td><span class="tag tag-gold">In Progress</span></td></tr>
-                  <tr><td>Viva Voce</td><td>20</td><td><span class="tag tag-white">Pending</span></td></tr>
-                  <tr><td><strong>Total</strong></td><td><strong>80</strong></td><td></td></tr>
-                </tbody>
-              </table>
+        <div class="grid-2 mt-24 reveal">
+          <div class="card">
+            <h4>Competitive Advantage</h4>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:0.88rem;">
+              <div>✅ Zero-shot shadow rejection — no labelled shadow data required</div>
+              <div>✅ Works across all gauge types and lighting without retraining</div>
+              <div>✅ Interpretable confidence label meets IEC 61511 safety requirements</div>
+              <div>✅ Deployable on embedded GPU (Jetson AGX Orin) for remote sites</div>
+              <div>✅ Patent application filed March 2025 (SSF + multi-metric scoring)</div>
             </div>
           </div>
           <div class="card">
-            <h4>Key Deliverables Checklist</h4>
+            <h4>Scalability &amp; Deployment</h4>
             <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:0.88rem;">
-              <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Project Charter (group)</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Individual Proposal Documents (×4)</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>PP1 Presentation slides</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>PP2 Presentation slides</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Individual IEEE component papers (×4)</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Merged HARP IEEE conference paper</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--accent-gold);">→</span><span>Final Thesis document</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--accent-gold);">→</span><span>Project Website (this site)</span></div>
-              <div style="display:flex;gap:10px;"><span style="color:var(--muted);">○</span><span>Viva presentation</span></div>
+              <div>🚀 <strong style="color:var(--white)">Cloud:</strong> REST API wrapping the pipeline, horizontally
+                scalable</div>
+              <div>🤖 <strong style="color:var(--white)">Edge:</strong> INT8 models on Jetson AGX Orin for offline
+                facilities</div>
+              <div>📱 <strong style="color:var(--white)">Mobile:</strong> Camera capture → cloud inference → reading in
+                &lt; 1s</div>
+              <div>🔄 <strong style="color:var(--white)">Self-improving:</strong> Human-review zone feedback
+                continuously refines thresholds</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div><!-- /page-solution -->
+
+
+  <!-- ══════════════════════════════════════════════════════
+     PAGE: MILESTONES
+══════════════════════════════════════════════════════ -->
+  <div id="page-milestones" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">Project Timeline</span>
+        <h1 style="margin: 14px 0 16px;">Milestones &amp; Assessments</h1>
+        <p class="lead" style="max-width:580px;">A structured timeline of all formal assessments and submission
+          deadlines for the HARP Final Year Research Project 2025/26.</p>
+      </div>
+    </div>
+    <section class="section">
+      <div class="container">
+        <div class="grid-2" style="gap:56px; align-items:start;">
+          <div>
+            <div class="timeline reveal">
+              <div class="timeline-item done">
+                <div class="timeline-date">May 2025</div>
+                <div class="timeline-title">Topic Selection &amp; Initial Proposal</div>
+                <p style="font-size:0.88rem;">Identification of the analog gauge false-alarm problem as the research
+                  domain. Initial team formation and supervisor allocation. Scope definition covering four pipeline
+                  components.</p>
+              </div>
+              <div class="timeline-item done">
+                <div class="timeline-date">June 2025</div>
+                <div class="timeline-title">Project Charter &amp; Proposal Submission</div>
+                <p style="font-size:0.88rem;">Formal submission of Project Charter (group) and individual Proposal
+                  Documents defining the research problem, objectives, literature review, and proposed methodology for
+                  each component.</p>
+              </div>
+              <div class="timeline-item done">
+                <div class="timeline-date">August 2025</div>
+                <div class="timeline-title">Progress Presentation 1 (PP1)</div>
+                <p style="font-size:0.88rem;">Presentation of early implementation progress: C1 YOLOv8 detector
+                  training, initial C2 keypoint extraction, and C3 baseline scalar regression.</p>
+              </div>
+              <div class="timeline-item done">
+                <div class="timeline-date">November 2025</div>
+                <div class="timeline-title">Progress Presentation 2 (PP2)</div>
+                <p style="font-size:0.88rem;">Full demonstration of the SSF algorithm (C2), sin/cos directional
+                  regression (C3), and initial C4 physics reasoning. Quantitative results on benchmark datasets
+                  presented.</p>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-date">March 2026</div>
+                <div class="timeline-title">Final Assessment &amp; Research Paper</div>
+                <p style="font-size:0.88rem;">Submission of the full merged IEEE conference paper (HARP unified paper),
+                  individual component papers, and complete system documentation. Includes field deployment validation
+                  results from three industrial sites.</p>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-date">April 2026</div>
+                <div class="timeline-title">Website &amp; Final Deliverables</div>
+                <p style="font-size:0.88rem;">This project website, supplementary documentation, and all code artifacts
+                  submitted for final evaluation.</p>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-date">May 2026</div>
+                <div class="timeline-title">Viva Voce</div>
+                <p style="font-size:0.88rem;">Individual oral examination. Each team member defends their specific
+                  component, technical understanding, and research contribution.</p>
+              </div>
+            </div>
+          </div>
+          <div class="reveal reveal-delay-1">
+            <div class="card mb-24">
+              <h4>Project Status Overview</h4>
+              <div style="margin-top:20px;">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Assessment</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Project Charter / Proposal</td>
+                      <td><span class="tag tag-cyan">Completed</span></td>
+                    </tr>
+                    <tr>
+                      <td>Progress Presentation 1</td>
+                      <td><span class="tag tag-cyan">Completed</span></td>
+                    </tr>
+                    <tr>
+                      <td>Progress Presentation 2</td>
+                      <td><span class="tag tag-cyan">Completed</span></td>
+                    </tr>
+                    <tr>
+                      <td>Final Assessment &amp; Paper</td>
+                      <td><span class="tag tag-gold">In Progress</span></td>
+                    </tr>
+                    <tr>
+                      <td>Viva Voce</td>
+                      <td><span class="tag tag-white">Upcoming</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <h4>Key Deliverables Checklist</h4>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:0.88rem;">
+                <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Project Charter
+                    (group)</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Individual Proposal
+                    Documents (×4)</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>PP1 Presentation
+                    slides</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>PP2 Presentation
+                    slides</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Individual IEEE
+                    component papers (×4)</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--cyan);">✓</span><span>Merged HARP IEEE
+                    conference paper</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--accent-gold);">→</span><span>Final Thesis
+                    document</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--accent-gold);">→</span><span>Project
+                    Website (this site)</span></div>
+                <div style="display:flex;gap:10px;"><span style="color:var(--muted);">○</span><span>Viva
+                    presentation</span></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</div><!-- /page-milestones -->
+    </section>
+  </div><!-- /page-milestones -->
 
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      PAGE: DOCUMENTS
 ══════════════════════════════════════════════════════ -->
-<div id="page-documents" class="page">
-  <div class="page-header">
-    <div class="container">
-      <span class="label">Documents</span>
-      <h1 style="margin: 14px 0 16px;">Research Documents &amp; Reports</h1>
-      <p class="lead" style="max-width:560px;">All project documents, technical reports, and research papers produced throughout the SLIIT Final Year Research Project.</p>
-    </div>
-  </div>
-  <section class="section">
-    <div class="container">
-      <h3 class="mb-24 reveal">Group Documents</h3>
-      <div class="doc-grid reveal">
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">Project Charter</div>
-            <div class="doc-meta">Group · May 2025 · PDF</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">Project Proposal (Group)</div>
-            <div class="doc-meta">Group · June 2025 · PDF</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">Merged HARP IEEE Paper</div>
-            <div class="doc-meta">All authors · April 2026 · PDF / LaTeX</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pending">📋</div>
-          <div>
-            <div class="doc-title">Final Thesis (Group)</div>
-            <div class="doc-meta">All authors · May 2026</div>
-            <span class="doc-status pending">Pending</span>
-          </div>
-        </div>
-      </div>
-
-      <h3 class="mt-48 mb-24 reveal">Individual Research Papers</h3>
-      <div class="doc-grid reveal">
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">C1: YOLOv8-Based Clock Face Localisation</div>
-            <div class="doc-meta">Sarathi Heshara · IT22207586 · IEEE format</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">C2: Vision-Language Guided Semantic Shadow Filtering</div>
-            <div class="doc-meta">Upendra Jayalath · IT22362926 · IEEE format</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">C3: Directional Regression &amp; Epistemic Uncertainty</div>
-            <div class="doc-meta">Pasindu Weerasinghe · IT22001016 · IEEE format</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">C4: Physics-Guided Symbolic Constraint Approach</div>
-            <div class="doc-meta">Chethana Dassanayake · IT22886804 · IEEE format</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-      </div>
-
-      <h3 class="mt-48 mb-24 reveal">Interim &amp; Progress Reports</h3>
-      <div class="doc-grid reveal">
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">Progress Report 1</div>
-            <div class="doc-meta">Group · August 2025</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pdf">📄</div>
-          <div>
-            <div class="doc-title">Progress Report 2</div>
-            <div class="doc-meta">Group · November 2025</div>
-            <span class="doc-status ready">Available</span>
-          </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pending">📋</div>
-          <div>
-            <div class="doc-title">Final Assessment Report</div>
-            <div class="doc-meta">Group · March 2026</div>
-            <span class="doc-status pending">Pending</span>
-          </div>
-        </div>
+  <div id="page-documents" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">Documents</span>
+        <h1 style="margin: 14px 0 16px;">Research Documents &amp; Reports</h1>
+        <p class="lead" style="max-width:560px;">All project documents, technical reports, and research papers produced
+          throughout the SLIIT Final Year Research Project.</p>
       </div>
     </div>
-  </section>
-</div><!-- /page-documents -->
+    <section class="section">
+      <div class="container">
+        <h3 class="mb-24 reveal">Group Documents</h3>
+        <div class="doc-grid reveal">
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">Project Charter</div>
+              <div class="doc-meta">Group · May 2025 · PDF</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">Project Proposal (Group)</div>
+              <div class="doc-meta">Group · June 2025 · PDF</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">Merged HARP IEEE Paper</div>
+              <div class="doc-meta">All authors · April 2026 · PDF / LaTeX</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pending">📋</div>
+            <div>
+              <div class="doc-title">Final Thesis (Group)</div>
+              <div class="doc-meta">All authors · May 2026</div>
+              <span class="doc-status pending">Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="mt-48 mb-24 reveal">Individual Research Papers</h3>
+        <div class="doc-grid reveal">
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">C1: YOLOv8-Based Clock Face Localisation</div>
+              <div class="doc-meta">Sarathi Heshara · IT22207586 · IEEE format</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">C2: Vision-Language Guided Semantic Shadow Filtering</div>
+              <div class="doc-meta">Upendra Nayanajith · IT22362926 · IEEE format</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">C3: Directional Regression &amp; Epistemic Uncertainty</div>
+              <div class="doc-meta">Pasindu Weerasinghe · IT22001016 · IEEE format</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">C4: Physics-Guided Symbolic Constraint Approach</div>
+              <div class="doc-meta">Chethana Dassanayake · IT22886804 · IEEE format</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="mt-48 mb-24 reveal">Interim &amp; Progress Reports</h3>
+        <div class="doc-grid reveal">
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">Progress Report 1</div>
+              <div class="doc-meta">Group · August 2025</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pdf">📄</div>
+            <div>
+              <div class="doc-title">Progress Report 2</div>
+              <div class="doc-meta">Group · November 2025</div>
+              <span class="doc-status ready">Available</span>
+            </div>
+          </div>
+          <div class="doc-card">
+            <div class="doc-icon pending">📋</div>
+            <div>
+              <div class="doc-title">Final Assessment Report</div>
+              <div class="doc-meta">Group · March 2026</div>
+              <span class="doc-status pending">Pending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-documents -->
 
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      PAGE: PRESENTATIONS
 ══════════════════════════════════════════════════════ -->
-<div id="page-presentations" class="page">
-  <div class="page-header">
-    <div class="container">
-      <span class="label">Presentations</span>
-      <h1 style="margin: 14px 0 16px;">Slides from Past &amp; Upcoming Presentations</h1>
-      <p class="lead" style="max-width:580px;">All presentation decks used at formal assessments throughout the SLIIT Final Year Research Project programme.</p>
+  <div id="page-presentations" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">Presentations</span>
+        <h1 style="margin: 14px 0 16px;">Slides from Past &amp; Upcoming Presentations</h1>
+        <p class="lead" style="max-width:580px;">All presentation decks used at formal assessments throughout the SLIIT
+          Final Year Research Project programme.</p>
+      </div>
     </div>
-  </div>
-  <section class="section">
-    <div class="container">
-      <div class="doc-grid reveal">
-        <div class="doc-card">
-          <div class="doc-icon ppt">📊</div>
-          <div>
-            <div class="doc-title">Proposal Presentation</div>
-            <div class="doc-meta">June 2025 · Group · PowerPoint / PDF</div>
-            <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Problem statement, literature review, proposed methodology, team roles.</p>
-            <span class="doc-status ready">Available</span>
+    <section class="section">
+      <div class="container">
+        <div class="doc-grid reveal">
+          <div class="doc-card">
+            <div class="doc-icon ppt">📊</div>
+            <div>
+              <div class="doc-title">Proposal Presentation</div>
+              <div class="doc-meta">June 2025 · Group · PowerPoint / PDF</div>
+              <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Problem statement, literature review,
+                proposed methodology, team roles.</p>
+              <span class="doc-status ready">Available</span>
+            </div>
           </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon ppt">📊</div>
-          <div>
-            <div class="doc-title">Progress Presentation 1</div>
-            <div class="doc-meta">August 2025 · Group · PowerPoint / PDF</div>
-            <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">C1 detection results, initial C2 keypoint extraction, C3 baseline.</p>
-            <span class="doc-status ready">Available</span>
+          <div class="doc-card">
+            <div class="doc-icon ppt">📊</div>
+            <div>
+              <div class="doc-title">Progress Presentation 1</div>
+              <div class="doc-meta">August 2025 · Group · PowerPoint / PDF</div>
+              <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">C1 detection results, initial C2 keypoint
+                extraction, C3 baseline.</p>
+              <span class="doc-status ready">Available</span>
+            </div>
           </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon ppt">📊</div>
-          <div>
-            <div class="doc-title">Progress Presentation 2</div>
-            <div class="doc-meta">November 2025 · Group · PowerPoint / PDF</div>
-            <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">SSF algorithm, directional regression, C4 physics reasoning, quantitative benchmarks.</p>
-            <span class="doc-status ready">Available</span>
+          <div class="doc-card">
+            <div class="doc-icon ppt">📊</div>
+            <div>
+              <div class="doc-title">Progress Presentation 2</div>
+              <div class="doc-meta">November 2025 · Group · PowerPoint / PDF</div>
+              <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">SSF algorithm, directional regression, C4
+                physics reasoning, quantitative benchmarks.</p>
+              <span class="doc-status ready">Available</span>
+            </div>
           </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pending">📊</div>
-          <div>
-            <div class="doc-title">Final Presentation</div>
-            <div class="doc-meta">March 2026 · Group</div>
-            <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Full HARP system, field results, commercial impact, future directions.</p>
-            <span class="doc-status pending">Pending</span>
+          <div class="doc-card">
+            <div class="doc-icon pending">📊</div>
+            <div>
+              <div class="doc-title">Final Presentation</div>
+              <div class="doc-meta">March 2026 · Group</div>
+              <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Full HARP system, field results,
+                commercial impact, future directions.</p>
+              <span class="doc-status pending">Pending</span>
+            </div>
           </div>
-        </div>
-        <div class="doc-card">
-          <div class="doc-icon pending">📊</div>
-          <div>
-            <div class="doc-title">Viva Presentation</div>
-            <div class="doc-meta">May 2026 · Individual</div>
-            <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Individual component defence slides for viva voce examination.</p>
-            <span class="doc-status pending">Pending</span>
+          <div class="doc-card">
+            <div class="doc-icon pending">📊</div>
+            <div>
+              <div class="doc-title">Viva Presentation</div>
+              <div class="doc-meta">May 2026 · Individual</div>
+              <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Individual component defence slides for
+                viva voce examination.</p>
+              <span class="doc-status pending">Pending</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</div><!-- /page-presentations -->
+    </section>
+  </div><!-- /page-presentations -->
 
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      PAGE: ABOUT US
 ══════════════════════════════════════════════════════ -->
-<div id="page-about" class="page">
-  <div class="page-header">
-    <div class="container">
-      <span class="label">The Team</span>
-      <h1 style="margin: 14px 0 16px;">About the Research Group</h1>
-      <p class="lead" style="max-width:620px;">Final-year BSc Information Technology students at Sri Lanka Institute of Information Technology (SLIIT), researching computer vision and AI for industrial applications.</p>
-    </div>
-  </div>
-  <section class="section">
-    <div class="container">
-      <div class="grid-4 reveal">
-
-        <div class="member-card">
-          <div class="member-avatar">👤</div>
-          <div class="member-name">Upendra Jayalath</div>
-          <div class="member-role">C2 — Semantic Shadow Filtering</div>
-          <div class="member-id">IT22362926</div>
-          <div class="member-skills">
-            <span class="tag tag-cyan">Computer Vision</span>
-            <span class="tag tag-white">CLIP / VLMs</span>
-            <span class="tag tag-white">PyTorch</span>
-          </div>
-          <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Research lead for the SSF algorithm and HARP pipeline integration. Interest in vision-language models and industrial AI deployment.</p>
-          <div class="member-email"><a href="mailto:IT22362926@my.sliit.lk">IT22362926@my.sliit.lk</a></div>
-        </div>
-
-        <div class="member-card">
-          <div class="member-avatar">👤</div>
-          <div class="member-name">Sarathi Heshara</div>
-          <div class="member-role">C1 — Detection &amp; Quality Gate</div>
-          <div class="member-id">IT22207586</div>
-          <div class="member-skills">
-            <span class="tag tag-cyan">Object Detection</span>
-            <span class="tag tag-white">YOLOv8</span>
-            <span class="tag tag-white">FastAPI</span>
-          </div>
-          <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Designed the dual-model detection framework, quality scoring mechanism, and perspective correction module with FastAPI/Streamlit deployment.</p>
-          <div class="member-email"><a href="mailto:it22207586@my.sliit.lk">it22207586@my.sliit.lk</a></div>
-        </div>
-
-        <div class="member-card">
-          <div class="member-avatar">👤</div>
-          <div class="member-name">Chethana D. Dassanayake</div>
-          <div class="member-role">C4 — Physics Reasoning Engine</div>
-          <div class="member-id">IT22886804</div>
-          <div class="member-skills">
-            <span class="tag tag-cyan">Symbolic AI</span>
-            <span class="tag tag-white">Probabilistic Reasoning</span>
-            <span class="tag tag-white">Python</span>
-          </div>
-          <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Designed the exhaustive kinematic search, confidence taxonomy, and physics-guided hand assignment for the C4 reasoning engine.</p>
-          <div class="member-email"><a href="mailto:IT22886804@my.sliit.lk">IT22886804@my.sliit.lk</a></div>
-        </div>
-
-        <div class="member-card">
-          <div class="member-avatar">👤</div>
-          <div class="member-name">Pasindu A. Weerasinghe</div>
-          <div class="member-role">C3 — Directional Regression</div>
-          <div class="member-id">IT22001016</div>
-          <div class="member-skills">
-            <span class="tag tag-cyan">Directional Statistics</span>
-            <span class="tag tag-white">ResNet-18</span>
-            <span class="tag tag-white">Uncertainty QA</span>
-          </div>
-          <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Developed the sin/cos regression architecture, Monte Carlo Dropout uncertainty quantification, and Mardia–Jupp circular statistics integration.</p>
-          <div class="member-email"><a href="mailto:IT22001016@my.sliit.lk">IT22001016@my.sliit.lk</a></div>
-        </div>
-
-      </div>
-
-      <div class="card mt-48 reveal" style="max-width:720px;">
-        <h4>Academic Supervision</h4>
-        <p class="mt-12">This research was conducted under the guidance of the Faculty of Computing at the Sri Lanka Institute of Information Technology (SLIIT), Malabe, as part of the Final Year Research Project programme for the BSc (Hons) in Information Technology, 2025/26 academic year.</p>
-        <div class="mt-20 flex" style="gap:24px;flex-wrap:wrap;">
-          <div><div class="label mb-4">Institution</div><div style="font-size:0.9rem;">SLIIT — Sri Lanka Institute of Information Technology</div></div>
-          <div><div class="label mb-4">Degree</div><div style="font-size:0.9rem;">BSc (Hons) Information Technology</div></div>
-          <div><div class="label mb-4">Academic Year</div><div style="font-size:0.9rem;">2025 / 2026</div></div>
-        </div>
+  <div id="page-about" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">The Team</span>
+        <h1 style="margin: 14px 0 16px;">About the Research Group</h1>
+        <p class="lead" style="max-width:620px;">Final-year BSc Information Technology students at Sri Lanka Institute
+          of Information Technology (SLIIT), researching computer vision and AI for industrial applications.</p>
       </div>
     </div>
-  </section>
-</div><!-- /page-about -->
+    <section class="section">
+      <div class="container">
+        <div class="grid-4 reveal">
+
+          <div class="member-card">
+            <div class="member-avatar" style="background:transparent;border:none;overflow:hidden;">
+              <img src="assets/upendra.jpg" alt="Upendra Nayanajith"
+                style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--cyan);"
+                onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:1.5rem;font-family:var(--font-display);font-weight:700;color:var(--cyan)\'>UN</span>';">
+            </div>
+            <div class="member-name">Upendra Nayanajith</div>
+            <div class="member-role">C2 — Semantic Shadow Filtering</div>
+            <div class="member-id">IT22362926</div>
+            <div class="member-skills">
+              <span class="tag tag-cyan">Computer Vision</span>
+              <span class="tag tag-white">CLIP / VLMs</span>
+              <span class="tag tag-white">PyTorch</span>
+            </div>
+            <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Research lead for the SSF algorithm and HARP
+              pipeline integration. Passionate about vision-language models and industrial AI deployment.</p>
+            <div class="member-email"><a href="mailto:IT22362926@my.sliit.lk">IT22362926@my.sliit.lk</a></div>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;">
+              <a href="https://github.com/upendranayanajith" target="_blank" rel="noopener" class="member-social-link"
+                title="GitHub">⌨</a>
+              <a href="https://www.linkedin.com/in/upendranayanajith/" target="_blank" rel="noopener"
+                class="member-social-link" title="LinkedIn">💼</a>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar member-initials">SH</div>
+            <div class="member-name">Sarathi Heshara</div>
+            <div class="member-role">C1 — Detection &amp; Quality Gate</div>
+            <div class="member-id">IT22207586</div>
+            <div class="member-skills">
+              <span class="tag tag-cyan">Object Detection</span>
+              <span class="tag tag-white">YOLOv8</span>
+              <span class="tag tag-white">FastAPI</span>
+            </div>
+            <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Designed the dual-model detection framework,
+              quality scoring mechanism, and perspective correction module with FastAPI/Streamlit deployment.</p>
+            <div class="member-email"><a href="mailto:it22207586@my.sliit.lk">it22207586@my.sliit.lk</a></div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar member-initials">CD</div>
+            <div class="member-name">Chethana D. Dassanayake</div>
+            <div class="member-role">C4 — Physics Reasoning Engine</div>
+            <div class="member-id">IT22886804</div>
+            <div class="member-skills">
+              <span class="tag tag-cyan">Symbolic AI</span>
+              <span class="tag tag-white">Probabilistic Reasoning</span>
+              <span class="tag tag-white">Python</span>
+            </div>
+            <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Designed the exhaustive kinematic search,
+              confidence taxonomy, and physics-guided hand assignment for the C4 reasoning engine.</p>
+            <div class="member-email"><a href="mailto:IT22886804@my.sliit.lk">IT22886804@my.sliit.lk</a></div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-avatar member-initials">PW</div>
+            <div class="member-name">Pasindu A. Weerasinghe</div>
+            <div class="member-role">C3 — Directional Regression</div>
+            <div class="member-id">IT22001016</div>
+            <div class="member-skills">
+              <span class="tag tag-cyan">Directional Statistics</span>
+              <span class="tag tag-white">ResNet-18</span>
+              <span class="tag tag-white">Uncertainty QA</span>
+            </div>
+            <p class="lead" style="font-size:0.8rem;margin-bottom:12px;">Developed the sin/cos regression architecture,
+              Monte Carlo Dropout uncertainty quantification, and Mardia–Jupp circular statistics integration.</p>
+            <div class="member-email"><a href="mailto:IT22001016@my.sliit.lk">IT22001016@my.sliit.lk</a></div>
+          </div>
+
+        </div>
+
+        <div class="card mt-48 reveal" style="max-width:720px;">
+          <h4>Academic Supervision</h4>
+          <p class="mt-12">This research was conducted under the guidance of the Faculty of Computing at the Sri Lanka
+            Institute of Information Technology (SLIIT), Malabe, as part of the Final Year Research Project programme
+            for the BSc (Hons) in Information Technology, 2025/26 academic year.</p>
+          <div class="mt-20 flex" style="gap:24px;flex-wrap:wrap;">
+            <div>
+              <div class="label mb-4">Institution</div>
+              <div style="font-size:0.9rem;">SLIIT — Sri Lanka Institute of Information Technology</div>
+            </div>
+            <div>
+              <div class="label mb-4">Degree</div>
+              <div style="font-size:0.9rem;">BSc (Hons) Information Technology</div>
+            </div>
+            <div>
+              <div class="label mb-4">Academic Year</div>
+              <div style="font-size:0.9rem;">2025 / 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /page-about -->
 
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      PAGE: CONTACT
 ══════════════════════════════════════════════════════ -->
-<div id="page-contact" class="page">
-  <div class="page-header">
-    <div class="container">
-      <span class="label">Get in Touch</span>
-      <h1 style="margin: 14px 0 16px;">Contact Us</h1>
-      <p class="lead" style="max-width:540px;">Questions about the research, collaboration enquiries, or interest in the commercial application of HARP — reach out to the team.</p>
+  <div id="page-contact" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">Get in Touch</span>
+        <h1 style="margin: 14px 0 16px;">Contact Us</h1>
+        <p class="lead" style="max-width:540px;">Questions about the research, collaboration enquiries, or interest in
+          the commercial application of HARP — reach out to the team.</p>
+      </div>
     </div>
-  </div>
-  <section class="section">
-    <div class="container">
-      <div class="grid-2" style="gap:56px; align-items:start;">
-        <div class="reveal">
-          <h3 class="mb-24">Send a Message</h3>
-          <form id="contact-form">
-            <div class="form-group">
-              <label>Full Name</label>
-              <input type="text" placeholder="Your name" required/>
-            </div>
-            <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" placeholder="your@email.com" required/>
-            </div>
-            <div class="form-group">
-              <label>Subject</label>
-              <select>
-                <option>Research Enquiry</option>
-                <option>Academic Collaboration</option>
-                <option>Commercial / Industry Partnership</option>
-                <option>Technical Question</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Message</label>
-              <textarea placeholder="Your message…" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
-          </form>
-        </div>
-        <div class="reveal reveal-delay-1">
-          <h3 class="mb-24">Direct Contacts</h3>
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div class="card card-sm">
-              <div style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Upendra Jayalath — C2 / Pipeline Lead</div>
-              <a href="mailto:IT22362926@my.sliit.lk" style="font-size:0.9rem;">IT22362926@my.sliit.lk</a>
-            </div>
-            <div class="card card-sm">
-              <div style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Sarathi Heshara — C1</div>
-              <a href="mailto:it22207586@my.sliit.lk" style="font-size:0.9rem;">it22207586@my.sliit.lk</a>
-            </div>
-            <div class="card card-sm">
-              <div style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Chethana Dassanayake — C4</div>
-              <a href="mailto:IT22886804@my.sliit.lk" style="font-size:0.9rem;">IT22886804@my.sliit.lk</a>
-            </div>
-            <div class="card card-sm">
-              <div style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Pasindu Weerasinghe — C3</div>
-              <a href="mailto:IT22001016@my.sliit.lk" style="font-size:0.9rem;">IT22001016@my.sliit.lk</a>
-            </div>
+    <section class="section">
+      <div class="container">
+        <div class="grid-2" style="gap:56px; align-items:start;">
+          <div class="reveal">
+            <h3 class="mb-24">Send a Message</h3>
+            <form id="contact-form">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Your name" required />
+              </div>
+              <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="your@email.com" required />
+              </div>
+              <div class="form-group">
+                <label>Subject</label>
+                <select>
+                  <option>Research Enquiry</option>
+                  <option>Academic Collaboration</option>
+                  <option>Commercial / Industry Partnership</option>
+                  <option>Technical Question</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea placeholder="Your message…" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+            </form>
           </div>
-          <div class="card mt-24">
-            <h4>Institution</h4>
-            <p class="mt-8" style="font-size:0.9rem;">Faculty of Computing<br/>Sri Lanka Institute of Information Technology<br/>New Kandy Road, Malabe 10115<br/>Sri Lanka</p>
-            <a href="https://www.sliit.lk" target="_blank" rel="noopener" class="btn btn-ghost btn-sm mt-16">Visit SLIIT →</a>
+          <div class="reveal reveal-delay-1">
+            <h3 class="mb-24">Direct Contacts</h3>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="card card-sm">
+                <div
+                  style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
+                  Upendra Nayanajith — C2 / Pipeline Lead</div>
+                <a href="mailto:IT22362926@my.sliit.lk" style="font-size:0.9rem;">IT22362926@my.sliit.lk</a>
+              </div>
+              <div class="card card-sm">
+                <div
+                  style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
+                  Sarathi Heshara — C1</div>
+                <a href="mailto:it22207586@my.sliit.lk" style="font-size:0.9rem;">it22207586@my.sliit.lk</a>
+              </div>
+              <div class="card card-sm">
+                <div
+                  style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
+                  Chethana Dassanayake — C4</div>
+                <a href="mailto:IT22886804@my.sliit.lk" style="font-size:0.9rem;">IT22886804@my.sliit.lk</a>
+              </div>
+              <div class="card card-sm">
+                <div
+                  style="font-size:0.78rem;color:var(--muted);font-family:var(--font-display);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
+                  Pasindu Weerasinghe — C3</div>
+                <a href="mailto:IT22001016@my.sliit.lk" style="font-size:0.9rem;">IT22001016@my.sliit.lk</a>
+              </div>
+            </div>
+            <div class="card mt-24">
+              <h4>Institution</h4>
+              <p class="mt-8" style="font-size:0.9rem;">Faculty of Computing<br />Sri Lanka Institute of Information
+                Technology<br />New Kandy Road, Malabe 10115<br />Sri Lanka</p>
+              <a href="https://www.sliit.lk" target="_blank" rel="noopener" class="btn btn-ghost btn-sm mt-16">Visit
+                SLIIT →</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-</div><!-- /page-contact -->
+    </section>
+  </div><!-- /page-contact -->
 
 
-<!-- ══════════════════════════════════════════════════════
+  <!-- ══════════════════════════════════════════════════════
      FOOTER (shared)
 ══════════════════════════════════════════════════════ -->
-<footer id="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand-name">HARP</div>
-        <p class="footer-desc">High-Accuracy Reading Pipeline for Analog Instruments. A final-year research project by four BSc IT students at SLIIT, Sri Lanka, addressing real-world industrial AI failure modes with novel vision-language and physics-guided methods.</p>
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand-name">HARP</div>
+          <p class="footer-desc">High-Accuracy Reading Pipeline for Analog Instruments. A final-year research project by
+            four BSc IT students at SLIIT, Sri Lanka, addressing real-world industrial AI failure modes with novel
+            vision-language and physics-guided methods.</p>
+        </div>
+        <div>
+          <div class="footer-heading">Navigation</div>
+          <ul class="footer-links">
+            <li><a href="#home" data-page="home">Home</a></li>
+            <li><a href="#domain" data-page="domain">Domain</a></li>
+            <li><a href="#solution" data-page="solution">Solution</a></li>
+            <li><a href="#milestones" data-page="milestones">Milestones</a></li>
+            <li><a href="#documents" data-page="documents">Documents</a></li>
+            <li><a href="#presentations" data-page="presentations">Slides</a></li>
+            <li><a href="#about" data-page="about">About Us</a></li>
+            <li><a href="#contact" data-page="contact">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Research</div>
+          <ul class="footer-links">
+            <li><a href="#domain" data-page="domain">Problem Statement</a></li>
+            <li><a href="#domain" data-page="domain">Literature Survey</a></li>
+            <li><a href="#domain" data-page="domain">Research Gap</a></li>
+            <li><a href="#solution" data-page="solution">SSF Algorithm</a></li>
+            <li><a href="#solution" data-page="solution">C4 Reasoning</a></li>
+            <li><a href="#documents" data-page="documents">IEEE Papers</a></li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <div class="footer-heading">Navigation</div>
-        <ul class="footer-links">
-          <li><a href="#home" data-page="home">Home</a></li>
-          <li><a href="#domain" data-page="domain">Domain</a></li>
-          <li><a href="#solution" data-page="solution">Solution</a></li>
-          <li><a href="#milestones" data-page="milestones">Milestones</a></li>
-          <li><a href="#documents" data-page="documents">Documents</a></li>
-          <li><a href="#presentations" data-page="presentations">Slides</a></li>
-          <li><a href="#about" data-page="about">About Us</a></li>
-          <li><a href="#contact" data-page="contact">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-heading">Research</div>
-        <ul class="footer-links">
-          <li><a href="#domain" data-page="domain">Problem Statement</a></li>
-          <li><a href="#domain" data-page="domain">Literature Survey</a></li>
-          <li><a href="#domain" data-page="domain">Research Gap</a></li>
-          <li><a href="#solution" data-page="solution">SSF Algorithm</a></li>
-          <li><a href="#solution" data-page="solution">C4 Reasoning</a></li>
-          <li><a href="#documents" data-page="documents">IEEE Papers</a></li>
-        </ul>
+      <div class="footer-bottom">
+        <span>© <span class="year"></span> HARP Research Team · SLIIT · All rights reserved.</span>
+        <span>BSc (Hons) IT · Final Year Research Project 2025/26</span>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© <span class="year"></span> HARP Research Team · SLIIT · All rights reserved.</span>
-      <span>BSc (Hons) IT · Final Year Research Project 2025/26</span>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-<button id="back-top" aria-label="Back to top">↑</button>
+  <button id="back-top" aria-label="Back to top">↑</button>
 
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>

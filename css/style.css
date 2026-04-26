@@ -809,3 +809,87 @@ p  { color: var(--off-white); font-size: 1rem; }
   .section { padding: 72px 0; }
   .tab-btn { padding: 10px 14px; font-size: 0.8rem; }
 }
+
+/* ── Member initials avatar ─────────────────────────────── */
+.member-initials {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--cyan);
+  background: rgba(0, 200, 224, 0.10);
+  border: 2px solid rgba(0, 200, 224, 0.3);
+  border-radius: 50%;
+  width: 80px; height: 80px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  letter-spacing: -0.02em;
+}
+
+/* ── Member social links ─────────────────────────────────── */
+.member-social-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  background: rgba(0, 200, 224, 0.08);
+  border: 1px solid rgba(0, 200, 224, 0.2);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  color: var(--cyan);
+  transition: var(--transition);
+  text-decoration: none;
+}
+.member-social-link:hover {
+  background: rgba(0, 200, 224, 0.18);
+  border-color: var(--cyan);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ── Accuracy bar chart (SVG-based) ─────────────────────── */
+.acc-chart { width: 100%; margin-top: 24px; }
+.acc-chart-row {
+  display: flex; align-items: center;
+  gap: 12px; margin-bottom: 14px;
+}
+.acc-chart-label {
+  font-family: var(--font-display);
+  font-size: 0.82rem; font-weight: 500;
+  color: var(--off-white);
+  width: 148px; flex-shrink: 0;
+  text-align: right;
+}
+.acc-chart-bar-wrap {
+  flex: 1; background: var(--border);
+  border-radius: 4px; height: 28px;
+  overflow: hidden; position: relative;
+}
+.acc-chart-bar {
+  height: 100%;
+  border-radius: 4px;
+  display: flex; align-items: center;
+  padding-left: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem; font-weight: 500;
+  transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+  width: 0;
+}
+.acc-chart-bar.bar-harp {
+  background: linear-gradient(90deg, var(--cyan), #00e5ff);
+  color: var(--navy);
+  font-weight: 700;
+}
+.acc-chart-bar.bar-other {
+  background: rgba(107,123,150,0.25);
+  color: var(--muted);
+}
+
+/* ── Pipeline visual enhancements ────────────────────────── */
+.pipe-step {
+  position: relative;
+  transition: var(--transition);
+}
+.pipe-step:hover {
+  border-color: rgba(0,200,224,0.4);
+  box-shadow: 0 0 20px rgba(0,200,224,0.1);
+  transform: translateY(-3px);
+}
+
