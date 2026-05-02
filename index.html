@@ -39,6 +39,7 @@
         <li><a href="#documents" data-page="documents">Documents</a></li>
         <li><a href="#presentations" data-page="presentations">Slides</a></li>
         <li><a href="#about" data-page="about">About Us</a></li>
+        <li><a href="#admin" data-page="admin">📂 Admin</a></li>
         <li><a href="#contact" class="nav-cta" data-page="contact">Contact</a></li>
       </ul>
       <div class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
@@ -1253,39 +1254,67 @@
       <div class="container">
         <span class="label">Documents</span>
         <h1 style="margin: 14px 0 16px;">Research Documents &amp; Reports</h1>
-        <p class="lead" style="max-width:560px;">All project documents, technical reports, and research papers produced
-          throughout the SLIIT Final Year Research Project.</p>
+        <p class="lead" style="max-width:560px;">Click any document to view it inline below. All project documents,
+          technical reports, and research papers produced throughout the SLIIT Final Year Research Project.</p>
       </div>
     </div>
     <section class="section">
       <div class="container">
-        <h3 class="mb-24 reveal">Group Documents</h3>
-        <div class="doc-grid reveal">
-          <div class="doc-card">
+
+        <!-- Search bar -->
+        <div class="doc-search-bar reveal">
+          <span class="doc-search-icon">🔍</span>
+          <input type="text" id="doc-search-input" placeholder="Search documents by title, author, or category…" />
+        </div>
+
+        <!-- ── PDF Viewer Panel (shared, moved by JS) ─── -->
+        <div class="pdf-viewer-panel" id="pdf-viewer-panel">
+          <div class="pdf-toolbar">
+            <div class="pdf-toolbar-title">
+              <div class="pdf-icon-badge">📄</div>
+              <span id="pdf-viewer-title">Document</span>
+            </div>
+            <div class="pdf-toolbar-controls">
+              <button class="pdf-ctrl-btn" id="pdf-open-new" title="Open in new tab">↗ Open</button>
+              <button class="pdf-ctrl-btn" id="pdf-download" title="Download">⬇ Download</button>
+              <button class="pdf-ctrl-btn close-btn" id="pdf-close-btn">✕ Close</button>
+            </div>
+          </div>
+          <div class="pdf-viewer-body" id="pdf-viewer-body">
+            <!-- Content injected by JS -->
+          </div>
+        </div>
+
+        <h3 class="mb-24 reveal" style="margin-top:48px;">Group Documents</h3>
+        <div class="doc-grid reveal" id="doc-section-group">
+          <div class="doc-card" data-doc-id="project-charter" data-doc-title="Project Charter" data-doc-meta="Group · May 2025 · PDF" data-doc-category="group">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">Project Charter</div>
               <div class="doc-meta">Group · May 2025 · PDF</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="project-proposal" data-doc-title="Project Proposal (Group)" data-doc-meta="Group · June 2025 · PDF" data-doc-category="group">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">Project Proposal (Group)</div>
               <div class="doc-meta">Group · June 2025 · PDF</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="harp-ieee-paper" data-doc-title="Merged HARP IEEE Paper" data-doc-meta="All authors · April 2026 · PDF" data-doc-category="group">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">Merged HARP IEEE Paper</div>
               <div class="doc-meta">All authors · April 2026 · PDF / LaTeX</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="final-thesis" data-doc-title="Final Thesis (Group)" data-doc-meta="All authors · May 2026" data-doc-category="group" data-doc-pending="true">
             <div class="doc-icon pending">📋</div>
             <div>
               <div class="doc-title">Final Thesis (Group)</div>
@@ -1296,60 +1325,66 @@
         </div>
 
         <h3 class="mt-48 mb-24 reveal">Individual Research Papers</h3>
-        <div class="doc-grid reveal">
-          <div class="doc-card">
+        <div class="doc-grid reveal" id="doc-section-papers">
+          <div class="doc-card" data-doc-id="c1-paper" data-doc-title="C1: YOLOv8-Based Clock Face Localisation" data-doc-meta="Sarathi Heshara · IT22207586" data-doc-category="paper">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">C1: YOLOv8-Based Clock Face Localisation</div>
               <div class="doc-meta">Sarathi Heshara · IT22207586 · IEEE format</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="c2-paper" data-doc-title="C2: Vision-Language Guided Semantic Shadow Filtering" data-doc-meta="Upendra Nayanajith · IT22362926" data-doc-category="paper">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">C2: Vision-Language Guided Semantic Shadow Filtering</div>
               <div class="doc-meta">Upendra Nayanajith · IT22362926 · IEEE format</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="c3-paper" data-doc-title="C3: Directional Regression & Epistemic Uncertainty" data-doc-meta="Pasindu Weerasinghe · IT22001016" data-doc-category="paper">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">C3: Directional Regression &amp; Epistemic Uncertainty</div>
               <div class="doc-meta">Pasindu Weerasinghe · IT22001016 · IEEE format</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="c4-paper" data-doc-title="C4: Physics-Guided Symbolic Constraint Approach" data-doc-meta="Chethana Dassanayake · IT22886804" data-doc-category="paper">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">C4: Physics-Guided Symbolic Constraint Approach</div>
               <div class="doc-meta">Chethana Dassanayake · IT22886804 · IEEE format</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
         </div>
 
         <h3 class="mt-48 mb-24 reveal">Interim &amp; Progress Reports</h3>
-        <div class="doc-grid reveal">
-          <div class="doc-card">
+        <div class="doc-grid reveal" id="doc-section-reports">
+          <div class="doc-card" data-doc-id="progress-report-1" data-doc-title="Progress Report 1" data-doc-meta="Group · August 2025" data-doc-category="report">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">Progress Report 1</div>
               <div class="doc-meta">Group · August 2025</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="progress-report-2" data-doc-title="Progress Report 2" data-doc-meta="Group · November 2025" data-doc-category="report">
             <div class="doc-icon pdf">📄</div>
             <div>
               <div class="doc-title">Progress Report 2</div>
               <div class="doc-meta">Group · November 2025</div>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-doc-id="final-assessment" data-doc-title="Final Assessment Report" data-doc-meta="Group · March 2026" data-doc-category="report" data-doc-pending="true">
             <div class="doc-icon pending">📋</div>
             <div>
               <div class="doc-title">Final Assessment Report</div>
@@ -1358,6 +1393,15 @@
             </div>
           </div>
         </div>
+
+        <!-- Uploaded documents section (populated by admin) -->
+        <div id="doc-section-uploaded" style="margin-top:48px; display:none;">
+          <h3 class="mb-24 reveal">📎 Uploaded Documents</h3>
+          <div class="doc-grid reveal" id="doc-uploaded-grid">
+            <!-- Dynamically populated by JS from localStorage -->
+          </div>
+        </div>
+
       </div>
     </section>
   </div><!-- /page-documents -->
@@ -1432,6 +1476,140 @@
       </div>
     </section>
   </div><!-- /page-presentations -->
+
+
+  <!-- ══════════════════════════════════════════════════════
+     PAGE: ADMIN / UPLOAD DASHBOARD
+══════════════════════════════════════════════════════ -->
+  <div id="page-admin" class="page">
+    <div class="page-header">
+      <div class="container">
+        <span class="label">Admin Dashboard</span>
+        <h1 style="margin: 14px 0 16px;">Document Upload Centre</h1>
+        <p class="lead" style="max-width:600px;">Upload research documents, link them to the public Documents page, and
+          manage all project files from one place. Files are stored locally in your browser.</p>
+      </div>
+    </div>
+    <section class="section">
+      <div class="container">
+
+        <!-- Stats row -->
+        <div class="upload-stats-row" id="admin-stats-row">
+          <div class="upload-stat-card">
+            <div class="upload-stat-icon">📄</div>
+            <div>
+              <div class="upload-stat-label">Total Documents</div>
+              <div class="upload-stat-value" id="stat-total">0</div>
+            </div>
+          </div>
+          <div class="upload-stat-card">
+            <div class="upload-stat-icon">✅</div>
+            <div>
+              <div class="upload-stat-label">Available</div>
+              <div class="upload-stat-value" id="stat-available">0</div>
+            </div>
+          </div>
+          <div class="upload-stat-card">
+            <div class="upload-stat-icon">📁</div>
+            <div>
+              <div class="upload-stat-label">Categories</div>
+              <div class="upload-stat-value" id="stat-categories">0</div>
+            </div>
+          </div>
+          <div class="upload-stat-card">
+            <div class="upload-stat-icon">💾</div>
+            <div>
+              <div class="upload-stat-label">Total Size</div>
+              <div class="upload-stat-value" id="stat-size">0 MB</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap:40px; align-items:start;">
+          <!-- Left: Upload zone + meta form -->
+          <div>
+            <h3 style="margin-bottom:20px;">Upload New Document</h3>
+
+            <!-- Drop zone -->
+            <div class="drop-zone" id="drop-zone">
+              <input type="file" id="file-input" accept=".pdf,.pptx,.ppt,.docx,.doc" multiple />
+              <span class="drop-icon">📂</span>
+              <h3>Drag &amp; drop files here</h3>
+              <p>or <span class="browse-text">browse to select files</span></p>
+              <p style="margin-top:10px; font-size:0.78rem; color:var(--muted);">Supports: PDF, PPTX, DOCX</p>
+            </div>
+
+            <!-- Upload metadata form -->
+            <div class="upload-meta-form" style="margin-top:24px;">
+              <div class="form-group">
+                <label for="upload-title">Document Title *</label>
+                <input type="text" id="upload-title" placeholder="e.g. Progress Report 3" />
+              </div>
+              <div class="form-group">
+                <label for="upload-author">Author / Team</label>
+                <input type="text" id="upload-author" placeholder="e.g. Group · May 2026" />
+              </div>
+              <div class="form-group">
+                <label for="upload-category">Category</label>
+                <select id="upload-category">
+                  <option value="group">Group Document</option>
+                  <option value="paper">Research Paper</option>
+                  <option value="report">Progress Report</option>
+                  <option value="presentation">Presentation</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="upload-status">Availability</label>
+                <select id="upload-status">
+                  <option value="ready">Available</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-top:20px; display:flex; gap:12px;">
+              <button class="btn btn-primary" id="upload-submit-btn" style="flex:1;">
+                ⬆ Upload Document
+              </button>
+              <button class="btn btn-outline" id="upload-clear-btn">Clear</button>
+            </div>
+
+            <!-- Upload queue (pending uploads) -->
+            <div id="upload-queue" style="margin-top:20px;"></div>
+          </div>
+
+          <!-- Right: Manage existing -->
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+              <h3>Manage Documents</h3>
+              <button class="btn btn-outline btn-sm" id="clear-all-docs-btn">🗑 Clear All</button>
+            </div>
+
+            <!-- Category filter -->
+            <div class="dash-filter-tabs" id="dash-filter-tabs">
+              <button class="dash-filter-btn active" data-filter="all">All</button>
+              <button class="dash-filter-btn" data-filter="group">Group</button>
+              <button class="dash-filter-btn" data-filter="paper">Papers</button>
+              <button class="dash-filter-btn" data-filter="report">Reports</button>
+              <button class="dash-filter-btn" data-filter="presentation">Slides</button>
+              <button class="dash-filter-btn" data-filter="other">Other</button>
+            </div>
+
+            <!-- Doc list -->
+            <div class="dash-doc-list">
+              <div id="dash-doc-items">
+                <div style="text-align:center; padding:48px 0; color:var(--muted);">
+                  <div style="font-size:3rem; margin-bottom:12px;">📭</div>
+                  <p>No documents uploaded yet.<br/>Use the form on the left to add your first document.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div><!-- /page-admin -->
 
 
   <!-- ══════════════════════════════════════════════════════
@@ -1654,6 +1832,7 @@
             <li><a href="#documents" data-page="documents">Documents</a></li>
             <li><a href="#presentations" data-page="presentations">Slides</a></li>
             <li><a href="#about" data-page="about">About Us</a></li>
+            <li><a href="#admin" data-page="admin">Admin</a></li>
             <li><a href="#contact" data-page="contact">Contact</a></li>
           </ul>
         </div>
@@ -1677,6 +1856,12 @@
   </footer>
 
   <button id="back-top" aria-label="Back to top">↑</button>
+
+  <!-- Toast notification (shared) -->
+  <div class="toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">✅</span>
+    <span id="toast-message">Done</span>
+  </div>
 
   <script src="js/main.js"></script>
 </body>
