@@ -639,6 +639,29 @@ p  { color: var(--off-white); font-size: 1rem; }
   margin: 0 auto 18px;
   display: flex; align-items: center; justify-content: center;
   font-size: 2rem;
+  overflow: hidden;
+}
+.member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.member-avatar.member-placeholder {
+  background: rgba(0,200,224,0.08);
+  border-color: rgba(0,200,224,0.18);
+}
+.member-avatar.member-placeholder .placeholder-text {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--cyan);
+}
+.member-avatar-note {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin: -12px auto 14px;
+  max-width: 180px;
+  line-height: 1.3;
 }
 .member-name { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
 .member-role { font-size: 0.82rem; color: var(--cyan); font-family: var(--font-display); font-weight: 500; margin-bottom: 6px; }
@@ -650,6 +673,7 @@ p  { color: var(--off-white); font-size: 1rem; }
   word-break: break-all;
 }
 .member-email a { color: var(--cyan); }
+.upload-headshot-btn { margin-top: 16px; }
 
 /* ── Documents / slides ─────────────────────────────────── */
 .doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
@@ -1236,3 +1260,16 @@ p  { color: var(--off-white); font-size: 1rem; }
 }
 .doc-search-bar input::placeholder { color: var(--muted); }
 .doc-search-icon { color: var(--muted); font-size: 1rem; }
+
+/* ── Admin tab panel visibility ──────────────────────── */
+.admin-tab-panel { display: block; }
+
+/* ── Slide viewer accent (orange) ───────────────────── */
+.slide-viewer-panel .pdf-toolbar {
+  border-bottom-color: rgba(251,146,60,0.25);
+}
+.slide-viewer-panel .pdf-toolbar-title .pdf-icon-badge {
+  background: rgba(220,120,50,0.15);
+  color: #fb923c;
+}
+

@@ -157,6 +157,69 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Year in footer ──────────────────────────────────── */
   document.querySelectorAll('.year').forEach(el => el.textContent = new Date().getFullYear());
 
+  /* ── About Us headshot upload support ─────────────────── */
+  const headshotInput = document.getElementById('headshot-file-input');
+  let activeHeadshotMember = null;
+
+  function updateAvatarNote(card, hasImage) {
+    const note = card.querySelector('.member-avatar-note');
+    if (!note) return;
+    note.textContent = hasImage ? 'Headshot added — use the button below to change it.' : 'Headshot placeholder — replace with a photo later.';
+  }
+
+  function renderMemberAvatar(card, dataUrl) {
+    const avatar = card.querySelector('.member-avatar');
+    const name = card.querySelector('.member-name')?.textContent.trim() || 'Team member';
+    if (!avatar) return;
+    avatar.classList.remove('member-placeholder');
+    avatar.innerHTML = `<img src="${dataUrl}" alt="Headshot of ${name}">`;
+    const img = avatar.querySelector('img');
+    if (img) {
+      img.addEventListener('error', () => {
+        avatar.classList.add('member-placeholder');
+        avatar.innerHTML = `<div class="placeholder-text">${card.dataset.memberId || ''}</div>`;
+        updateAvatarNote(card, false);
+      });
+    }
+    updateAvatarNote(card, true);
+  }
+
+  function loadSavedHeadshots() {
+    document.querySelectorAll('.member-card[data-member-id]').forEach(card => {
+      const id = card.dataset.memberId;
+      const stored = id ? localStorage.getItem(`harp-headshot-${id}`) : null;
+      if (stored) renderMemberAvatar(card, stored);
+    });
+  }
+
+  document.querySelectorAll('.upload-headshot-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeHeadshotMember = btn.dataset.member;
+      if (!activeHeadshotMember) return;
+      if (headshotInput) {
+        headshotInput.value = '';
+        headshotInput.click();
+      }
+    });
+  });
+
+  headshotInput?.addEventListener('change', (event) => {
+    const file = event.target.files?.[0];
+    if (!file || !activeHeadshotMember) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      if (typeof dataUrl !== 'string') return;
+      const card = document.querySelector(`.member-card[data-member-id="${activeHeadshotMember}"]`);
+      if (!card) return;
+      renderMemberAvatar(card, dataUrl);
+      localStorage.setItem(`harp-headshot-${activeHeadshotMember}`, dataUrl);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  loadSavedHeadshots();
+
   /* ── Accuracy bar chart animation ────────────────────── */
   function animateAccBars(container) {
     container.querySelectorAll('.acc-chart-bar[data-acc-width]').forEach(bar => {
@@ -541,7 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
         </div>
       </div>`).join('');
-    // Re-attach listeners for dynamically added cards
     attachDocCardListeners();
   }
 
@@ -549,8 +611,338 @@ document.addEventListener('DOMContentLoaded', () => {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  /* ── Init ────────────────────────────────────────── */
+  /* ══════════════════════════════════════════════════════
+     SLIDES VIEWER — Presentations Page
+  ══════════════════════════════════════════════════════ */
+
+  const slidePanel      = document.getElementById('slide-viewer-panel');
+  const slideBody       = document.getElementById('slide-viewer-body');
+  const slideTitleEl    = document.getElementById('slide-viewer-title');
+  const slideCloseBtn   = document.getElementById('slide-close-btn');
+  const slideOpenNew    = document.getElementById('slide-open-new');
+  const slideDownloadBtn= document.getElementById('slide-download');
+
+  let activeSlideUrl    = null;
+  let activeSlideCard   = null;
+
+  function openSlideViewer(card) {
+    const slideId   = card.dataset.slideId;
+    const title     = card.dataset.slideTitle || 'Presentation';
+    const isPending = card.dataset.slidePending === 'true';
+
+    if (activeSlideCard) activeSlideCard.classList.remove('doc-card-active');
+    activeSlideCard = card;
+    card.classList.add('doc-card-active');
+
+    // Move panel right after the card's parent grid
+    const grid = card.closest('.doc-grid') || card.parentElement;
+    grid.after(slidePanel);
+
+    slideTitleEl.textContent = title;
+    slidePanel.classList.remove('visible');
+    slideBody.innerHTML = '';
+
+    const stored = getStoredSlides().find(s => s.id === slideId);
+    activeSlideUrl = stored ? stored.dataUrl : null;
+
+    if (isPending || !stored) {
+      slideBody.innerHTML = `
+        <div class="pdf-placeholder">
+          <div class="pdf-placeholder-icon">📊</div>
+          <h3>${isPending ? 'Slides Not Yet Available' : 'No Slides Linked Yet'}</h3>
+          <p>${isPending
+            ? 'These slides are pending submission and will be available soon.'
+            : `No file has been uploaded for "<strong>${title}</strong>" yet.`}
+          </p>
+          ${!isPending ? `<div class="upload-hint" onclick="(function(){document.querySelectorAll('[data-page=admin]')[0].click(); setTimeout(()=>{document.querySelector('[data-admin-tab=slides]')?.click();},200)})()">📊 Go to Upload Dashboard → Slides tab</div>` : ''}
+        </div>`;
+      slideOpenNew.style.display   = 'none';
+      slideDownloadBtn.style.display = 'none';
+    } else {
+      slideBody.innerHTML = `<iframe src="${activeSlideUrl}" title="${title}"></iframe>`;
+      slideOpenNew.style.display   = '';
+      slideDownloadBtn.style.display = '';
+    }
+
+    setTimeout(() => slidePanel.classList.add('visible'), 10);
+    setTimeout(() => slidePanel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  function closeSlideViewer() {
+    slidePanel?.classList.remove('visible');
+    if (activeSlideCard) { activeSlideCard.classList.remove('doc-card-active'); activeSlideCard = null; }
+    activeSlideUrl = null;
+    setTimeout(() => { if (slideBody) slideBody.innerHTML = ''; }, 380);
+  }
+
+  slideCloseBtn?.addEventListener('click', closeSlideViewer);
+  slideOpenNew?.addEventListener('click', () => { if (activeSlideUrl) window.open(activeSlideUrl, '_blank'); });
+  slideDownloadBtn?.addEventListener('click', () => {
+    if (!activeSlideUrl) return;
+    const a = document.createElement('a');
+    a.href     = activeSlideUrl;
+    a.download = (slideTitleEl?.textContent || 'presentation') + '.pdf';
+    a.click();
+  });
+
+  /* Attach listeners to static slide cards */
+  function attachSlideCardListeners() {
+    document.querySelectorAll('.doc-card[data-slide-id]').forEach(card => {
+      if (card.dataset.slideListenerAttached) return;
+      card.dataset.slideListenerAttached = 'true';
+      card.addEventListener('click', (e) => {
+        if (e.target.classList.contains('slide-view-btn') || e.target.classList.contains('doc-view-btn')) {
+          openSlideViewer(card);
+          return;
+        }
+        if (card.classList.contains('doc-card-active')) {
+          closeSlideViewer();
+        } else {
+          openSlideViewer(card);
+        }
+      });
+    });
+  }
+  attachSlideCardListeners();
+
+  /* Slide search */
+  const slideSearchInput = document.getElementById('slide-search-input');
+  slideSearchInput?.addEventListener('input', () => {
+    const q = slideSearchInput.value.toLowerCase().trim();
+    document.querySelectorAll('.doc-card[data-slide-id]').forEach(card => {
+      const title    = (card.dataset.slideTitle    || '').toLowerCase();
+      const meta     = (card.dataset.slideMeta     || '').toLowerCase();
+      const category = (card.dataset.slideCategory || '').toLowerCase();
+      const match    = !q || title.includes(q) || meta.includes(q) || category.includes(q);
+      card.style.display = match ? '' : 'none';
+    });
+  });
+
+  /* ══════════════════════════════════════════════════════
+     SLIDES STORAGE + ADMIN UPLOAD
+  ══════════════════════════════════════════════════════ */
+
+  const LS_SLIDES_KEY = 'harp_uploaded_slides';
+
+  function getStoredSlides() {
+    try { return JSON.parse(localStorage.getItem(LS_SLIDES_KEY) || '[]'); } catch { return []; }
+  }
+  function saveStoredSlides(slides) {
+    localStorage.setItem(LS_SLIDES_KEY, JSON.stringify(slides));
+  }
+
+  /* ── Admin tab switching ──────────────────────────── */
+  document.getElementById('admin-tabs')?.querySelectorAll('[data-admin-tab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-admin-tab]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.adminTab;
+      document.getElementById('admin-panel-documents').style.display = tab === 'documents' ? '' : 'none';
+      document.getElementById('admin-panel-slides').style.display    = tab === 'slides'    ? '' : 'none';
+    });
+  });
+
+  /* ── Updated refreshAdminStats (docs + slides) ────── */
+  function refreshAdminStats() {
+    const docs   = getStoredDocs();
+    const slides = getStoredSlides();
+    const all    = [...docs, ...slides];
+
+    const statTotal      = document.getElementById('stat-total');
+    const statSlides     = document.getElementById('stat-slides');
+    const statAvailable  = document.getElementById('stat-available');
+    const statSize       = document.getElementById('stat-size');
+    if (!statTotal) return;
+
+    statTotal.textContent     = docs.length;
+    if (statSlides) statSlides.textContent = slides.length;
+    statAvailable.textContent = all.filter(d => d.status === 'ready').length;
+    const totalBytes = all.reduce((s, d) => s + (d.size || 0), 0);
+    statSize.textContent = totalBytes > 1048576
+      ? (totalBytes / 1048576).toFixed(1) + ' MB'
+      : (totalBytes / 1024).toFixed(0) + ' KB';
+  }
+
+  /* ── Render slides list in admin ──────────────────── */
+  function renderDashSlideList(filter = 'all') {
+    const container = document.getElementById('dash-slide-items');
+    if (!container) return;
+    const slides   = getStoredSlides();
+    const filtered = filter === 'all' ? slides : slides.filter(s => s.category === filter);
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding:48px 0; color:var(--muted);">
+        <div style="font-size:3rem; margin-bottom:12px;">📭</div>
+        <p>No slides${filter !== 'all' ? ' in this category' : ' uploaded yet'}.</p></div>`;
+      return;
+    }
+    const catLabels = { group:'Group', individual:'Individual', viva:'Viva', other:'Other' };
+    container.innerHTML = filtered.map(s => `
+      <div class="dash-doc-item" data-slide-id="${s.id}">
+        <div class="dash-doc-file-icon" style="background:rgba(220,120,50,0.12);">📊</div>
+        <div class="dash-doc-info">
+          <div class="dash-doc-name">${s.title}</div>
+          <div class="dash-doc-size">${s.author || 'No author'} · ${formatSize(s.size)}</div>
+          ${s.status === 'ready' ? '<div class="upload-progress-bar"><div class="upload-progress-fill" style="width:100%"></div></div>' : ''}
+        </div>
+        <div class="dash-doc-category">${catLabels[s.category] || s.category}</div>
+        <div class="dash-doc-actions">
+          <button class="dash-action-btn" title="View" data-saction="view" data-sid="${s.id}">👁</button>
+          <button class="dash-action-btn del-btn" title="Delete" data-saction="delete" data-sid="${s.id}">🗑</button>
+        </div>
+      </div>`).join('');
+
+    container.querySelectorAll('.dash-action-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const action = btn.dataset.saction;
+        const id     = btn.dataset.sid;
+        if (action === 'delete') {
+          saveStoredSlides(getStoredSlides().filter(s => s.id !== id));
+          renderDashSlideList(getCurrentSlideFilter());
+          refreshAdminStats();
+          renderUploadedSlidesOnPublicPage();
+          showToast('Slide deleted', '🗑');
+        } else if (action === 'view') {
+          const slide = getStoredSlides().find(s => s.id === id);
+          if (slide) window.open(slide.dataUrl, '_blank');
+        }
+      });
+    });
+  }
+
+  function getCurrentSlideFilter() {
+    return document.querySelector('#slide-filter-tabs .dash-filter-btn.active')?.dataset.slideFilter || 'all';
+  }
+
+  /* Category filter for slides tab */
+  document.getElementById('slide-filter-tabs')?.querySelectorAll('.dash-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#slide-filter-tabs .dash-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderDashSlideList(btn.dataset.slideFilter);
+    });
+  });
+
+  /* ── Slide drop zone ──────────────────────────────── */
+  const slideDropZone  = document.getElementById('slide-drop-zone');
+  const slideFileInput = document.getElementById('slide-file-input');
+  let pendingSlideFiles = [];
+
+  if (slideDropZone) {
+    slideDropZone.addEventListener('dragover', e => { e.preventDefault(); slideDropZone.classList.add('drag-over'); });
+    slideDropZone.addEventListener('dragleave', () => slideDropZone.classList.remove('drag-over'));
+    slideDropZone.addEventListener('drop', e => {
+      e.preventDefault(); slideDropZone.classList.remove('drag-over');
+      handleSlideFiles(Array.from(e.dataTransfer.files));
+    });
+    slideFileInput?.addEventListener('change', () => handleSlideFiles(Array.from(slideFileInput.files)));
+  }
+
+  function handleSlideFiles(files) {
+    pendingSlideFiles = files.filter(f => f.name.match(/\.(pdf|pptx|ppt)$/i));
+    if (pendingSlideFiles.length === 0) { showToast('No supported slide files selected', '⚠️'); return; }
+    if (pendingSlideFiles.length === 1) {
+      const titleIn = document.getElementById('slide-upload-title');
+      if (titleIn && !titleIn.value)
+        titleIn.value = pendingSlideFiles[0].name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+    }
+    const queue = document.getElementById('slide-upload-queue');
+    if (queue) {
+      queue.innerHTML = pendingSlideFiles.map(f => `
+        <div class="dash-doc-item" style="margin-bottom:8px;">
+          <div class="dash-doc-file-icon" style="background:rgba(220,120,50,0.12);">📊</div>
+          <div class="dash-doc-info">
+            <div class="dash-doc-name">${f.name}</div>
+            <div class="dash-doc-size">${formatSize(f.size)}</div>
+          </div>
+          <div class="dash-doc-category">Queued</div>
+        </div>`).join('');
+    }
+    showToast(`${pendingSlideFiles.length} slide file(s) ready`, '📊');
+  }
+
+  /* ── Slide upload submit ──────────────────────────── */
+  document.getElementById('slide-upload-submit-btn')?.addEventListener('click', () => {
+    const title    = document.getElementById('slide-upload-title')?.value.trim();
+    const author   = document.getElementById('slide-upload-author')?.value.trim();
+    const category = document.getElementById('slide-upload-category')?.value || 'other';
+    const status   = document.getElementById('slide-upload-status')?.value   || 'ready';
+
+    if (!title)                    { showToast('Please enter a presentation title', '⚠️'); return; }
+    if (pendingSlideFiles.length === 0) { showToast('Please select a slide file', '⚠️'); return; }
+
+    const file   = pendingSlideFiles[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const slide = {
+        id        : 'slide_' + Date.now(),
+        title, author, category, status,
+        size      : file.size,
+        fileName  : file.name,
+        dataUrl   : e.target.result,
+        uploadedAt: new Date().toISOString()
+      };
+      const slides = getStoredSlides();
+      slides.unshift(slide);
+      saveStoredSlides(slides);
+      renderDashSlideList(getCurrentSlideFilter());
+      refreshAdminStats();
+      renderUploadedSlidesOnPublicPage();
+      clearSlideUploadForm();
+      showToast(`"${title}" uploaded successfully!`, '✅');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function clearSlideUploadForm() {
+    const titleIn  = document.getElementById('slide-upload-title');
+    const authorIn = document.getElementById('slide-upload-author');
+    if (titleIn)  titleIn.value  = '';
+    if (authorIn) authorIn.value = '';
+    if (slideFileInput) slideFileInput.value = '';
+    pendingSlideFiles = [];
+    const queue = document.getElementById('slide-upload-queue');
+    if (queue) queue.innerHTML = '';
+  }
+
+  document.getElementById('slide-upload-clear-btn')?.addEventListener('click', clearSlideUploadForm);
+
+  document.getElementById('clear-all-slides-btn')?.addEventListener('click', () => {
+    if (!confirm('Delete ALL uploaded slides? This cannot be undone.')) return;
+    saveStoredSlides([]);
+    renderDashSlideList();
+    refreshAdminStats();
+    renderUploadedSlidesOnPublicPage();
+    showToast('All slides cleared', '🗑');
+  });
+
+  /* ── Sync uploaded slides → public Presentations page */
+  function renderUploadedSlidesOnPublicPage() {
+    const section = document.getElementById('slide-section-uploaded');
+    const grid    = document.getElementById('slide-uploaded-grid');
+    if (!section || !grid) return;
+    const slides = getStoredSlides();
+    if (slides.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
+    section.style.display = '';
+    grid.innerHTML = slides.map(s => `
+      <div class="doc-card" data-slide-id="${s.id}" data-slide-title="${escHtml(s.title)}"
+           data-slide-meta="${escHtml(s.author || '')}" data-slide-category="${s.category}">
+        <div class="doc-icon ppt">📊</div>
+        <div>
+          <div class="doc-title">${escHtml(s.title)}</div>
+          <div class="doc-meta">${escHtml(s.author || 'Team')} · ${formatSize(s.size)}</div>
+          <span class="doc-status ${s.status}">${s.status === 'ready' ? 'Available' : 'Pending'}</span>
+          <div><button class="doc-view-btn slide-view-btn" tabindex="-1">🖥 View Slides</button></div>
+        </div>
+      </div>`).join('');
+    attachSlideCardListeners();
+  }
+
+  /* ── Init (all) ──────────────────────────────────── */
   renderDashDocList();
+  renderDashSlideList();
   refreshAdminStats();
   renderUploadedDocsOnPublicPage();
+  renderUploadedSlidesOnPublicPage();
 });
+
