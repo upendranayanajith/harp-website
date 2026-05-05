@@ -110,6 +110,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const navPageLinks = document.querySelectorAll('[data-page]');
 
   function showPage(id) {
+    if (id === 'admin') {
+      const pwd = prompt("Enter Admin Password:");
+      if (pwd !== "admin123") {
+        alert("Incorrect password. Access denied.");
+        return;
+      }
+    }
+
     pages.forEach(p => p.classList.toggle('page-active', p.id === `page-${id}`));
     window.scrollTo({ top: 0, behavior: 'smooth' });
     history.pushState({}, '', `#${id}`);
@@ -136,22 +144,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle initial hash
   const hash = window.location.hash.slice(1) || 'home';
-  if (document.getElementById(`page-${hash}`)) showPage(hash);
-  else showPage('home');
+  if (document.getElementById(`page-${hash}`)) {
+    if (hash === 'admin') {
+      const pwd = prompt("Enter admin password:");
+      if (pwd === "admin123") {
+        showPage('admin');
+      } else {
+        alert("Incorrect password. Access denied.");
+        showPage('home');
+      }
+    } else {
+      showPage(hash);
+    }
+  } else {
+    showPage('home');
+  }
 
   /* ── Contact form ────────────────────────────────────── */
   const form = document.getElementById('contact-form');
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
+    const name = document.getElementById('contact-name')?.value || '';
+    const email = document.getElementById('contact-email')?.value || '';
+    const subject = document.getElementById('contact-subject')?.value || 'Contact via HARP';
+    const body = document.getElementById('contact-body')?.value || '';
+    
+    const mailtoLink = `mailto:ascu0000@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + " (" + email + ")\n\n" + body)}`;
+    window.location.href = mailtoLink;
+
     const btn = form.querySelector('[type="submit"]');
-    btn.textContent = 'Sending…';
+    btn.textContent = 'Opening Mail Client…';
     btn.disabled = true;
     setTimeout(() => {
-      btn.textContent = 'Message sent ✓';
-      btn.style.background = '#22c55e';
+      btn.textContent = 'Send Message';
+      btn.disabled = false;
       form.reset();
-      setTimeout(() => { btn.textContent = 'Send Message'; btn.disabled = false; btn.style.background = ''; }, 3000);
-    }, 1200);
+    }, 3000);
   });
 
   /* ── Year in footer ──────────────────────────────────── */
