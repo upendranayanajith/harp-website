@@ -160,42 +160,26 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage('home');
   }
 
-  /* ── Contact form (Web3Forms) ───────────────────────── */
+  /* ── Contact form ────────────────────────────────────── */
   const form = document.getElementById('contact-form');
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener('submit', (e) => {
     e.preventDefault();
+    const name = document.getElementById('contact-name')?.value || '';
+    const email = document.getElementById('contact-email')?.value || '';
+    const subject = document.getElementById('contact-subject')?.value || 'Contact via HARP';
+    const body = document.getElementById('contact-body')?.value || '';
+    
+    const mailtoLink = `mailto:ascu0000@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + " (" + email + ")\n\n" + body)}`;
+    window.location.href = mailtoLink;
 
-    const btn     = document.getElementById('contact-submit-btn');
-    const subject = document.getElementById('contact-subject')?.value || 'Contact via HARP Website';
-
-    // Sync the subject select value into the hidden field Web3Forms reads
-    const hiddenSubject = document.getElementById('contact-subject-hidden');
-    if (hiddenSubject) hiddenSubject.value = subject;
-
-    btn.textContent = 'Sending…';
-    btn.disabled    = true;
-
-    const formData = new FormData(form);
-
-    try {
-      const res  = await fetch('https://api.web3forms.com/submit', {
-        method : 'POST',
-        body   : formData
-      });
-      const data = await res.json();
-
-      if (data.success) {
-        showToast('Message sent! We\'ll get back to you soon.', '✅', 4000);
-        form.reset();
-      } else {
-        showToast('Send failed: ' + (data.message || 'Unknown error'), '❌', 4000);
-      }
-    } catch (err) {
-      showToast('Network error — please try again.', '❌', 4000);
-    } finally {
+    const btn = form.querySelector('[type="submit"]');
+    btn.textContent = 'Opening Mail Client…';
+    btn.disabled = true;
+    setTimeout(() => {
       btn.textContent = 'Send Message';
-      btn.disabled    = false;
-    }
+      btn.disabled = false;
+      form.reset();
+    }, 3000);
   });
 
   /* ── Year in footer ──────────────────────────────────── */
