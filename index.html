@@ -18,6 +18,9 @@
       display: block;
     }
   </style>
+  <!-- Supabase client (required for document/slide storage) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <!-- EmailJS (contact form) -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>emailjs.init("wqKT0gF8fFWeAK86O");</script>
 </head>
@@ -1984,7 +1987,7 @@
                 <label>Message</label>
                 <textarea id="contact-body" placeholder="Your message…" required></textarea>
               </div>
-              <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+              <button type="submit" class="btn btn-primary" id="contact-submit-btn" style="width:100%;">Send Message</button>
             </form>
           </div>
           <div class="reveal reveal-delay-1">
@@ -2084,7 +2087,6 @@
     <span id="toast-message">Done</span>
   </div>
 
-  <script src="js/idb.js"></script>
   <script src="js/main.js"></script>
   <script src="js/references.js"></script>
 </body>

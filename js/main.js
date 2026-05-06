@@ -552,6 +552,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault(); dropZone.classList.remove('drag-over');
       handleFiles(Array.from(e.dataTransfer.files));
     });
+    // Click anywhere on drop zone (except the hidden input itself) to browse
+    dropZone.addEventListener('click', (e) => {
+      if (e.target !== fileInput) fileInput?.click();
+    });
     fileInput?.addEventListener('change', () => handleFiles(Array.from(fileInput.files)));
   }
 
@@ -867,6 +871,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     slideDropZone.addEventListener('drop', e => {
       e.preventDefault(); slideDropZone.classList.remove('drag-over');
       handleSlideFiles(Array.from(e.dataTransfer.files));
+    });
+    // Click anywhere on drop zone (except the hidden input itself) to browse
+    slideDropZone.addEventListener('click', (e) => {
+      if (e.target !== slideFileInput) slideFileInput?.click();
     });
     slideFileInput?.addEventListener('change', () => handleSlideFiles(Array.from(slideFileInput.files)));
   }
