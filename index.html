@@ -18,6 +18,7 @@
       display: block;
     }
   </style>
+
 </head>
 
 <body>
@@ -1444,8 +1445,35 @@
     </div>
     <section class="section">
       <div class="container">
+
+        <!-- Search bar -->
+        <div class="doc-search-bar reveal">
+          <span class="doc-search-icon">🔍</span>
+          <input type="text" id="slide-search-input" placeholder="Search slides by title, author, or category…" />
+        </div>
+
+        <!-- ── Slide Viewer Panel (shared, moved by JS) ─── -->
+        <div class="pdf-viewer-panel" id="slide-viewer-panel">
+          <div class="pdf-toolbar">
+            <div class="pdf-toolbar-title">
+              <div class="pdf-icon-badge">📊</div>
+              <span id="slide-viewer-title">Presentation</span>
+            </div>
+            <div class="pdf-toolbar-controls">
+              <button class="pdf-ctrl-btn" id="slide-open-new" title="Open in new tab">↗ Open</button>
+              <button class="pdf-ctrl-btn" id="slide-download" title="Download">⬇ Download</button>
+              <button class="pdf-ctrl-btn close-btn" id="slide-close-btn">✕ Close</button>
+            </div>
+          </div>
+          <div class="pdf-viewer-body" id="slide-viewer-body">
+            <!-- Content injected by JS -->
+          </div>
+        </div>
+
+        <h3 class="mb-24 reveal" style="margin-top:48px;">Group Presentation Slides</h3>
         <div class="doc-grid reveal">
-          <div class="doc-card">
+          <div class="doc-card" data-slide-id="slide-proposal" data-slide-title="Proposal Presentation"
+               data-slide-meta="Group · June 2025" data-slide-category="group">
             <div class="doc-icon ppt">📊</div>
             <div>
               <div class="doc-title">Proposal Presentation</div>
@@ -1453,9 +1481,11 @@
               <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">Problem statement, literature review,
                 proposed methodology, team roles.</p>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn slide-view-btn" tabindex="-1">🖥 View Slides</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-slide-id="slide-pp1" data-slide-title="Progress Presentation 1"
+               data-slide-meta="Group · August 2025" data-slide-category="group">
             <div class="doc-icon ppt">📊</div>
             <div>
               <div class="doc-title">Progress Presentation 1</div>
@@ -1463,9 +1493,11 @@
               <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">C1 detection results, initial C2 keypoint
                 extraction, C3 baseline.</p>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn slide-view-btn" tabindex="-1">🖥 View Slides</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-slide-id="slide-pp2" data-slide-title="Progress Presentation 2"
+               data-slide-meta="Group · November 2025" data-slide-category="group">
             <div class="doc-icon ppt">📊</div>
             <div>
               <div class="doc-title">Progress Presentation 2</div>
@@ -1473,9 +1505,11 @@
               <p style="font-size:0.78rem;color:var(--muted);margin-top:6px;">SSF algorithm, directional regression, C4
                 physics reasoning, quantitative benchmarks.</p>
               <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn slide-view-btn" tabindex="-1">🖥 View Slides</button></div>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-slide-id="slide-final" data-slide-title="Final Presentation"
+               data-slide-meta="Group · March 2026" data-slide-category="group" data-slide-pending="true">
             <div class="doc-icon pending">📊</div>
             <div>
               <div class="doc-title">Final Presentation</div>
@@ -1485,7 +1519,8 @@
               <span class="doc-status pending">Pending</span>
             </div>
           </div>
-          <div class="doc-card">
+          <div class="doc-card" data-slide-id="slide-viva" data-slide-title="Viva Presentation"
+               data-slide-meta="Individual · May 2026" data-slide-category="individual" data-slide-pending="true">
             <div class="doc-icon pending">📊</div>
             <div>
               <div class="doc-title">Viva Presentation</div>
@@ -1496,6 +1531,15 @@
             </div>
           </div>
         </div>
+
+        <!-- Uploaded slides section (populated by admin) -->
+        <div id="slide-section-uploaded" style="margin-top:48px; display:none;">
+          <h3 class="mb-24 reveal">📎 Uploaded Slides</h3>
+          <div class="doc-grid reveal" id="slide-uploaded-grid">
+            <!-- Dynamically populated by JS from IndexedDB -->
+          </div>
+        </div>
+
       </div>
     </section>
   </div><!-- /page-presentations -->
@@ -1508,9 +1552,9 @@
     <div class="page-header">
       <div class="container">
         <span class="label">Admin Dashboard</span>
-        <h1 style="margin: 14px 0 16px;">Document Upload Centre</h1>
-        <p class="lead" style="max-width:600px;">Upload research documents, link them to the public Documents page, and
-          manage all project files from one place. Files are stored locally in your browser.</p>
+        <h1 style="margin: 14px 0 16px;">Upload &amp; Management Centre</h1>
+        <p class="lead" style="max-width:600px;">Upload research documents and presentation slides, link them to the
+          public pages, and manage all project files from one place. Files are stored in your browser's IndexedDB (no size limit).</p>
       </div>
     </div>
     <section class="section">
@@ -1526,17 +1570,17 @@
             </div>
           </div>
           <div class="upload-stat-card">
+            <div class="upload-stat-icon">📊</div>
+            <div>
+              <div class="upload-stat-label">Slides</div>
+              <div class="upload-stat-value" id="stat-slides">0</div>
+            </div>
+          </div>
+          <div class="upload-stat-card">
             <div class="upload-stat-icon">✅</div>
             <div>
               <div class="upload-stat-label">Available</div>
               <div class="upload-stat-value" id="stat-available">0</div>
-            </div>
-          </div>
-          <div class="upload-stat-card">
-            <div class="upload-stat-icon">📁</div>
-            <div>
-              <div class="upload-stat-label">Categories</div>
-              <div class="upload-stat-value" id="stat-categories">0</div>
             </div>
           </div>
           <div class="upload-stat-card">
@@ -1548,82 +1592,144 @@
           </div>
         </div>
 
-        <div class="grid-2" style="gap:40px; align-items:start;">
-          <!-- Left: Upload zone + meta form -->
-          <div>
-            <h3 style="margin-bottom:20px;">Upload New Document</h3>
+        <!-- Admin tabs -->
+        <div class="dash-filter-tabs" id="admin-tabs" style="margin-bottom:32px;">
+          <button class="dash-filter-btn active" data-admin-tab="documents">📄 Documents</button>
+          <button class="dash-filter-btn" data-admin-tab="slides">📊 Slides</button>
+        </div>
 
-            <!-- Drop zone -->
-            <div class="drop-zone" id="drop-zone">
-              <input type="file" id="file-input" accept=".pdf,.pptx,.ppt,.docx,.doc" multiple />
-              <span class="drop-icon">📂</span>
-              <h3>Drag &amp; drop files here</h3>
-              <p>or <span class="browse-text">browse to select files</span></p>
-              <p style="margin-top:10px; font-size:0.78rem; color:var(--muted);">Supports: PDF, PPTX, DOCX</p>
+        <!-- ══ DOCUMENTS PANEL ══ -->
+        <div id="admin-panel-documents">
+          <div class="grid-2" style="gap:40px; align-items:start;">
+            <div>
+              <h3 style="margin-bottom:20px;">Upload New Document</h3>
+              <div class="drop-zone" id="drop-zone">
+                <input type="file" id="file-input" accept=".pdf,.pptx,.ppt,.docx,.doc" multiple />
+                <span class="drop-icon">📂</span>
+                <h3>Drag &amp; drop files here</h3>
+                <p>or <span class="browse-text">browse to select files</span></p>
+                <p style="margin-top:10px; font-size:0.78rem; color:var(--muted);">Supports: PDF, PPTX, DOCX</p>
+              </div>
+              <div class="upload-meta-form" style="margin-top:24px;">
+                <div class="form-group">
+                  <label for="upload-title">Document Title *</label>
+                  <input type="text" id="upload-title" placeholder="e.g. Progress Report 3" />
+                </div>
+                <div class="form-group">
+                  <label for="upload-author">Author / Team</label>
+                  <input type="text" id="upload-author" placeholder="e.g. Group · May 2026" />
+                </div>
+                <div class="form-group">
+                  <label for="upload-category">Category</label>
+                  <select id="upload-category">
+                    <option value="group">Group Document</option>
+                    <option value="paper">Research Paper</option>
+                    <option value="report">Progress Report</option>
+                    <option value="presentation">Presentation</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="upload-status">Availability</label>
+                  <select id="upload-status">
+                    <option value="ready">Available</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top:20px; display:flex; gap:12px;">
+                <button class="btn btn-primary" id="upload-submit-btn" style="flex:1;">⬆ Upload Document</button>
+                <button class="btn btn-outline" id="upload-clear-btn">Clear</button>
+              </div>
+              <div id="upload-queue" style="margin-top:20px;"></div>
             </div>
-
-            <!-- Upload metadata form -->
-            <div class="upload-meta-form" style="margin-top:24px;">
-              <div class="form-group">
-                <label for="upload-title">Document Title *</label>
-                <input type="text" id="upload-title" placeholder="e.g. Progress Report 3" />
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+                <h3>Manage Documents</h3>
+                <button class="btn btn-outline btn-sm" id="clear-all-docs-btn">🗑 Clear All</button>
               </div>
-              <div class="form-group">
-                <label for="upload-author">Author / Team</label>
-                <input type="text" id="upload-author" placeholder="e.g. Group · May 2026" />
+              <div class="dash-filter-tabs" id="dash-filter-tabs">
+                <button class="dash-filter-btn active" data-filter="all">All</button>
+                <button class="dash-filter-btn" data-filter="group">Group</button>
+                <button class="dash-filter-btn" data-filter="paper">Papers</button>
+                <button class="dash-filter-btn" data-filter="report">Reports</button>
+                <button class="dash-filter-btn" data-filter="presentation">Slides</button>
+                <button class="dash-filter-btn" data-filter="other">Other</button>
               </div>
-              <div class="form-group">
-                <label for="upload-category">Category</label>
-                <select id="upload-category">
-                  <option value="group">Group Document</option>
-                  <option value="paper">Research Paper</option>
-                  <option value="report">Progress Report</option>
-                  <option value="presentation">Presentation</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="upload-status">Availability</label>
-                <select id="upload-status">
-                  <option value="ready">Available</option>
-                  <option value="pending">Pending</option>
-                </select>
+              <div class="dash-doc-list">
+                <div id="dash-doc-items">
+                  <div style="text-align:center; padding:48px 0; color:var(--muted);">
+                    <div style="font-size:3rem; margin-bottom:12px;">📭</div>
+                    <p>No documents uploaded yet.<br />Use the form to add your first document.</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div style="margin-top:20px; display:flex; gap:12px;">
-              <button class="btn btn-primary" id="upload-submit-btn" style="flex:1;">
-                ⬆ Upload Document
-              </button>
-              <button class="btn btn-outline" id="upload-clear-btn">Clear</button>
-            </div>
-
-            <!-- Upload queue (pending uploads) -->
-            <div id="upload-queue" style="margin-top:20px;"></div>
           </div>
+        </div>
 
-          <!-- Right: Manage existing -->
-          <div>
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
-              <h3>Manage Documents</h3>
-              <button class="btn btn-outline btn-sm" id="clear-all-docs-btn">🗑 Clear All</button>
+        <!-- ══ SLIDES PANEL ══ -->
+        <div id="admin-panel-slides" style="display:none;">
+          <div class="grid-2" style="gap:40px; align-items:start;">
+            <div>
+              <h3 style="margin-bottom:20px;">Upload New Slides</h3>
+              <div class="drop-zone" id="slide-drop-zone">
+                <input type="file" id="slide-file-input" accept=".pdf,.pptx,.ppt" multiple />
+                <span class="drop-icon">📊</span>
+                <h3>Drag &amp; drop slides here</h3>
+                <p>or <span class="browse-text">browse to select files</span></p>
+                <p style="margin-top:10px; font-size:0.78rem; color:var(--muted);">Supports: PDF, PPTX, PPT</p>
+              </div>
+              <div class="upload-meta-form" style="margin-top:24px;">
+                <div class="form-group">
+                  <label for="slide-upload-title">Presentation Title *</label>
+                  <input type="text" id="slide-upload-title" placeholder="e.g. Progress Presentation 3" />
+                </div>
+                <div class="form-group">
+                  <label for="slide-upload-author">Presenter / Team</label>
+                  <input type="text" id="slide-upload-author" placeholder="e.g. Group · May 2026" />
+                </div>
+                <div class="form-group">
+                  <label for="slide-upload-category">Category</label>
+                  <select id="slide-upload-category">
+                    <option value="group">Group</option>
+                    <option value="individual">Individual</option>
+                    <option value="viva">Viva</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="slide-upload-status">Availability</label>
+                  <select id="slide-upload-status">
+                    <option value="ready">Available</option>
+                    <option value="pending">Pending</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top:20px; display:flex; gap:12px;">
+                <button class="btn btn-primary" id="slide-upload-submit-btn" style="flex:1;">⬆ Upload Slides</button>
+                <button class="btn btn-outline" id="slide-upload-clear-btn">Clear</button>
+              </div>
+              <div id="slide-upload-queue" style="margin-top:20px;"></div>
             </div>
-
-            <!-- Category filter -->
-            <div class="dash-filter-tabs" id="dash-filter-tabs">
-              <button class="dash-filter-btn active" data-filter="all">All</button>
-              <button class="dash-filter-btn" data-filter="group">Group</button>
-              <button class="dash-filter-btn" data-filter="paper">Papers</button>
-              <button class="dash-filter-btn" data-filter="report">Reports</button>
-              <button class="dash-filter-btn" data-filter="presentation">Slides</button>
-              <button class="dash-filter-btn" data-filter="other">Other</button>
-            </div>
-
-            <!-- Doc list -->
-            <div class="dash-doc-list">
-              <div id="dash-doc-items">
-                <div style="text-align:center; padding:48px 0; color:var(--muted);">
-                  <div style="font-size:3rem; margin-bottom:12px;">📭</div>
-                  <p>No documents uploaded yet.<br />Use the form on the left to add your first document.</p>
+            <div>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+                <h3>Manage Slides</h3>
+                <button class="btn btn-outline btn-sm" id="clear-all-slides-btn">🗑 Clear All</button>
+              </div>
+              <div class="dash-filter-tabs" id="slide-filter-tabs">
+                <button class="dash-filter-btn active" data-slide-filter="all">All</button>
+                <button class="dash-filter-btn" data-slide-filter="group">Group</button>
+                <button class="dash-filter-btn" data-slide-filter="individual">Individual</button>
+                <button class="dash-filter-btn" data-slide-filter="viva">Viva</button>
+                <button class="dash-filter-btn" data-slide-filter="other">Other</button>
+              </div>
+              <div class="dash-doc-list">
+                <div id="dash-slide-items">
+                  <div style="text-align:center; padding:48px 0; color:var(--muted);">
+                    <div style="font-size:3rem; margin-bottom:12px;">📭</div>
+                    <p>No slides uploaded yet.<br />Use the form to add your first presentation.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1978,7 +2084,7 @@
   </div>
 
   <script src="js/idb.js"></script>
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
   <script src="js/references.js"></script>
 </body>
 

@@ -2,7 +2,12 @@
    HARP Website — main.js
    ============================================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
+/* ── Supabase client ─────────────────────────────────────── */
+const SUPABASE_URL = 'https://vamclbbpzbsedmfsekjb.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbWNsYmJwemJzZWRtZnNla2piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwNTI0MDEsImV4cCI6MjA5MzYyODQwMX0.7a95kWAQ4EJzXEVmXzOq7OQN_qFTM4WxOBgtRkNwFi4';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+document.addEventListener('DOMContentLoaded', async () => {
 
   /* ── Navbar scroll effect ────────────────────────────── */
   const navbar = document.getElementById('navbar');
@@ -160,26 +165,38 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage('home');
   }
 
-  /* ── Contact form ────────────────────────────────────── */
+  /* ── Contact form (EmailJS) ─────────────────────────── */
   const form = document.getElementById('contact-form');
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('contact-name')?.value || '';
-    const email = document.getElementById('contact-email')?.value || '';
+    const name    = document.getElementById('contact-name')?.value    || '';
+    const email   = document.getElementById('contact-email')?.value   || '';
     const subject = document.getElementById('contact-subject')?.value || 'Contact via HARP';
-    const body = document.getElementById('contact-body')?.value || '';
-    
-    const mailtoLink = `mailto:ascu0000@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + " (" + email + ")\n\n" + body)}`;
-    window.location.href = mailtoLink;
+    const body    = document.getElementById('contact-body')?.value    || '';
 
     const btn = form.querySelector('[type="submit"]');
-    btn.textContent = 'Opening Mail Client…';
+    btn.textContent = 'Sending…';
     btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = 'Send Message';
-      btn.disabled = false;
+
+    emailjs.send('service_cw76hux', 'template_19kdkbx', {
+      name:    name,
+      email:   email,
+      subject: subject,
+      message: body,
+    })
+    .then(() => {
+      btn.textContent = 'Message Sent!';
       form.reset();
-    }, 3000);
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+      }, 3000);
+    })
+    .catch((err) => {
+      console.error('EmailJS error:', err);
+      btn.textContent = 'Failed — Try Again';
+      btn.disabled = false;
+    });
   });
 
   /* ── Year in footer ──────────────────────────────────── */
@@ -294,12 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const title    = card.dataset.docTitle || 'Document';
     const isPending = card.dataset.docPending === 'true';
 
-    // Deactivate previous
     if (activeDocCard) activeDocCard.classList.remove('doc-card-active');
     activeDocCard = card;
     card.classList.add('doc-card-active');
 
-    // Move panel right after this card's parent grid, then show
     const grid = card.closest('.doc-grid') || card.parentElement;
     grid.after(pdfPanel);
 
@@ -307,13 +322,17 @@ document.addEventListener('DOMContentLoaded', () => {
     pdfPanel.classList.remove('visible');
     pdfBody.innerHTML = '';
 
+<<<<<<< HEAD
+    const stored = cachedDocs.find(d => d.id === docId);
+    activePdfUrl  = stored ? stored.publicUrl : null;
+=======
     // Check if we have a real file stored for this doc
     const allDocs = await HarpIDB.getDocs();
     const stored = allDocs.find(d => d.id === docId);
     activePdfUrl  = stored ? stored.dataUrl : null;
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
 
     if (isPending || (!stored)) {
-      // Show placeholder
       const adminLink = `<span style="color:var(--cyan);cursor:pointer;text-decoration:underline;" onclick="window.location.hash='admin'; document.querySelector('[data-page=admin]').click();">Upload Dashboard</span>`;
       pdfBody.innerHTML = `
         <div class="pdf-placeholder">
@@ -328,16 +347,12 @@ document.addEventListener('DOMContentLoaded', () => {
       pdfOpenNew.style.display  = 'none';
       pdfDownload.style.display = 'none';
     } else {
-      // Render actual PDF in iframe
       pdfBody.innerHTML = `<iframe src="${activePdfUrl}" title="${title}"></iframe>`;
       pdfOpenNew.style.display  = '';
       pdfDownload.style.display = '';
     }
 
-    // Reveal with animation
     setTimeout(() => pdfPanel.classList.add('visible'), 10);
-
-    // Smooth scroll to viewer
     setTimeout(() => pdfPanel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   }
 
@@ -362,10 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
     a.click();
   });
 
-  // Attach click listeners to all static doc cards
   function attachDocCardListeners() {
     document.querySelectorAll('.doc-card[data-doc-id]').forEach(card => {
-      // Avoid double-attaching
       if (card.dataset.listenerAttached) return;
       card.dataset.listenerAttached = 'true';
       card.addEventListener('click', (e) => {
@@ -373,7 +386,6 @@ document.addEventListener('DOMContentLoaded', () => {
           openPdfViewer(card);
           return;
         }
-        // Toggle: clicking same card closes it
         if (card.classList.contains('doc-card-active')) {
           closePdfViewer();
         } else {
@@ -398,13 +410,52 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ══════════════════════════════════════════════════════
+<<<<<<< HEAD
+     ADMIN / UPLOAD DASHBOARD — Supabase-backed
+  ══════════════════════════════════════════════════════ */
+
+  // In-memory caches populated from Supabase
+  let cachedDocs   = [];
+  let cachedSlides = [];
+
+  function docPublicUrl(filePath) {
+    return sb.storage.from('documents').getPublicUrl(filePath).data.publicUrl;
+  }
+  function slidePublicUrl(filePath) {
+    return sb.storage.from('slides').getPublicUrl(filePath).data.publicUrl;
+  }
+
+  async function loadDocs() {
+    const { data, error } = await sb.from('documents').select('*').order('uploaded_at', { ascending: false });
+    if (error) { console.error('loadDocs:', error); return; }
+    cachedDocs = (data || []).map(r => ({
+      ...r,
+      size    : r.file_size,
+      fileName: r.file_name,
+      publicUrl: docPublicUrl(r.file_path)
+    }));
+  }
+
+  async function loadSlides() {
+    const { data, error } = await sb.from('slides').select('*').order('uploaded_at', { ascending: false });
+    if (error) { console.error('loadSlides:', error); return; }
+    cachedSlides = (data || []).map(r => ({
+      ...r,
+      size    : r.file_size,
+      fileName: r.file_name,
+      publicUrl: slidePublicUrl(r.file_path)
+    }));
+  }
+
+=======
      ADMIN / UPLOAD DASHBOARD
      Storage: IndexedDB via HarpIDB (no size limit)
   ══════════════════════════════════════════════════════ */
 
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
   /* ── Toast helper ─────────────────────────────────── */
   function showToast(msg, icon = '✅', duration = 3000) {
-    const toast   = document.getElementById('app-toast');
+    const toast    = document.getElementById('app-toast');
     const toastMsg = document.getElementById('toast-message');
     const toastIco = document.getElementById('toast-icon');
     if (!toast) return;
@@ -414,6 +465,30 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => toast.classList.remove('show'), duration);
   }
 
+<<<<<<< HEAD
+  function formatSize(bytes) {
+    if (!bytes) return '—';
+    if (bytes > 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
+    return (bytes / 1024).toFixed(0) + ' KB';
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── Admin stats ──────────────────────────────────── */
+  function refreshAdminStats() {
+    const all = [...cachedDocs, ...cachedSlides];
+    const statTotal     = document.getElementById('stat-total');
+    const statSlides    = document.getElementById('stat-slides');
+    const statAvailable = document.getElementById('stat-available');
+    const statSize      = document.getElementById('stat-size');
+    if (!statTotal) return;
+    statTotal.textContent     = cachedDocs.length;
+    if (statSlides) statSlides.textContent = cachedSlides.length;
+    statAvailable.textContent = all.filter(d => d.status === 'ready').length;
+    const totalBytes = all.reduce((s, d) => s + (d.file_size || 0), 0);
+=======
   /* ── Admin stats update ───────────────────────────── */
   async function refreshAdminStats() {
     const docs   = await HarpIDB.getDocs();
@@ -428,17 +503,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (statSlides) statSlides.textContent = slides.length;
     statAvailable.textContent = all.filter(d => d.status === 'ready').length;
     const totalBytes = all.reduce((s, d) => s + (d.size || 0), 0);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
     statSize.textContent = totalBytes > 1048576
       ? (totalBytes / 1048576).toFixed(1) + ' MB'
       : (totalBytes / 1024).toFixed(0) + ' KB';
   }
 
   /* ── Render dash doc list ─────────────────────────── */
+<<<<<<< HEAD
+  function getCurrentFilter() {
+    return document.querySelector('.dash-filter-btn.active')?.dataset.filter || 'all';
+  }
+
+  function renderDashDocList(filter = 'all') {
+    const container = document.getElementById('dash-doc-items');
+    if (!container) return;
+    const filtered = filter === 'all' ? cachedDocs : cachedDocs.filter(d => d.category === filter);
+=======
   async function renderDashDocList(filter = 'all') {
     const container = document.getElementById('dash-doc-items');
     if (!container) return;
     const docs = await HarpIDB.getDocs();
     const filtered = filter === 'all' ? docs : docs.filter(d => d.category === filter);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
     if (filtered.length === 0) {
       container.innerHTML = `<div style="text-align:center; padding:48px 0; color:var(--muted);">
         <div style="font-size:3rem; margin-bottom:12px;">📭</div>
@@ -451,46 +538,47 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="dash-doc-item" data-doc-id="${doc.id}">
         <div class="dash-doc-file-icon">📄</div>
         <div class="dash-doc-info">
-          <div class="dash-doc-name">${doc.title}</div>
-          <div class="dash-doc-size">${doc.author || 'No author'} · ${formatSize(doc.size)}</div>
+          <div class="dash-doc-name">${escHtml(doc.title)}</div>
+          <div class="dash-doc-size">${escHtml(doc.author || 'No author')} · ${formatSize(doc.file_size)}</div>
           ${doc.status === 'ready' ? '<div class="upload-progress-bar"><div class="upload-progress-fill" style="width:100%"></div></div>' : ''}
         </div>
         <div class="dash-doc-category">${catLabels[doc.category] || doc.category}</div>
         <div class="dash-doc-actions">
-          <button class="dash-action-btn" title="View" data-action="view" data-id="${doc.id}">👁</button>
+          <button class="dash-action-btn" title="View"   data-action="view"   data-id="${doc.id}">👁</button>
           <button class="dash-action-btn del-btn" title="Delete" data-action="delete" data-id="${doc.id}">🗑</button>
         </div>
       </div>`).join('');
 
-    // Attach action listeners
     container.querySelectorAll('.dash-action-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
+      btn.addEventListener('click', async e => {
         e.stopPropagation();
         const action = btn.dataset.action;
         const id     = btn.dataset.id;
         if (action === 'delete') {
+<<<<<<< HEAD
+          const doc = cachedDocs.find(d => d.id === id);
+          if (doc?.file_path) await sb.storage.from('documents').remove([doc.file_path]);
+          await sb.from('documents').delete().eq('id', id);
+          await loadDocs();
+=======
           await HarpIDB.deleteDoc(id);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
           renderDashDocList(getCurrentFilter());
           refreshAdminStats();
           renderUploadedDocsOnPublicPage();
           showToast('Document deleted', '🗑');
         } else if (action === 'view') {
+<<<<<<< HEAD
+          const doc = cachedDocs.find(d => d.id === id);
+          if (doc?.publicUrl) window.open(doc.publicUrl, '_blank');
+=======
           const allDocs = await HarpIDB.getDocs();
           const doc = allDocs.find(d => d.id === id);
           if (doc) window.open(doc.dataUrl, '_blank');
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
         }
       });
     });
-  }
-
-  function formatSize(bytes) {
-    if (!bytes) return '—';
-    if (bytes > 1048576) return (bytes / 1048576).toFixed(1) + ' MB';
-    return (bytes / 1024).toFixed(0) + ' KB';
-  }
-
-  function getCurrentFilter() {
-    return document.querySelector('.dash-filter-btn.active')?.dataset.filter || 'all';
   }
 
   /* ── Category filter tabs ─────────────────────────── */
@@ -519,12 +607,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let pendingFiles = [];
 
   function handleFiles(files) {
-    pendingFiles = files.filter(f =>
-      f.name.match(/\.(pdf|pptx|ppt|docx|doc)$/i)
-    );
+    pendingFiles = files.filter(f => f.name.match(/\.(pdf|pptx|ppt|docx|doc)$/i));
     if (pendingFiles.length === 0) { showToast('No supported files selected', '⚠️'); return; }
 
-    // Pre-fill title if single file
     if (pendingFiles.length === 1) {
       const titleInput = document.getElementById('upload-title');
       if (titleInput && !titleInput.value) {
@@ -532,7 +617,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Show queue
     const queue = document.getElementById('upload-queue');
     if (queue) {
       queue.innerHTML = pendingFiles.map(f => `
@@ -555,9 +639,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const category = document.getElementById('upload-category')?.value || 'other';
     const status   = document.getElementById('upload-status')?.value  || 'ready';
 
-    if (!title) { showToast('Please enter a document title', '⚠️'); return; }
+    if (!title)                  { showToast('Please enter a document title', '⚠️'); return; }
     if (pendingFiles.length === 0) { showToast('Please select at least one file', '⚠️'); return; }
 
+<<<<<<< HEAD
+    const file     = pendingFiles[0];
+    const filePath = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const submitBtn = document.getElementById('upload-submit-btn');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Uploading…'; }
+
+    const { error: storageErr } = await sb.storage.from('documents').upload(filePath, file, { cacheControl: '3600' });
+    if (storageErr) {
+      showToast('Upload failed: ' + storageErr.message, '❌');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '⬆ Upload Document'; }
+      return;
+    }
+
+    const { error: dbErr } = await sb.from('documents').insert({
+      title, author, category, status,
+      file_name : file.name,
+      file_path : filePath,
+      file_size : file.size
+    });
+    if (dbErr) {
+      showToast('DB error: ' + dbErr.message, '❌');
+      await sb.storage.from('documents').remove([filePath]);
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '⬆ Upload Document'; }
+      return;
+    }
+
+    await loadDocs();
+    renderDashDocList(getCurrentFilter());
+    refreshAdminStats();
+    renderUploadedDocsOnPublicPage();
+    clearUploadForm();
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '⬆ Upload Document'; }
+    showToast(`"${title}" uploaded successfully!`, '✅');
+=======
     const file = pendingFiles[0];
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -579,6 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(`"${title}" uploaded successfully!`, '✅');
     };
     reader.readAsDataURL(file);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
   });
 
   function clearUploadForm() {
@@ -596,7 +715,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('clear-all-docs-btn')?.addEventListener('click', async () => {
     if (!confirm('Delete ALL uploaded documents? This cannot be undone.')) return;
+<<<<<<< HEAD
+    const paths = cachedDocs.map(d => d.file_path).filter(Boolean);
+    if (paths.length > 0) await sb.storage.from('documents').remove(paths);
+    const ids = cachedDocs.map(d => d.id);
+    if (ids.length > 0) await sb.from('documents').delete().in('id', ids);
+    await loadDocs();
+=======
     await HarpIDB.saveDocs([]);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
     renderDashDocList();
     refreshAdminStats();
     renderUploadedDocsOnPublicPage();
@@ -608,25 +735,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const section = document.getElementById('doc-section-uploaded');
     const grid    = document.getElementById('doc-uploaded-grid');
     if (!section || !grid) return;
+<<<<<<< HEAD
+    if (cachedDocs.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
+=======
     const docs = await HarpIDB.getDocs();
     if (docs.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
     section.style.display = '';
-    grid.innerHTML = docs.map(doc => `
+    grid.innerHTML = cachedDocs.map(doc => `
       <div class="doc-card" data-doc-id="${doc.id}" data-doc-title="${escHtml(doc.title)}"
            data-doc-meta="${escHtml(doc.author || '')}" data-doc-category="${doc.category}">
         <div class="doc-icon pdf">📄</div>
         <div>
           <div class="doc-title">${escHtml(doc.title)}</div>
-          <div class="doc-meta">${escHtml(doc.author || 'Team')} · ${formatSize(doc.size)}</div>
+          <div class="doc-meta">${escHtml(doc.author || 'Team')} · ${formatSize(doc.file_size)}</div>
           <span class="doc-status ${doc.status}">${doc.status === 'ready' ? 'Available' : 'Pending'}</span>
           <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
         </div>
       </div>`).join('');
     attachDocCardListeners();
-  }
-
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   /* ══════════════════════════════════════════════════════
@@ -652,7 +779,6 @@ document.addEventListener('DOMContentLoaded', () => {
     activeSlideCard = card;
     card.classList.add('doc-card-active');
 
-    // Move panel right after the card's parent grid
     const grid = card.closest('.doc-grid') || card.parentElement;
     grid.after(slidePanel);
 
@@ -660,9 +786,14 @@ document.addEventListener('DOMContentLoaded', () => {
     slidePanel.classList.remove('visible');
     slideBody.innerHTML = '';
 
+<<<<<<< HEAD
+    const stored = cachedSlides.find(s => s.id === slideId);
+    activeSlideUrl = stored ? stored.publicUrl : null;
+=======
     const allSlides = await HarpIDB.getSlides();
     const stored = allSlides.find(s => s.id === slideId);
     activeSlideUrl = stored ? stored.dataUrl : null;
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
 
     if (isPending || !stored) {
       slideBody.innerHTML = `
@@ -675,11 +806,11 @@ document.addEventListener('DOMContentLoaded', () => {
           </p>
           ${!isPending ? `<div class="upload-hint" onclick="(function(){document.querySelectorAll('[data-page=admin]')[0].click(); setTimeout(()=>{document.querySelector('[data-admin-tab=slides]')?.click();},200)})()">📊 Go to Upload Dashboard → Slides tab</div>` : ''}
         </div>`;
-      slideOpenNew.style.display   = 'none';
+      slideOpenNew.style.display    = 'none';
       slideDownloadBtn.style.display = 'none';
     } else {
       slideBody.innerHTML = `<iframe src="${activeSlideUrl}" title="${title}"></iframe>`;
-      slideOpenNew.style.display   = '';
+      slideOpenNew.style.display    = '';
       slideDownloadBtn.style.display = '';
     }
 
@@ -704,7 +835,6 @@ document.addEventListener('DOMContentLoaded', () => {
     a.click();
   });
 
-  /* Attach listeners to static slide cards */
   function attachSlideCardListeners() {
     document.querySelectorAll('.doc-card[data-slide-id]').forEach(card => {
       if (card.dataset.slideListenerAttached) return;
@@ -738,8 +868,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ══════════════════════════════════════════════════════
+<<<<<<< HEAD
+     SLIDES STORAGE + ADMIN UPLOAD — Supabase-backed
+=======
      SLIDES STORAGE + ADMIN UPLOAD
      Storage: IndexedDB via HarpIDB (no size limit)
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
   ══════════════════════════════════════════════════════ */
 
   /* ── Admin tab switching ──────────────────────────── */
@@ -753,6 +887,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+<<<<<<< HEAD
+  /* ── Render slides list in admin ──────────────────── */
+  function getCurrentSlideFilter() {
+    return document.querySelector('#slide-filter-tabs .dash-filter-btn.active')?.dataset.slideFilter || 'all';
+  }
+
+  function renderDashSlideList(filter = 'all') {
+    const container = document.getElementById('dash-slide-items');
+    if (!container) return;
+    const filtered = filter === 'all' ? cachedSlides : cachedSlides.filter(s => s.category === filter);
+=======
   /* ── refreshAdminStats defined above (docs + slides) ── */
 
   /* ── Render slides list in admin ──────────────────── */
@@ -761,6 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!container) return;
     const slides   = await HarpIDB.getSlides();
     const filtered = filter === 'all' ? slides : slides.filter(s => s.category === filter);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
     if (filtered.length === 0) {
       container.innerHTML = `<div style="text-align:center; padding:48px 0; color:var(--muted);">
         <div style="font-size:3rem; margin-bottom:12px;">📭</div>
@@ -772,39 +918,47 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="dash-doc-item" data-slide-id="${s.id}">
         <div class="dash-doc-file-icon" style="background:rgba(220,120,50,0.12);">📊</div>
         <div class="dash-doc-info">
-          <div class="dash-doc-name">${s.title}</div>
-          <div class="dash-doc-size">${s.author || 'No author'} · ${formatSize(s.size)}</div>
+          <div class="dash-doc-name">${escHtml(s.title)}</div>
+          <div class="dash-doc-size">${escHtml(s.author || 'No author')} · ${formatSize(s.file_size)}</div>
           ${s.status === 'ready' ? '<div class="upload-progress-bar"><div class="upload-progress-fill" style="width:100%"></div></div>' : ''}
         </div>
         <div class="dash-doc-category">${catLabels[s.category] || s.category}</div>
         <div class="dash-doc-actions">
-          <button class="dash-action-btn" title="View" data-saction="view" data-sid="${s.id}">👁</button>
+          <button class="dash-action-btn" title="View"   data-saction="view"   data-sid="${s.id}">👁</button>
           <button class="dash-action-btn del-btn" title="Delete" data-saction="delete" data-sid="${s.id}">🗑</button>
         </div>
       </div>`).join('');
 
     container.querySelectorAll('.dash-action-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
+      btn.addEventListener('click', async e => {
         e.stopPropagation();
         const action = btn.dataset.saction;
         const id     = btn.dataset.sid;
         if (action === 'delete') {
+<<<<<<< HEAD
+          const slide = cachedSlides.find(s => s.id === id);
+          if (slide?.file_path) await sb.storage.from('slides').remove([slide.file_path]);
+          await sb.from('slides').delete().eq('id', id);
+          await loadSlides();
+=======
           await HarpIDB.deleteSlide(id);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
           renderDashSlideList(getCurrentSlideFilter());
           refreshAdminStats();
           renderUploadedSlidesOnPublicPage();
           showToast('Slide deleted', '🗑');
         } else if (action === 'view') {
+<<<<<<< HEAD
+          const slide = cachedSlides.find(s => s.id === id);
+          if (slide?.publicUrl) window.open(slide.publicUrl, '_blank');
+=======
           const allSlides = await HarpIDB.getSlides();
           const slide = allSlides.find(s => s.id === id);
           if (slide) window.open(slide.dataUrl, '_blank');
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
         }
       });
     });
-  }
-
-  function getCurrentSlideFilter() {
-    return document.querySelector('#slide-filter-tabs .dash-filter-btn.active')?.dataset.slideFilter || 'all';
   }
 
   /* Category filter for slides tab */
@@ -861,9 +1015,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const category = document.getElementById('slide-upload-category')?.value || 'other';
     const status   = document.getElementById('slide-upload-status')?.value   || 'ready';
 
-    if (!title)                    { showToast('Please enter a presentation title', '⚠️'); return; }
+    if (!title)                       { showToast('Please enter a presentation title', '⚠️'); return; }
     if (pendingSlideFiles.length === 0) { showToast('Please select a slide file', '⚠️'); return; }
 
+<<<<<<< HEAD
+    const file     = pendingSlideFiles[0];
+    const filePath = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+    const submitBtn = document.getElementById('slide-upload-submit-btn');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Uploading…'; }
+
+    const { error: storageErr } = await sb.storage.from('slides').upload(filePath, file, { cacheControl: '3600' });
+    if (storageErr) {
+      showToast('Upload failed: ' + storageErr.message, '❌');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '⬆ Upload Slides'; }
+      return;
+    }
+
+    const { error: dbErr } = await sb.from('slides').insert({
+      title, author, category, status,
+      file_name : file.name,
+      file_path : filePath,
+      file_size : file.size
+    });
+    if (dbErr) {
+      showToast('DB error: ' + dbErr.message, '❌');
+      await sb.storage.from('slides').remove([filePath]);
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '⬆ Upload Slides'; }
+      return;
+    }
+
+    await loadSlides();
+    renderDashSlideList(getCurrentSlideFilter());
+    refreshAdminStats();
+    renderUploadedSlidesOnPublicPage();
+    clearSlideUploadForm();
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = '⬆ Upload Slides'; }
+    showToast(`"${title}" uploaded successfully!`, '✅');
+=======
     const file   = pendingSlideFiles[0];
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -885,6 +1073,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(`"${title}" uploaded successfully!`, '✅');
     };
     reader.readAsDataURL(file);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
   });
 
   function clearSlideUploadForm() {
@@ -902,7 +1091,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('clear-all-slides-btn')?.addEventListener('click', async () => {
     if (!confirm('Delete ALL uploaded slides? This cannot be undone.')) return;
+<<<<<<< HEAD
+    const paths = cachedSlides.map(s => s.file_path).filter(Boolean);
+    if (paths.length > 0) await sb.storage.from('slides').remove(paths);
+    const ids = cachedSlides.map(s => s.id);
+    if (ids.length > 0) await sb.from('slides').delete().in('id', ids);
+    await loadSlides();
+=======
     await HarpIDB.saveSlides([]);
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
     renderDashSlideList();
     refreshAdminStats();
     renderUploadedSlidesOnPublicPage();
@@ -914,16 +1111,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const section = document.getElementById('slide-section-uploaded');
     const grid    = document.getElementById('slide-uploaded-grid');
     if (!section || !grid) return;
+<<<<<<< HEAD
+    if (cachedSlides.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
+=======
     const slides = await HarpIDB.getSlides();
     if (slides.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
+>>>>>>> eeb4ced53784b369cb85e9c1087e43b5779b5873
     section.style.display = '';
-    grid.innerHTML = slides.map(s => `
+    grid.innerHTML = cachedSlides.map(s => `
       <div class="doc-card" data-slide-id="${s.id}" data-slide-title="${escHtml(s.title)}"
            data-slide-meta="${escHtml(s.author || '')}" data-slide-category="${s.category}">
         <div class="doc-icon ppt">📊</div>
         <div>
           <div class="doc-title">${escHtml(s.title)}</div>
-          <div class="doc-meta">${escHtml(s.author || 'Team')} · ${formatSize(s.size)}</div>
+          <div class="doc-meta">${escHtml(s.author || 'Team')} · ${formatSize(s.file_size)}</div>
           <span class="doc-status ${s.status}">${s.status === 'ready' ? 'Available' : 'Pending'}</span>
           <div><button class="doc-view-btn slide-view-btn" tabindex="-1">🖥 View Slides</button></div>
         </div>
@@ -931,11 +1132,11 @@ document.addEventListener('DOMContentLoaded', () => {
     attachSlideCardListeners();
   }
 
-  /* ── Init (all) ──────────────────────────────────── */
+  /* ── Init: load from Supabase then render ─────────── */
+  await Promise.all([loadDocs(), loadSlides()]);
   renderDashDocList();
   renderDashSlideList();
   refreshAdminStats();
   renderUploadedDocsOnPublicPage();
   renderUploadedSlidesOnPublicPage();
 });
-
