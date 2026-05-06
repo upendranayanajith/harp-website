@@ -659,57 +659,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   /* ── Sync uploaded docs → public Documents page ───── */
   async function renderUploadedDocsOnPublicPage() {
-    const section   = document.getElementById('doc-section-uploaded');
-    const container = document.getElementById('doc-uploaded-container');
-    const emptySt   = document.getElementById('doc-empty-state');
-    if (!section || !container) return;
+    const section = document.getElementById('doc-section-uploaded');
+    const grid    = document.getElementById('doc-uploaded-grid');
+    const emptySt = document.getElementById('doc-empty-state');
+    if (!section || !grid) return;
     if (cachedDocs.length === 0) {
-      section.style.display = 'none'; container.innerHTML = '';
+      section.style.display = 'none'; grid.innerHTML = '';
       if (emptySt) emptySt.style.display = '';
       return;
     }
     section.style.display = '';
     if (emptySt) emptySt.style.display = 'none';
-
-    // Group documents by category
-    const catLabels = {
-      group: 'Group Documents',
-      paper: 'Individual Research Papers',
-      report: 'Interim & Progress Reports',
-      checklist: '📋 Checklists & Trackers',
-      presentation: 'Presentations',
-      other: 'Other Documents'
-    };
-
-    const grouped = {};
-    cachedDocs.forEach(doc => {
-      if (!grouped[doc.category]) grouped[doc.category] = [];
-      grouped[doc.category].push(doc);
-    });
-
-    // Render each category block
-    let html = '';
-    const order = ['group', 'paper', 'report', 'checklist', 'presentation', 'other'];
-    order.forEach(cat => {
-      if (grouped[cat] && grouped[cat].length > 0) {
-        html += `<h3 class="mt-48 mb-24 reveal">${catLabels[cat]}</h3>`;
-        html += `<div class="doc-grid reveal">`;
-        html += grouped[cat].map(doc => `
-          <div class="doc-card" data-doc-id="${doc.id}" data-doc-title="${escHtml(doc.title)}"
-               data-doc-meta="${escHtml(doc.author || '')}" data-doc-category="${doc.category}">
-            <div class="doc-icon pdf">📄</div>
-            <div>
-              <div class="doc-title">${escHtml(doc.title)}</div>
-              <div class="doc-meta">${escHtml(doc.author || 'Team')} · ${formatSize(doc.file_size)}</div>
-              <span class="doc-status ${doc.status}">${doc.status === 'ready' ? 'Available' : 'Pending'}</span>
-              <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
-            </div>
-          </div>`).join('');
-        html += `</div>`;
-      }
-    });
-
-    container.innerHTML = html;
+    grid.innerHTML = cachedDocs.map(doc => `
+      <div class="doc-card" data-doc-id="${doc.id}" data-doc-title="${escHtml(doc.title)}"
+           data-doc-meta="${escHtml(doc.author || '')}" data-doc-category="${doc.category}">
+        <div class="doc-icon pdf">📄</div>
+        <div>
+          <div class="doc-title">${escHtml(doc.title)}</div>
+          <div class="doc-meta">${escHtml(doc.author || 'Team')} · ${formatSize(doc.file_size)}</div>
+          <span class="doc-status ${doc.status}">${doc.status === 'ready' ? 'Available' : 'Pending'}</span>
+          <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
+        </div>
+      </div>`).join('');
     attachDocCardListeners();
   }
 
@@ -1009,55 +980,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   /* ── Sync uploaded slides → public Presentations page */
   async function renderUploadedSlidesOnPublicPage() {
-    const section   = document.getElementById('slide-section-uploaded');
-    const container = document.getElementById('slide-uploaded-container');
-    const emptySt   = document.getElementById('slide-empty-state');
-    if (!section || !container) return;
+    const section = document.getElementById('slide-section-uploaded');
+    const grid    = document.getElementById('slide-uploaded-grid');
+    const emptySt = document.getElementById('slide-empty-state');
+    if (!section || !grid) return;
     if (cachedSlides.length === 0) {
-      section.style.display = 'none'; container.innerHTML = '';
+      section.style.display = 'none'; grid.innerHTML = '';
       if (emptySt) emptySt.style.display = '';
       return;
     }
     section.style.display = '';
     if (emptySt) emptySt.style.display = 'none';
-
-    // Group slides by category
-    const catLabels = {
-      group: 'Group Presentation Slides',
-      individual: 'Individual Presentation Slides',
-      viva: 'Viva Presentation Slides',
-      other: 'Other Presentations'
-    };
-
-    const grouped = {};
-    cachedSlides.forEach(s => {
-      if (!grouped[s.category]) grouped[s.category] = [];
-      grouped[s.category].push(s);
-    });
-
-    // Render each category block
-    let html = '';
-    const order = ['group', 'individual', 'viva', 'other'];
-    order.forEach(cat => {
-      if (grouped[cat] && grouped[cat].length > 0) {
-        html += `<h3 class="mt-48 mb-24 reveal">${catLabels[cat]}</h3>`;
-        html += `<div class="doc-grid reveal">`;
-        html += grouped[cat].map(s => `
-          <div class="doc-card" data-slide-id="${s.id}" data-slide-title="${escHtml(s.title)}"
-               data-slide-meta="${escHtml(s.author || '')}" data-slide-category="${s.category}">
-            <div class="doc-icon ppt">📊</div>
-            <div>
-              <div class="doc-title">${escHtml(s.title)}</div>
-              <div class="doc-meta">${escHtml(s.author || 'Team')} · ${formatSize(s.file_size)}</div>
-              <span class="doc-status ${s.status}">${s.status === 'ready' ? 'Available' : 'Pending'}</span>
-              <div><button class="doc-view-btn slide-view-btn" tabindex="-1">🖥 View Slides</button></div>
-            </div>
-          </div>`).join('');
-        html += `</div>`;
-      }
-    });
-
-    container.innerHTML = html;
+    grid.innerHTML = cachedSlides.map(s => `
+      <div class="doc-card" data-slide-id="${s.id}" data-slide-title="${escHtml(s.title)}"
+           data-slide-meta="${escHtml(s.author || '')}" data-slide-category="${s.category}">
+        <div class="doc-icon ppt">📊</div>
+        <div>
+          <div class="doc-title">${escHtml(s.title)}</div>
+          <div class="doc-meta">${escHtml(s.author || 'Team')} · ${formatSize(s.file_size)}</div>
+          <span class="doc-status ${s.status}">${s.status === 'ready' ? 'Available' : 'Pending'}</span>
+          <div><button class="doc-view-btn slide-view-btn" tabindex="-1">🖥 View Slides</button></div>
+        </div>
+      </div>`).join('');
     attachSlideCardListeners();
   }
 
