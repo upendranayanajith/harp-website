@@ -169,22 +169,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   const form = document.getElementById('contact-form');
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const name = document.getElementById('contact-name')?.value || '';
-    const email = document.getElementById('contact-email')?.value || '';
+    const name    = document.getElementById('contact-name')?.value    || '';
+    const email   = document.getElementById('contact-email')?.value   || '';
     const subject = document.getElementById('contact-subject')?.value || 'Contact via HARP';
-    const body = document.getElementById('contact-body')?.value || '';
-
-    const mailtoLink = `mailto:ascu0000@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + " (" + email + ")\n\n" + body)}`;
-    window.location.href = mailtoLink;
+    const body    = document.getElementById('contact-body')?.value    || '';
 
     const btn = form.querySelector('[type="submit"]');
-    btn.textContent = 'Opening Mail Client…';
+    btn.textContent = 'Sending…';
     btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = 'Send Message';
-      btn.disabled = false;
+
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+      from_name:  name,
+      from_email: email,
+      subject:    subject,
+      message:    body,
+    })
+    .then(() => {
+      btn.textContent = 'Message Sent!';
       form.reset();
-    }, 3000);
+      setTimeout(() => {
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+      }, 3000);
+    })
+    .catch((err) => {
+      console.error('EmailJS error:', err);
+      btn.textContent = 'Failed — Try Again';
+      btn.disabled = false;
+    });
   });
 
   /* ── Year in footer ──────────────────────────────────── */
