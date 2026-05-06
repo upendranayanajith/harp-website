@@ -494,7 +494,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${filter === 'all' ? 'Use the form to add your first document.' : ''}</p></div>`;
       return;
     }
-    const catLabels = { group:'Group', paper:'Paper', report:'Report', presentation:'Slides', checklist:'Checklist', other:'Other' };
+    const catLabels = {
+      'checklist':     'Checklist',
+      'progress-pres': 'Progress Presentation',
+      'paper':         'Research Paper',
+      'proposal':      'Proposal',
+      'final-report':  'Final Report',
+      'group-report':  'Group Report'
+    };
     container.innerHTML = filtered.map(doc => `
       <div class="dash-doc-item" data-doc-id="${doc.id}">
         <div class="dash-doc-file-icon">📄</div>
@@ -532,12 +539,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  /* ── Category filter tabs ─────────────────────────── */
+  /* ── Admin: category filter tabs ─────────────────── */
   document.getElementById('dash-filter-tabs')?.querySelectorAll('.dash-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('dash-filter-tabs').querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       renderDashDocList(btn.dataset.filter);
+    });
+  });
+
+  /* ── Public Documents page: category filter tabs ── */
+  let pubDocFilter = 'all';
+  document.getElementById('doc-public-filter-tabs')?.querySelectorAll('.dash-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('doc-public-filter-tabs').querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      pubDocFilter = btn.dataset.pubFilter;
+      renderUploadedDocsOnPublicPage();
     });
   });
 
@@ -663,6 +681,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const grid    = document.getElementById('doc-uploaded-grid');
     const emptySt = document.getElementById('doc-empty-state');
     if (!section || !grid) return;
+
+    const filtered = (pubDocFilter === 'all')
+      ? cachedDocs
+      : cachedDocs.filter(d => d.category === pubDocFilter);
+
     if (cachedDocs.length === 0) {
       section.style.display = 'none'; grid.innerHTML = '';
       if (emptySt) emptySt.style.display = '';
@@ -670,17 +693,72 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     section.style.display = '';
     if (emptySt) emptySt.style.display = 'none';
-    grid.innerHTML = cachedDocs.map(doc => `
-      <div class="doc-card" data-doc-id="${doc.id}" data-doc-title="${escHtml(doc.title)}"
-           data-doc-meta="${escHtml(doc.author || '')}" data-doc-category="${doc.category}">
-        <div class="doc-icon pdf">📄</div>
-        <div>
-          <div class="doc-title">${escHtml(doc.title)}</div>
-          <div class="doc-meta">${escHtml(doc.author || 'Team')} · ${formatSize(doc.file_size)}</div>
-          <span class="doc-status ${doc.status}">${doc.status === 'ready' ? 'Available' : 'Pending'}</span>
-          <div><button class="doc-view-btn" tabindex="-1">👁 View PDF</button></div>
-        </div>
-      </div>`).join('');
+
+    // Group by category when showing All, flat list when filtered
+    const CAT_ICONS = {
+      'checklist':'✅','progress-pres':'📊','paper':'📄',
+      'proposal':'📝','final-report':'🏆','group-report':'👥'
+    };
+    const CAT_LABELS = {
+      'checklist':'Checklists','progress-pres':'Progress Presentations',
+      'paper':'Research Papers','proposal':'Proposals',
+      'final-report':'Final Reports','group-report':'Group Reports'
+    };
+
+    function docCardHtml(doc) {
+      const icon = CAT_ICONS[doc.category] || '📄';
+      return `
+        <div class="doc-card" data-doc-id="${doc.id}" data-doc-title="${escHtml(doc.title)}"
+             data-doc-meta="${escHtml(doc.author || '')}" data-doc-category="${doc.category}">
+          <div class="doc-icon pdf">${icon}</div>
+          <div>
+            <div class="doc-title">${escHtml(doc.title)}</div>
+            <div class="doc-meta">${escHtml(doc.author || 'Team')} · ${formatSize(doc.file_size)}</div>
+            <span class="doc-status ${doc.status}">${doc.status === 'ready' ? 'Available' : 'Pending'}</span>
+            <div><button class="doc-view-btn" tabindex="-1">👁 View</button></div>
+          </div>
+        </div>`;
+    }
+
+    if (pubDocFilter !== 'all') {
+      // Flat filtered view
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="padding:40px 0; color:var(--muted); text-align:center; grid-column:1/-1;">
+          <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.4;">📂</div>
+          <p>No documents in this category yet.</p></div>`;
+      } else {
+        grid.innerHTML = filtered.map(docCardHtml).join('');
+      }
+    } else {
+      // Grouped by category
+      const ORDER = ['checklist','progress-pres','paper','proposal','final-report','group-report'];
+      const groups = {};
+      cachedDocs.forEach(d => { if (!groups[d.category]) groups[d.category] = []; groups[d.category].push(d); });
+      let html = '';
+      ORDER.forEach(cat => {
+        if (!groups[cat] || groups[cat].length === 0) return;
+        const label = CAT_LABELS[cat] || cat;
+        const icon  = CAT_ICONS[cat]  || '📄';
+        html += `<div style="grid-column:1/-1;margin-top:32px;margin-bottom:12px;">
+          <h3 style="display:flex;align-items:center;gap:10px;font-size:1rem;color:var(--white);">
+            <span>${icon}</span>${label}
+            <span style="font-size:0.75rem;color:var(--muted);font-weight:400;">(${groups[cat].length})</span>
+          </h3>
+          <div style="height:2px;background:rgba(0,200,224,0.15);margin-top:8px;"></div>
+        </div>`;
+        html += groups[cat].map(docCardHtml).join('');
+      });
+      // Any uncategorized docs
+      Object.keys(groups).forEach(cat => {
+        if (ORDER.includes(cat)) return;
+        const label = cat.charAt(0).toUpperCase() + cat.slice(1);
+        html += `<div style="grid-column:1/-1;margin-top:32px;margin-bottom:12px;">
+          <h3 style="font-size:1rem;color:var(--white);">📎 ${label}</h3>
+          <div style="height:2px;background:rgba(0,200,224,0.15);margin-top:8px;"></div></div>`;
+        html += groups[cat].map(docCardHtml).join('');
+      });
+      grid.innerHTML = html || `<div style="padding:40px 0;color:var(--muted);text-align:center;grid-column:1/-1;">No documents uploaded yet.</div>`;
+    }
     attachDocCardListeners();
   }
 

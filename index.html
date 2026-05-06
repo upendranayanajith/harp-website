@@ -1305,6 +1305,17 @@
           </div>
         </div>
 
+        <!-- Category filter tabs -->
+        <div class="dash-filter-tabs reveal" id="doc-public-filter-tabs" style="margin-bottom:32px;">
+          <button class="dash-filter-btn active" data-pub-filter="all">📂 All</button>
+          <button class="dash-filter-btn" data-pub-filter="checklist">✅ Checklists</button>
+          <button class="dash-filter-btn" data-pub-filter="progress-pres">📊 Progress Presentations</button>
+          <button class="dash-filter-btn" data-pub-filter="paper">📄 Research Papers</button>
+          <button class="dash-filter-btn" data-pub-filter="proposal">📝 Proposals</button>
+          <button class="dash-filter-btn" data-pub-filter="final-report">🏆 Final Reports</button>
+          <button class="dash-filter-btn" data-pub-filter="group-report">👥 Group Reports</button>
+        </div>
+
         <!-- Documents populated from Supabase via Admin dashboard -->
         <div id="doc-section-uploaded" style="margin-top:0; display:none;">
           <div class="doc-grid reveal" id="doc-uploaded-grid">
@@ -1466,12 +1477,12 @@
                 <div class="form-group">
                   <label for="upload-category">Category</label>
                   <select id="upload-category">
-                    <option value="group">Group Document</option>
+                    <option value="checklist">Checklist</option>
+                    <option value="progress-pres">Progress Presentation</option>
                     <option value="paper">Research Paper</option>
-                    <option value="report">Progress Report</option>
-                    <option value="checklist">Checklist / Tracker</option>
-                    <option value="presentation">Presentation</option>
-                    <option value="other">Other</option>
+                    <option value="proposal">Proposal</option>
+                    <option value="final-report">Final Report</option>
+                    <option value="group-report">Group Report</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -1495,12 +1506,12 @@
               </div>
               <div class="dash-filter-tabs" id="dash-filter-tabs">
                 <button class="dash-filter-btn active" data-filter="all">All</button>
-                <button class="dash-filter-btn" data-filter="group">Group</button>
-                <button class="dash-filter-btn" data-filter="paper">Papers</button>
-                <button class="dash-filter-btn" data-filter="report">Reports</button>
                 <button class="dash-filter-btn" data-filter="checklist">Checklists</button>
-                <button class="dash-filter-btn" data-filter="presentation">Slides</button>
-                <button class="dash-filter-btn" data-filter="other">Other</button>
+                <button class="dash-filter-btn" data-filter="progress-pres">Progress Pres.</button>
+                <button class="dash-filter-btn" data-filter="paper">Research Papers</button>
+                <button class="dash-filter-btn" data-filter="proposal">Proposals</button>
+                <button class="dash-filter-btn" data-filter="final-report">Final Reports</button>
+                <button class="dash-filter-btn" data-filter="group-report">Group Reports</button>
               </div>
               <div class="dash-doc-list">
                 <div id="dash-doc-items">
