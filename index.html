@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HARP — High-Accuracy Reading Pipeline for Analog Instruments</title>
+  <title>Multi-Model Ensemble Architecture for Analog Clock Reading | HARP · SLIIT 2026</title>
   <meta name="description"
-    content="HARP is a modular AI pipeline that reads industrial analog gauges and clocks with 96.4% accuracy using vision-language models, directional statistics, and physics-guided reasoning." />
+    content="Multi-Model Ensemble Architecture for Analog Clock Reading (HARP) — a final-year research project at SLIIT 2026 using vision-language models, directional statistics, and physics-guided reasoning to achieve 96.4% field accuracy." />
   <link rel="stylesheet" href="css/style.css" />
   <style>
     /* Page routing */
@@ -69,15 +69,15 @@
             Final Year Research Project · SLIIT 2025/26
           </div>
           <h1 class="hero-title">
-            Making Machines Read<br />
-            <em>Analog Instruments</em><br />
-            Like Experts Do
+            Multi-Model Ensemble<br />
+            <em>Architecture for Analog</em><br />
+            Clock Reading
           </h1>
           <p class="hero-sub">
-            HARP is a four-stage AI pipeline that reads industrial gauges and
-            clocks with 96.4% accuracy — eliminating shadow misdetection,
-            circular-regression bias, and costly false alarms in real-world
-            factory environments.
+            A four-stage AI ensemble pipeline that reads industrial analog
+            clocks and gauges with 96.4% accuracy — eliminating shadow
+            misdetection, circular-regression bias, and costly false alarms
+            in real-world factory environments.
           </p>
           <div class="hero-actions">
             <a href="#solution" class="btn btn-primary btn-lg" data-page="solution">
@@ -360,8 +360,9 @@
               <div class="card card-sm mb-16">
                 <h4>Hough Transform Pipelines</h4>
                 <p class="mt-8">Detect circular dials and straight needle lines using the classical Hough transform
-                  (Duda &amp; Hart, 1972). Fast, but severely brittle under shadows, perspective distortion, and varying
-                  illumination.</p>
+                  <a href="https://doi.org/10.1145/361237.361242" target="_blank" rel="noopener"
+                     style="color:var(--cyan);text-decoration:none;">[2]</a>. Fast, but severely brittle under
+                  shadows, perspective distortion, and varying illumination.</p>
                 <div class="metric-row mt-16">
                   <div class="metric-box">
                     <div class="metric-val">28%+</div>
@@ -376,9 +377,11 @@
               </div>
               <div class="card card-sm">
                 <h4>CNN Angle Regression</h4>
-                <p class="mt-8">Zhao et al. (2020) applied CNNs to predict gauge angle directly, gaining 12–18
-                  percentage points over Hough. But regresses a scalar over [0°, 360°) — introducing the circular
-                  discontinuity bias.</p>
+                <p class="mt-8">Zhao et al.
+                  <a href="https://doi.org/10.1016/j.eswa.2020.113270" target="_blank" rel="noopener"
+                     style="color:var(--cyan);text-decoration:none;">[3]</a>
+                  applied CNNs to predict gauge angle directly, gaining 12–18 percentage points over Hough.
+                  But regresses a scalar over [0°, 360°) — introducing the circular discontinuity bias.</p>
               </div>
             </div>
             <div class="reveal reveal-delay-1">
@@ -434,9 +437,12 @@
                 </table>
               </div>
               <div class="callout mt-24">
-                <p>Gao et al. (2022) benchmarked <strong style="color:var(--white)">six state-of-the-art
-                    pipelines</strong> across 18 gauge types and found every single one degrades severely under shadow
-                  conditions — none proposed a dedicated shadow-rejection stage.</p>
+                <p>Gao et al.
+                  <a href="https://doi.org/10.1016/j.measurement.2021.110357" target="_blank" rel="noopener"
+                     style="color:var(--cyan);text-decoration:none;">[4]</a>
+                  benchmarked <strong style="color:var(--white)">six state-of-the-art pipelines</strong> across
+                  18 gauge types and found every single one degrades severely under shadow conditions — none
+                  proposed a dedicated shadow-rejection stage.</p>
               </div>
 
               <!-- Animated accuracy bar chart -->
@@ -1422,11 +1428,76 @@
           </div>
         </div>
 
+        <!-- Checklists section -->
+        <h3 class="mt-48 mb-24 reveal">📋 Checklists &amp; Trackers</h3>
+        <div class="doc-grid reveal" id="doc-section-checklists">
+          <div class="doc-card" data-doc-id="checklist-proposal" data-doc-title="Proposal Submission Checklist"
+            data-doc-meta="Group · 2025" data-doc-category="checklist">
+            <div class="doc-icon" style="background:rgba(0,200,224,0.1);">✅</div>
+            <div>
+              <div class="doc-title">Proposal Submission Checklist</div>
+              <div class="doc-meta">Group · 2025 · TXT / XLSX</div>
+              <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">📥 Download</button></div>
+            </div>
+          </div>
+          <div class="doc-card" data-doc-id="checklist-progress1" data-doc-title="Progress Report 1 Checklist"
+            data-doc-meta="Group · August 2025" data-doc-category="checklist">
+            <div class="doc-icon" style="background:rgba(0,200,224,0.1);">✅</div>
+            <div>
+              <div class="doc-title">Progress Report 1 Checklist</div>
+              <div class="doc-meta">Group · August 2025 · TXT / XLSX</div>
+              <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">📥 Download</button></div>
+            </div>
+          </div>
+          <div class="doc-card" data-doc-id="checklist-progress2" data-doc-title="Progress Report 2 Checklist"
+            data-doc-meta="Group · November 2025" data-doc-category="checklist">
+            <div class="doc-icon" style="background:rgba(0,200,224,0.1);">✅</div>
+            <div>
+              <div class="doc-title">Progress Report 2 Checklist</div>
+              <div class="doc-meta">Group · November 2025 · TXT / XLSX</div>
+              <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">📥 Download</button></div>
+            </div>
+          </div>
+          <div class="doc-card" data-doc-id="checklist-final" data-doc-title="Final Assessment Checklist"
+            data-doc-meta="Group · March 2026" data-doc-category="checklist">
+            <div class="doc-icon" style="background:rgba(0,200,224,0.1);">✅</div>
+            <div>
+              <div class="doc-title">Final Assessment Checklist</div>
+              <div class="doc-meta">Group · March 2026 · TXT / XLSX</div>
+              <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">📥 Download</button></div>
+            </div>
+          </div>
+          <div class="doc-card" data-doc-id="tracker-tasks" data-doc-title="Task Tracking Spreadsheet"
+            data-doc-meta="Group · Running · Excel" data-doc-category="checklist">
+            <div class="doc-icon" style="background:rgba(80,200,120,0.1);">📊</div>
+            <div>
+              <div class="doc-title">Task Tracking Spreadsheet</div>
+              <div class="doc-meta">Group · Running · Excel</div>
+              <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">📥 Download</button></div>
+            </div>
+          </div>
+          <div class="doc-card" data-doc-id="tracker-meetings" data-doc-title="Meeting Minutes Log"
+            data-doc-meta="Group · Running · TXT" data-doc-category="checklist">
+            <div class="doc-icon" style="background:rgba(80,200,120,0.1);">📝</div>
+            <div>
+              <div class="doc-title">Meeting Minutes Log</div>
+              <div class="doc-meta">Group · Running · TXT</div>
+              <span class="doc-status ready">Available</span>
+              <div><button class="doc-view-btn" tabindex="-1">📥 Download</button></div>
+            </div>
+          </div>
+        </div>
+
         <!-- Uploaded documents section (populated by admin) -->
         <div id="doc-section-uploaded" style="margin-top:48px; display:none;">
           <h3 class="mb-24 reveal">📎 Uploaded Documents</h3>
           <div class="doc-grid reveal" id="doc-uploaded-grid">
-            <!-- Dynamically populated by JS from localStorage -->
+            <!-- Dynamically populated by JS from Supabase -->
           </div>
         </div>
 
@@ -1608,11 +1679,11 @@
             <div>
               <h3 style="margin-bottom:20px;">Upload New Document</h3>
               <div class="drop-zone" id="drop-zone">
-                <input type="file" id="file-input" accept=".pdf,.pptx,.ppt,.docx,.doc" multiple />
+                <input type="file" id="file-input" accept=".pdf,.pptx,.ppt,.docx,.doc,.txt,.xlsx,.xls,.csv" multiple />
                 <span class="drop-icon">📂</span>
                 <h3>Drag &amp; drop files here</h3>
                 <p>or <span class="browse-text">browse to select files</span></p>
-                <p style="margin-top:10px; font-size:0.78rem; color:var(--muted);">Supports: PDF, PPTX, DOCX</p>
+                <p style="margin-top:10px; font-size:0.78rem; color:var(--muted);">Supports: PDF, PPTX, DOCX, TXT, XLSX, CSV</p>
               </div>
               <div class="upload-meta-form" style="margin-top:24px;">
                 <div class="form-group">
@@ -1629,6 +1700,7 @@
                     <option value="group">Group Document</option>
                     <option value="paper">Research Paper</option>
                     <option value="report">Progress Report</option>
+                    <option value="checklist">Checklist / Tracker</option>
                     <option value="presentation">Presentation</option>
                     <option value="other">Other</option>
                   </select>
@@ -1657,15 +1729,13 @@
                 <button class="dash-filter-btn" data-filter="group">Group</button>
                 <button class="dash-filter-btn" data-filter="paper">Papers</button>
                 <button class="dash-filter-btn" data-filter="report">Reports</button>
+                <button class="dash-filter-btn" data-filter="checklist">Checklists</button>
                 <button class="dash-filter-btn" data-filter="presentation">Slides</button>
                 <button class="dash-filter-btn" data-filter="other">Other</button>
               </div>
               <div class="dash-doc-list">
                 <div id="dash-doc-items">
-                  <div style="text-align:center; padding:48px 0; color:var(--muted);">
-                    <div style="font-size:3rem; margin-bottom:12px;">📭</div>
-                    <p>No documents uploaded yet.<br />Use the form to add your first document.</p>
-                  </div>
+                  <!-- Populated by JS on page load -->
                 </div>
               </div>
             </div>
@@ -1730,10 +1800,7 @@
               </div>
               <div class="dash-doc-list">
                 <div id="dash-slide-items">
-                  <div style="text-align:center; padding:48px 0; color:var(--muted);">
-                    <div style="font-size:3rem; margin-bottom:12px;">📭</div>
-                    <p>No slides uploaded yet.<br />Use the form to add your first presentation.</p>
-                  </div>
+                  <!-- Populated by JS on page load -->
                 </div>
               </div>
             </div>
@@ -2042,7 +2109,7 @@
       <div class="footer-grid">
         <div>
           <div class="footer-brand-name">HARP</div>
-          <p class="footer-desc">High-Accuracy Reading Pipeline for Analog Instruments. A final-year research project by
+          <p class="footer-desc">Multi-Model Ensemble Architecture for Analog Clock Reading. A final-year research project by
             four BSc IT students at SLIIT, Sri Lanka, addressing real-world industrial AI failure modes with novel
             vision-language and physics-guided methods.</p>
         </div>

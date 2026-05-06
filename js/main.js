@@ -494,7 +494,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${filter === 'all' ? 'Use the form to add your first document.' : ''}</p></div>`;
       return;
     }
-    const catLabels = { group:'Group', paper:'Paper', report:'Report', presentation:'Slides', other:'Other' };
+    const catLabels = { group:'Group', paper:'Paper', report:'Report', presentation:'Slides', checklist:'Checklist', other:'Other' };
     container.innerHTML = filtered.map(doc => `
       <div class="dash-doc-item" data-doc-id="${doc.id}">
         <div class="dash-doc-file-icon">📄</div>
@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let pendingFiles = [];
 
   function handleFiles(files) {
-    pendingFiles = files.filter(f => f.name.match(/\.(pdf|pptx|ppt|docx|doc)$/i));
+    pendingFiles = files.filter(f => f.name.match(/\.(pdf|pptx|ppt|docx|doc|txt|xlsx|xls|csv)$/i));
     if (pendingFiles.length === 0) { showToast('No supported files selected', '⚠️'); return; }
 
     if (pendingFiles.length === 1) {
