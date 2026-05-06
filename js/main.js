@@ -160,26 +160,42 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage('home');
   }
 
-  /* ── Contact form ────────────────────────────────────── */
+  /* ── Contact form (Web3Forms) ───────────────────────── */
   const form = document.getElementById('contact-form');
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('contact-name')?.value || '';
-    const email = document.getElementById('contact-email')?.value || '';
-    const subject = document.getElementById('contact-subject')?.value || 'Contact via HARP';
-    const body = document.getElementById('contact-body')?.value || '';
-    
-    const mailtoLink = `mailto:ascu0000@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + " (" + email + ")\n\n" + body)}`;
-    window.location.href = mailtoLink;
 
-    const btn = form.querySelector('[type="submit"]');
-    btn.textContent = 'Opening Mail Client…';
-    btn.disabled = true;
-    setTimeout(() => {
+    const btn     = document.getElementById('contact-submit-btn');
+    const subject = document.getElementById('contact-subject')?.value || 'Contact via HARP Website';
+
+    // Sync the subject select value into the hidden field Web3Forms reads
+    const hiddenSubject = document.getElementById('contact-subject-hidden');
+    if (hiddenSubject) hiddenSubject.value = subject;
+
+    btn.textContent = 'Sending…';
+    btn.disabled    = true;
+
+    const formData = new FormData(form);
+
+    try {
+      const res  = await fetch('https://api.web3forms.com/submit', {
+        method : 'POST',
+        body   : formData
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        showToast('Message sent! We\'ll get back to you soon.', '✅', 4000);
+        form.reset();
+      } else {
+        showToast('Send failed: ' + (data.message || 'Unknown error'), '❌', 4000);
+      }
+    } catch (err) {
+      showToast('Network error — please try again.', '❌', 4000);
+    } finally {
       btn.textContent = 'Send Message';
-      btn.disabled = false;
-      form.reset();
-    }, 3000);
+      btn.disabled    = false;
+    }
   });
 
   /* ── Year in footer ──────────────────────────────────── */
@@ -289,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activePdfUrl   = null;
   let activeDocCard  = null;
 
-  function openPdfViewer(card) {
+  async function openPdfViewer(card) {
     const docId    = card.dataset.docId;
     const title    = card.dataset.docTitle || 'Document';
     const isPending = card.dataset.docPending === 'true';
@@ -308,7 +324,8 @@ document.addEventListener('DOMContentLoaded', () => {
     pdfBody.innerHTML = '';
 
     // Check if we have a real file stored for this doc
-    const stored = getStoredDocs().find(d => d.id === docId);
+    const allDocs = await HarpIDB.getDocs();
+    const stored = allDocs.find(d => d.id === docId);
     activePdfUrl  = stored ? stored.dataUrl : null;
 
     if (isPending || (!stored)) {
@@ -398,16 +415,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ══════════════════════════════════════════════════════
      ADMIN / UPLOAD DASHBOARD
+     Storage: IndexedDB via HarpIDB (no size limit)
   ══════════════════════════════════════════════════════ */
-
-  const LS_KEY = 'harp_uploaded_docs';
-
-  function getStoredDocs() {
-    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; }
-  }
-  function saveStoredDocs(docs) {
-    localStorage.setItem(LS_KEY, JSON.stringify(docs));
-  }
 
   /* ── Toast helper ─────────────────────────────────── */
   function showToast(msg, icon = '✅', duration = 3000) {
@@ -422,27 +431,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── Admin stats update ───────────────────────────── */
-  function refreshAdminStats() {
-    const docs = getStoredDocs();
+  async function refreshAdminStats() {
+    const docs   = await HarpIDB.getDocs();
+    const slides = await HarpIDB.getSlides();
+    const all    = [...docs, ...slides];
     const statTotal      = document.getElementById('stat-total');
+    const statSlides     = document.getElementById('stat-slides');
     const statAvailable  = document.getElementById('stat-available');
-    const statCategories = document.getElementById('stat-categories');
     const statSize       = document.getElementById('stat-size');
     if (!statTotal) return;
-    statTotal.textContent      = docs.length;
-    statAvailable.textContent  = docs.filter(d => d.status === 'ready').length;
-    statCategories.textContent = new Set(docs.map(d => d.category)).size;
-    const totalBytes = docs.reduce((s, d) => s + (d.size || 0), 0);
+    statTotal.textContent     = docs.length;
+    if (statSlides) statSlides.textContent = slides.length;
+    statAvailable.textContent = all.filter(d => d.status === 'ready').length;
+    const totalBytes = all.reduce((s, d) => s + (d.size || 0), 0);
     statSize.textContent = totalBytes > 1048576
       ? (totalBytes / 1048576).toFixed(1) + ' MB'
       : (totalBytes / 1024).toFixed(0) + ' KB';
   }
 
   /* ── Render dash doc list ─────────────────────────── */
-  function renderDashDocList(filter = 'all') {
+  async function renderDashDocList(filter = 'all') {
     const container = document.getElementById('dash-doc-items');
     if (!container) return;
-    const docs = getStoredDocs();
+    const docs = await HarpIDB.getDocs();
     const filtered = filter === 'all' ? docs : docs.filter(d => d.category === filter);
     if (filtered.length === 0) {
       container.innerHTML = `<div style="text-align:center; padding:48px 0; color:var(--muted);">
@@ -474,14 +485,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const action = btn.dataset.action;
         const id     = btn.dataset.id;
         if (action === 'delete') {
-          const docs = getStoredDocs().filter(d => d.id !== id);
-          saveStoredDocs(docs);
+          await HarpIDB.deleteDoc(id);
           renderDashDocList(getCurrentFilter());
           refreshAdminStats();
           renderUploadedDocsOnPublicPage();
           showToast('Document deleted', '🗑');
         } else if (action === 'view') {
-          const doc = getStoredDocs().find(d => d.id === id);
+          const allDocs = await HarpIDB.getDocs();
+          const doc = allDocs.find(d => d.id === id);
           if (doc) window.open(doc.dataUrl, '_blank');
         }
       });
@@ -554,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── Upload submit ───────────────────────────────── */
-  document.getElementById('upload-submit-btn')?.addEventListener('click', () => {
+  document.getElementById('upload-submit-btn')?.addEventListener('click', async () => {
     const title    = document.getElementById('upload-title')?.value.trim();
     const author   = document.getElementById('upload-author')?.value.trim();
     const category = document.getElementById('upload-category')?.value || 'other';
@@ -563,28 +574,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!title) { showToast('Please enter a document title', '⚠️'); return; }
     if (pendingFiles.length === 0) { showToast('Please select at least one file', '⚠️'); return; }
 
-    const file = pendingFiles[0]; // process first file
+    const file = pendingFiles[0];
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const doc = {
-        id       : 'upload_' + Date.now(),
-        title,
-        author,
-        category,
-        status,
-        size     : file.size,
-        fileName : file.name,
-        dataUrl  : e.target.result,
+        id        : 'upload_' + Date.now(),
+        title, author, category, status,
+        size      : file.size,
+        fileName  : file.name,
+        dataUrl   : e.target.result,
         uploadedAt: new Date().toISOString()
       };
-      const docs = getStoredDocs();
+      const docs = await HarpIDB.getDocs();
       docs.unshift(doc);
-      saveStoredDocs(docs);
+      await HarpIDB.saveDocs(docs);
       renderDashDocList(getCurrentFilter());
       refreshAdminStats();
       renderUploadedDocsOnPublicPage();
-
-      // Clear form
       clearUploadForm();
       showToast(`"${title}" uploaded successfully!`, '✅');
     };
@@ -604,9 +610,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('upload-clear-btn')?.addEventListener('click', clearUploadForm);
 
-  document.getElementById('clear-all-docs-btn')?.addEventListener('click', () => {
+  document.getElementById('clear-all-docs-btn')?.addEventListener('click', async () => {
     if (!confirm('Delete ALL uploaded documents? This cannot be undone.')) return;
-    saveStoredDocs([]);
+    await HarpIDB.saveDocs([]);
     renderDashDocList();
     refreshAdminStats();
     renderUploadedDocsOnPublicPage();
@@ -614,11 +620,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ── Sync uploaded docs → public Documents page ───── */
-  function renderUploadedDocsOnPublicPage() {
+  async function renderUploadedDocsOnPublicPage() {
     const section = document.getElementById('doc-section-uploaded');
     const grid    = document.getElementById('doc-uploaded-grid');
     if (!section || !grid) return;
-    const docs = getStoredDocs();
+    const docs = await HarpIDB.getDocs();
     if (docs.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
     section.style.display = '';
     grid.innerHTML = docs.map(doc => `
@@ -653,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeSlideUrl    = null;
   let activeSlideCard   = null;
 
-  function openSlideViewer(card) {
+  async function openSlideViewer(card) {
     const slideId   = card.dataset.slideId;
     const title     = card.dataset.slideTitle || 'Presentation';
     const isPending = card.dataset.slidePending === 'true';
@@ -670,7 +676,8 @@ document.addEventListener('DOMContentLoaded', () => {
     slidePanel.classList.remove('visible');
     slideBody.innerHTML = '';
 
-    const stored = getStoredSlides().find(s => s.id === slideId);
+    const allSlides = await HarpIDB.getSlides();
+    const stored = allSlides.find(s => s.id === slideId);
     activeSlideUrl = stored ? stored.dataUrl : null;
 
     if (isPending || !stored) {
@@ -748,16 +755,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ══════════════════════════════════════════════════════
      SLIDES STORAGE + ADMIN UPLOAD
+     Storage: IndexedDB via HarpIDB (no size limit)
   ══════════════════════════════════════════════════════ */
-
-  const LS_SLIDES_KEY = 'harp_uploaded_slides';
-
-  function getStoredSlides() {
-    try { return JSON.parse(localStorage.getItem(LS_SLIDES_KEY) || '[]'); } catch { return []; }
-  }
-  function saveStoredSlides(slides) {
-    localStorage.setItem(LS_SLIDES_KEY, JSON.stringify(slides));
-  }
 
   /* ── Admin tab switching ──────────────────────────── */
   document.getElementById('admin-tabs')?.querySelectorAll('[data-admin-tab]').forEach(btn => {
@@ -770,32 +769,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ── Updated refreshAdminStats (docs + slides) ────── */
-  function refreshAdminStats() {
-    const docs   = getStoredDocs();
-    const slides = getStoredSlides();
-    const all    = [...docs, ...slides];
-
-    const statTotal      = document.getElementById('stat-total');
-    const statSlides     = document.getElementById('stat-slides');
-    const statAvailable  = document.getElementById('stat-available');
-    const statSize       = document.getElementById('stat-size');
-    if (!statTotal) return;
-
-    statTotal.textContent     = docs.length;
-    if (statSlides) statSlides.textContent = slides.length;
-    statAvailable.textContent = all.filter(d => d.status === 'ready').length;
-    const totalBytes = all.reduce((s, d) => s + (d.size || 0), 0);
-    statSize.textContent = totalBytes > 1048576
-      ? (totalBytes / 1048576).toFixed(1) + ' MB'
-      : (totalBytes / 1024).toFixed(0) + ' KB';
-  }
+  /* ── refreshAdminStats defined above (docs + slides) ── */
 
   /* ── Render slides list in admin ──────────────────── */
-  function renderDashSlideList(filter = 'all') {
+  async function renderDashSlideList(filter = 'all') {
     const container = document.getElementById('dash-slide-items');
     if (!container) return;
-    const slides   = getStoredSlides();
+    const slides   = await HarpIDB.getSlides();
     const filtered = filter === 'all' ? slides : slides.filter(s => s.category === filter);
     if (filtered.length === 0) {
       container.innerHTML = `<div style="text-align:center; padding:48px 0; color:var(--muted);">
@@ -825,13 +805,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const action = btn.dataset.saction;
         const id     = btn.dataset.sid;
         if (action === 'delete') {
-          saveStoredSlides(getStoredSlides().filter(s => s.id !== id));
+          await HarpIDB.deleteSlide(id);
           renderDashSlideList(getCurrentSlideFilter());
           refreshAdminStats();
           renderUploadedSlidesOnPublicPage();
           showToast('Slide deleted', '🗑');
         } else if (action === 'view') {
-          const slide = getStoredSlides().find(s => s.id === id);
+          const allSlides = await HarpIDB.getSlides();
+          const slide = allSlides.find(s => s.id === id);
           if (slide) window.open(slide.dataUrl, '_blank');
         }
       });
@@ -890,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── Slide upload submit ──────────────────────────── */
-  document.getElementById('slide-upload-submit-btn')?.addEventListener('click', () => {
+  document.getElementById('slide-upload-submit-btn')?.addEventListener('click', async () => {
     const title    = document.getElementById('slide-upload-title')?.value.trim();
     const author   = document.getElementById('slide-upload-author')?.value.trim();
     const category = document.getElementById('slide-upload-category')?.value || 'other';
@@ -901,7 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const file   = pendingSlideFiles[0];
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const slide = {
         id        : 'slide_' + Date.now(),
         title, author, category, status,
@@ -910,9 +891,9 @@ document.addEventListener('DOMContentLoaded', () => {
         dataUrl   : e.target.result,
         uploadedAt: new Date().toISOString()
       };
-      const slides = getStoredSlides();
+      const slides = await HarpIDB.getSlides();
       slides.unshift(slide);
-      saveStoredSlides(slides);
+      await HarpIDB.saveSlides(slides);
       renderDashSlideList(getCurrentSlideFilter());
       refreshAdminStats();
       renderUploadedSlidesOnPublicPage();
@@ -935,9 +916,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('slide-upload-clear-btn')?.addEventListener('click', clearSlideUploadForm);
 
-  document.getElementById('clear-all-slides-btn')?.addEventListener('click', () => {
+  document.getElementById('clear-all-slides-btn')?.addEventListener('click', async () => {
     if (!confirm('Delete ALL uploaded slides? This cannot be undone.')) return;
-    saveStoredSlides([]);
+    await HarpIDB.saveSlides([]);
     renderDashSlideList();
     refreshAdminStats();
     renderUploadedSlidesOnPublicPage();
@@ -945,11 +926,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ── Sync uploaded slides → public Presentations page */
-  function renderUploadedSlidesOnPublicPage() {
+  async function renderUploadedSlidesOnPublicPage() {
     const section = document.getElementById('slide-section-uploaded');
     const grid    = document.getElementById('slide-uploaded-grid');
     if (!section || !grid) return;
-    const slides = getStoredSlides();
+    const slides = await HarpIDB.getSlides();
     if (slides.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
     section.style.display = '';
     grid.innerHTML = slides.map(s => `
