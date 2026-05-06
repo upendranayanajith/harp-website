@@ -661,9 +661,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function renderUploadedDocsOnPublicPage() {
     const section = document.getElementById('doc-section-uploaded');
     const grid    = document.getElementById('doc-uploaded-grid');
+    const emptySt = document.getElementById('doc-empty-state');
     if (!section || !grid) return;
-    if (cachedDocs.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
+    if (cachedDocs.length === 0) {
+      section.style.display = 'none'; grid.innerHTML = '';
+      if (emptySt) emptySt.style.display = '';
+      return;
+    }
     section.style.display = '';
+    if (emptySt) emptySt.style.display = 'none';
     grid.innerHTML = cachedDocs.map(doc => `
       <div class="doc-card" data-doc-id="${doc.id}" data-doc-title="${escHtml(doc.title)}"
            data-doc-meta="${escHtml(doc.author || '')}" data-doc-category="${doc.category}">
@@ -976,9 +982,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function renderUploadedSlidesOnPublicPage() {
     const section = document.getElementById('slide-section-uploaded');
     const grid    = document.getElementById('slide-uploaded-grid');
+    const emptySt = document.getElementById('slide-empty-state');
     if (!section || !grid) return;
-    if (cachedSlides.length === 0) { section.style.display = 'none'; grid.innerHTML = ''; return; }
+    if (cachedSlides.length === 0) {
+      section.style.display = 'none'; grid.innerHTML = '';
+      if (emptySt) emptySt.style.display = '';
+      return;
+    }
     section.style.display = '';
+    if (emptySt) emptySt.style.display = 'none';
     grid.innerHTML = cachedSlides.map(s => `
       <div class="doc-card" data-slide-id="${s.id}" data-slide-title="${escHtml(s.title)}"
            data-slide-meta="${escHtml(s.author || '')}" data-slide-category="${s.category}">
