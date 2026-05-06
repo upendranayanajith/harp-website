@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     btn.textContent = 'Sending…';
     btn.disabled = true;
 
-    emailjs.send('service_cw76hux', 'template_19kdkbx', {
+    emailjs.send('service_cw76hux', 'template_8bbc2om', {
       name:    name,
       email:   email,
       subject: subject,
